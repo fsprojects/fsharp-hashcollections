@@ -2,16 +2,16 @@ namespace HashTrie.FSharp
 
 open System
 
-type [<Struct>] HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
+type [<System.Runtime.CompilerServices.IsReadOnly; Struct>] HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
 
 type HashTrieNode<'tk, 'tv> =
     | EntryNode of entry: HashMapEntry<'tk, 'tv>
     | HashCollisionNode of entries: HashMapEntry<'tk, 'tv> list
     | TrieNode of nodes: Compressed32PosArray<HashTrieNode<'tk, 'tv>>
 
-type [<Struct>] HashTrie<'tk, 'tv> = {
+type [<Struct; System.Runtime.CompilerServices.IsReadOnly>] HashTrie<'tk, 'tv> = {
     CurrentCount: int32
-    RootData: HashTrieNode<'tk, 'tv> voption
+    RootData: Compressed32PosArray<HashTrieNode<'tk, 'tv>>
 }
 
 module HashTrie =
@@ -23,29 +23,31 @@ module HashTrie =
             | entry :: tail -> if entry.Key = k then ValueSome entry.Value else findInList tail
         findInList l
 
-    let [<Literal>] PartitionSize = 5
-    let [<Literal>] PartitionMask = 0b11111u
-    let [<Literal>] MaxShiftValue = 30 // Partition Size amount of 1 bits
+    let [<Literal>] PartitionSize = 4
+    let [<Literal>] PartitionMask = 0b1111u
+    let [<Literal>] MaxShiftValue = 32 // Partition Size amount of 1 bits
 
-    let inline private getIndex (keyHash: uint32) shift = keyHash >>> shift &&& PartitionMask
+    let inline private getIndex keyHash shift = keyHash >>> shift &&& PartitionMask
+    let inline private getIndexNoShift keyHash = keyHash &&& PartitionMask
 
-    let inline private getFromNode k hashTrieNode =
+    let tryFind k (hashTrie: HashTrie<_, _>) = 
         let keyHash = hash k |> uint32
-        let rec traverseNodes k keyHash node shift =
+        
+        let rec getRec node shift =
             match node with
             | TrieNode(nodes) ->
-                let index = getIndex keyHash shift
-                // NOTE: Compressed32PosArray.get is inlined to avoid struct copying. Delivers a significant performance benefit in Get operations.
-                match nodes |> Compressed32PosArray.get (int index) with
-                | ValueSome(node) -> traverseNodes k keyHash node (shift + PartitionSize)
-                | ValueNone -> ValueNone
+                let bitPos = Compressed32PosArray.getBitMapForIndex (getIndex keyHash shift)
+                if Compressed32PosArray.boundsCheckIfSetForBitMapIndex nodes.BitMap bitPos // This checks if the bit was set in the first place.
+                then
+                    getRec
+                        (nodes.Content.[Compressed32PosArray.getCompressedIndexForIndexBitmap nodes.BitMap bitPos]) 
+                        (shift + PartitionSize)
+                else ValueNone
             | EntryNode entry -> if entry.Key = k then ValueSome entry.Value else ValueNone
             | HashCollisionNode entries -> tryFindValueInList k entries
-        traverseNodes k keyHash hashTrieNode 0
-
-    let get k hashTrie = 
-        match hashTrie.RootData with
-        | ValueSome(rootData) -> getFromNode k rootData
+        
+        match Compressed32PosArray.get (getIndexNoShift keyHash) hashTrie.RootData with
+        | ValueSome(node) -> getRec node PartitionSize
         | ValueNone -> ValueNone
 
     let private addNodesToResolveConflict existingEntry newEntry existingEntryHash currentKeyHash shift =
@@ -56,22 +58,23 @@ module HashTrie =
             then HashCollisionNode([ existingEntry; newEntry] ) // This is a hash collision node. We have reached max depth.
             else
                 if existingEntryIndex <> currentEntryIndex
-                then
-                    //let subNode = addNodesToResolveConflict existingEntry newEntry existingEntryHash currentKeyHash (shift + PartitionSize)
-                    TrieNode(Compressed32PosArray.empty |> Compressed32PosArray.set (int existingEntryIndex) (EntryNode existingEntry) |> Compressed32PosArray.set (int currentEntryIndex) (EntryNode newEntry))
+                then 
+                    TrieNode(
+                        Compressed32PosArray.empty 
+                        |> Compressed32PosArray.set existingEntryIndex (EntryNode existingEntry) 
+                        |> Compressed32PosArray.set currentEntryIndex (EntryNode newEntry))
                 else
-                    // We're still colliding but haven't reached max depth yet. Attempt next partition.
                     let subNode = createRequiredDepthNodes (shift + PartitionSize)
-                    TrieNode(Compressed32PosArray.empty |> Compressed32PosArray.set (int existingEntryIndex) subNode)
-        createRequiredDepthNodes shift            
+                    TrieNode(Compressed32PosArray.empty |> Compressed32PosArray.set existingEntryIndex subNode)
+        createRequiredDepthNodes shift
 
-    let inline private addFromNode k v hashTrieNode =
+    let add k v hashTrie =
         let keyHash = hash k |> uint32
-        let newEntry = { Key = k; Value = v; }
+        let newEntry = { Key = k; Value = v }
         let rec traverseNodes node shift =
             match node with
             | TrieNode(nodes) ->
-                let index = getIndex keyHash shift |> int
+                let index = getIndex keyHash shift
                 match nodes |> Compressed32PosArray.get index with
                 | ValueSome(nodeAtPos) ->
                     let struct (newPosNode, isAdded) = traverseNodes nodeAtPos (shift + PartitionSize)
@@ -87,26 +90,31 @@ module HashTrie =
                 if entries |> List.exists (fun x -> x.Key = k)
                 then struct (HashCollisionNode(entries |> List.map (fun x -> if x.Key = k then newEntry else x)), false)
                 else struct (HashCollisionNode(newEntry :: entries), true)
-        traverseNodes hashTrieNode 0
+        
+        let index = getIndexNoShift keyHash
 
-    let add k v hashTrie =
-        let rootData = hashTrie.RootData |> ValueOption.defaultWith (fun () -> TrieNode(Compressed32PosArray.empty))
-        let struct (newNode, isAdded) = addFromNode k v rootData
+        let struct (newRootData, isAdded) = 
+            match Compressed32PosArray.get index hashTrie.RootData with
+            | ValueSome(node) -> 
+                let struct (newNode, isAdded) = traverseNodes node PartitionSize
+                struct (
+                    hashTrie.RootData |> Compressed32PosArray.set index newNode,
+                    isAdded)
+            | ValueNone -> struct (hashTrie.RootData |> Compressed32PosArray.set index (EntryNode newEntry), true)
+
         { CurrentCount = if isAdded then hashTrie.CurrentCount + 1 else hashTrie.CurrentCount
-          RootData = ValueSome newNode }
+          RootData = newRootData }
 
-    // NOTE: This needs to change so that nodes are cleaned up (i.e. if TrieNode is empty then we don't need it anymore and it should be unset upstream)
-    let private removeFromNode k hashTrieNode =
+    let remove k hashTrie =
         let keyHash = hash k |> uint32
-        let rec traverseNodes node shift =
-            let (TrieNode(nodes)) = node // Removal always deals with TrieNodes and ONE level below.
+        let rec traverseNodes node nodes shift =
             let index = getIndex keyHash shift |> int
             match nodes |> Compressed32PosArray.get index with
             | ValueSome(subNode) ->
                 let struct (newSubNodeList, didWeRemove) = 
                     match subNode with
-                    | TrieNode _ -> 
-                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes subNode (shift + PartitionSize)
+                    | TrieNode subNodes -> 
+                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes subNode subNodes (shift + PartitionSize)
                         match childNodeOpt with
                         | ValueSome(childNode) -> struct (nodes |> Compressed32PosArray.set index childNode, didWeRemove)
                         | ValueNone -> struct (nodes |> Compressed32PosArray.unset index, didWeRemove)  
@@ -125,16 +133,30 @@ module HashTrie =
                 if newSubNodeList |> Compressed32PosArray.count = 0
                 then struct (ValueNone, didWeRemove)
                 else struct (ValueSome (TrieNode(newSubNodeList)), didWeRemove)
-            | ValueNone -> struct (ValueSome node, false) // No point projecting new node; nothing to remove.
-        traverseNodes hashTrieNode 0
-
-    let remove k hashTrie =
-        match hashTrie.RootData with
-        | ValueSome(rootData) -> 
-            let struct (newNode, isRemoved) = removeFromNode k rootData
-            { CurrentCount = if isRemoved then hashTrie.CurrentCount - 1 else hashTrie.CurrentCount
-              RootData = newNode }
-        | ValueNone -> hashTrie // There's no data - remove is a no-op          
+            | ValueNone -> struct (ValueSome node, false) 
+        
+        let rootIndex = getIndex keyHash 0 |> int
+        match Compressed32PosArray.get rootIndex hashTrie.RootData with
+        | ValueSome(node) -> 
+            match node with
+            | TrieNode(nodes) -> 
+                let struct (newNode, isRemoved) = traverseNodes node nodes PartitionSize
+                if isRemoved
+                then
+                    match newNode with
+                    | ValueSome(newNode) -> 
+                        let newRootData = hashTrie.RootData |> Compressed32PosArray.set rootIndex newNode
+                        { CurrentCount = hashTrie.CurrentCount - 1; RootData = newRootData }
+                    | ValueNone -> { CurrentCount = hashTrie.CurrentCount - 1; RootData = hashTrie.RootData |> Compressed32PosArray.unset rootIndex }
+                else hashTrie
+            | EntryNode entry -> 
+                if entry.Key = k 
+                then 
+                    { CurrentCount = hashTrie.CurrentCount - 1
+                      RootData = hashTrie.RootData |> Compressed32PosArray.unset rootIndex }
+                else hashTrie
+            | HashCollisionNode _ -> failwith "Not expected at root position"
+        | _ -> hashTrie // There's no data - remove is a no-op          
 
     let public count hashTrie = hashTrie.CurrentCount
 
@@ -145,8 +167,7 @@ module HashTrie =
             | EntryNode entry -> yield struct (entry.Key, entry.Value)
             | HashCollisionNode entries -> for entry in entries do yield struct (entry.Key, entry.Value)
         }
-        match hashTrie.RootData with
-        | ValueSome(rootData) -> yieldNodes rootData
-        | ValueNone -> Seq.empty
 
-    let [<GeneralizableValue>] public empty<'tk, 'tv> : HashTrie<'tk, 'tv> = { CurrentCount = 0; RootData = ValueNone }
+        seq { for node in hashTrie.RootData.Content do yield! yieldNodes node }
+
+    let [<GeneralizableValue>] public empty<'tk, 'tv> : HashTrie<'tk, 'tv> = { CurrentCount = 0; RootData = Compressed32PosArray.empty }

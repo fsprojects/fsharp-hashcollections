@@ -27,8 +27,34 @@ let mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) =
             (mapToTest |> Map.toSeq |> Seq.map (fun (x, y) -> struct (x, y)) |> set)
             "Hash Trie and Map don't contain same data"
 
+let toVOption i = match i with | Some(x) -> ValueSome x | None -> ValueNone
+
+let mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) = 
+    
+    let mutable mapToTest = Map.empty
+    let mutable hashTrieToTest = HashTrie.empty
+    
+    for action in actions do 
+        let mutable key = Unchecked.defaultof<_>
+        match action with
+        | Add(k, v) -> 
+            mapToTest <- mapToTest |> Map.add k v
+            hashTrieToTest <- hashTrieToTest |> HashTrie.add k v
+            key <- k
+        | Remove k ->
+            mapToTest <- mapToTest |> Map.remove k
+            hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
+            key <- k
+        let mapResult = mapToTest |> Map.tryFind key |> toVOption
+        let hashTrieResult = hashTrieToTest |> HashTrie.tryFind key
+        Expect.equal hashTrieResult mapResult "Key update did not hold"
+
+let propertyTest (actions: KvAction<int64, int> list) = 
+    mapAndHashTrieAreTheSameAfterActions actions
+    mapAndHashTrieHaveSameGetValue actions
+
 let buildPropertyTest testName testFunction = 
-    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 10000; MaxTest = 1000 }
+    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 1000 }    
     testCase testName <| fun () -> Check.One(config, testFunction)
 
 let [<Tests>] tests = 
@@ -54,8 +80,12 @@ let [<Tests>] tests =
           testCase
             "Add and remove value with same hash"
             (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (0L,0); Remove 1L ])
+        
+          buildPropertyTest
+            "Map and HashTrie behave the same on Add and Remove"
+            (fun (x: KvAction<int64, int> list) -> mapAndHashTrieAreTheSameAfterActions x)
 
           buildPropertyTest
-            "Map and hash trie are always equal"
-            (fun (actions: KvAction<int64, int> list) -> mapAndHashTrieAreTheSameAfterActions actions)
+            "Map and HashTrie always have the same Get result"
+            (fun (x: KvAction<int64, int> list) -> mapAndHashTrieHaveSameGetValue x)
         ]
