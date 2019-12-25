@@ -5,9 +5,9 @@ open System
 type [<System.Runtime.CompilerServices.IsReadOnly; Struct>] HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
 
 type HashTrieNode<'tk, 'tv> =
+    | TrieNode of nodes: Compressed32PosArray<HashTrieNode<'tk, 'tv>>
     | EntryNode of entry: HashMapEntry<'tk, 'tv>
     | HashCollisionNode of entries: HashMapEntry<'tk, 'tv> list
-    | TrieNode of nodes: Compressed32PosArray<HashTrieNode<'tk, 'tv>>
 
 type [<Struct; System.Runtime.CompilerServices.IsReadOnly>] HashTrie<'tk, 'tv> = {
     CurrentCount: int32
@@ -17,45 +17,64 @@ type [<Struct; System.Runtime.CompilerServices.IsReadOnly>] HashTrie<'tk, 'tv> =
 module HashTrie =
 
     let private tryFindValueInList k l =
+        printfn  "Attempting to find hash collision [K: %A, Node: %A]" k l
         let rec findInList currentList =
             match currentList with
+            | entry :: tail -> 
+                if entry.Key = k 
+                then ValueSome entry.Value
+                else findInList tail
             | [] -> ValueNone
-            | entry :: tail -> if entry.Key = k then ValueSome entry.Value else findInList tail
         findInList l
 
-    let [<Literal>] PartitionSize = 4
-    let [<Literal>] PartitionMask = 0b1111u
-    let [<Literal>] MaxShiftValue = 32 // Partition Size amount of 1 bits
+    let [<Literal>] PartitionSize = 6
+    let [<Literal>] PartitionMask = 0b111111UL
+    let [<Literal>] MaxShiftValue = 30 // Partition Size amount of 1 bits
 
-    let inline private getIndex keyHash shift = keyHash >>> shift &&& PartitionMask
-    let inline private getIndexNoShift keyHash = keyHash &&& PartitionMask
+    let inline private getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask
+    let inline private getIndex keyHash shift = getIndexNoShift (keyHash >>> shift)
 
     let tryFind k (hashTrie: HashTrie<_, _>) = 
-        let keyHash = hash k |> uint32
-        
-        let rec getRec node shift =
+
+        let rec getRec node remainderHash =
+            //printfn "Rec: Hash: %A, Node: %A" remainderHash node
             match node with
             | TrieNode(nodes) ->
-                let bitPos = Compressed32PosArray.getBitMapForIndex (getIndex keyHash shift)
+                let bitPos = Compressed32PosArray.getBitMapForIndex (getIndexNoShift remainderHash)
+                //printfn "BitMapOfArray: %i; BitPos: %i" nodes.BitMap bitPos
                 if Compressed32PosArray.boundsCheckIfSetForBitMapIndex nodes.BitMap bitPos // This checks if the bit was set in the first place.
                 then
                     getRec
                         (nodes.Content.[Compressed32PosArray.getCompressedIndexForIndexBitmap nodes.BitMap bitPos]) 
-                        (shift + PartitionSize)
-                else ValueNone
+                        (remainderHash >>> PartitionSize)
+                else 
+                  //  printfn "EMPTY, not traversing further"
+                    ValueNone
             | EntryNode entry -> if entry.Key = k then ValueSome entry.Value else ValueNone
             | HashCollisionNode entries -> tryFindValueInList k entries
         
+        let keyHash = hash k |> uint64
         match Compressed32PosArray.get (getIndexNoShift keyHash) hashTrie.RootData with
-        | ValueSome(node) -> getRec node PartitionSize
-        | ValueNone -> ValueNone
+        | ValueSome(node) -> getRec node (keyHash >>> PartitionSize)
+        | ValueNone -> 
+            //printfn "Returning at first level"
+            ValueNone
 
     let private addNodesToResolveConflict existingEntry newEntry existingEntryHash currentKeyHash shift =
         let rec createRequiredDepthNodes shift =
             let existingEntryIndex = getIndex existingEntryHash shift
             let currentEntryIndex = getIndex currentKeyHash shift
             if shift = MaxShiftValue
-            then HashCollisionNode([ existingEntry; newEntry] ) // This is a hash collision node. We have reached max depth.
+            then 
+                //This should never happen at all in benchmarking. Something is not right especially for int32's of a given range.
+                printfn 
+                    "Creating hash collision node [EntryOld: %A, EntryOldHash: %i, NewEntry: %A, NewEntryHash: %i, ExistingEntry: %i, CurrentEntry: %i]" 
+                    existingEntry 
+                    (hash existingEntry.Key) 
+                    newEntry (hash newEntry.Key)
+                    existingEntryIndex
+                    currentEntryIndex
+                HashCollisionNode([ existingEntry; newEntry] ) // This is a hash collision node. We have reached max depth.
             else
                 if existingEntryIndex <> currentEntryIndex
                 then 
@@ -69,7 +88,7 @@ module HashTrie =
         createRequiredDepthNodes shift
 
     let add k v hashTrie =
-        let keyHash = hash k |> uint32
+        let keyHash = hash k |> uint64
         let newEntry = { Key = k; Value = v }
         let rec traverseNodes node shift =
             match node with
@@ -84,9 +103,13 @@ module HashTrie =
                 // At this point we may need to split the nodes or replace an existing one or make a hash collision node if we run out of hash partitions.
                 if entry.Key = k
                 then struct (EntryNode newEntry, false) // Replacement
-                else struct (addNodesToResolveConflict entry newEntry (hash entry.Key |> uint32) keyHash shift, true)
+                else 
+                    // Suspect this logic fails and is wrong. We could be doing a lot of hash collision nodes by mistake masking the performance bug.
+                    // Interesting this doesn't happen when everything is divisible by 32 exactly.
+                    struct (addNodesToResolveConflict entry newEntry (hash entry.Key |> uint64) keyHash shift, true)
             | HashCollisionNode entries ->
                 /// This should only occur IF as above we are at the maximum point of shift (shift = MaxShiftValue)
+                if shift <> MaxShiftValue then failwithf "Not expected to exist"
                 if entries |> List.exists (fun x -> x.Key = k)
                 then struct (HashCollisionNode(entries |> List.map (fun x -> if x.Key = k then newEntry else x)), false)
                 else struct (HashCollisionNode(newEntry :: entries), true)
@@ -106,7 +129,7 @@ module HashTrie =
           RootData = newRootData }
 
     let remove k hashTrie =
-        let keyHash = hash k |> uint32
+        let keyHash = hash k |> uint64
         let rec traverseNodes node nodes shift =
             let index = getIndex keyHash shift |> int
             match nodes |> Compressed32PosArray.get index with

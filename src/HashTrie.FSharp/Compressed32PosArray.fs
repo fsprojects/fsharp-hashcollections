@@ -7,108 +7,69 @@ open System.Runtime.CompilerServices
 
 /// A fixed 32-bit array like structure. Only allocates as many entries as required to store elements with a maximum of 32 elements.
 /// WARNING: There is no bounds checking on the indexes passed into the above for performance.
-type [<IsReadOnly; Struct>] Compressed32PosArray<'t> = { BitMap: uint16; Content: 't array }
+type [<IsReadOnly; Struct>] Compressed32PosArray<'t> = { BitMap: uint64; Content: 't array }
 
 module ArrayUtils = 
 
-  type MethodGenerator<'t>() = 
-    static member val ArrayCreate : int -> 't array = 
-      printfn "Generating method"
-      let il = DynamicMethod("GenerateArrayUnchecked", typeof<'t array>, [| typeof<int> |])
-      let gen = il.GetILGenerator()
-      gen.Emit(OpCodes.Ldarg_0)
-      gen.Emit(OpCodes.Newarr, typeof<'t>)
-      gen.Emit(OpCodes.Ret)
-      let d = il.CreateDelegate(typeof<Func<int, 't array>>) :?> Func<int, 't array>
-      d.Invoke
+  // type MethodGenerator<'t>() = 
+  //   static member val ArrayCreate : int -> 't array = 
+  //     printfn "Generating method"
+  //     let il = DynamicMethod("GenerateArrayUnchecked", typeof<'t array>, [| typeof<int> |])
+  //     let gen = il.GetILGenerator()
+  //     gen.Emit(OpCodes.Ldarg_0)
+  //     gen.Emit(OpCodes.Newarr, typeof<'t>)
+  //     gen.Emit(OpCodes.Ret)
+  //     let d = il.CreateDelegate(typeof<Func<int, 't array>>) :?> Func<int, 't array>
+  //     d.Invoke
 
   let inline arrayCreate<'t> length = 
-    //Array.zeroCreate<'t> length
-    MethodGenerator<'t>.ArrayCreate length
+    Array.zeroCreate<'t> length
+    //MethodGenerator<'t>.ArrayCreate length
   
   let inline copyArray (sourceArray: 'T []) : 'T [] =
       let result = arrayCreate sourceArray.Length
       System.Array.Copy (sourceArray, result, sourceArray.Length)
       result
 
-//   let inline copyArray (sourceArray: 'T []) : 'T [] =
-//       let result = arrayCreate sourceArray.Length
-//       for i = 0 to sourceArray.Length - 1 do
-//         result.[i] <- sourceArray.[i]
-// //      System.Array.Copy (sourceArray, result, sourceArray.Length)
-//       result
-
-  // let inline copyArrayMakeHoleLast (itemToInsert: 'T) (sourceArray: 'T []) : 'T [] =
-  //   let result = arrayCreate (sourceArray.Length + 1)
-  //   System.Array.Copy (sourceArray, result, sourceArray.Length)
-  //   result.[sourceArray.Length] <- itemToInsert
-  //   result
-
-  let inline copyArrayMakeHole (holeIndex : int) (itemToInsert: 'T) (sourceArray: 'T []) : 'T [] =
+  let inline copyArrayInsertInMiddle (holeIndex : int) (itemToInsert: 'T) (sourceArray: 'T []) : 'T [] =
     let result = arrayCreate (sourceArray.Length + 1)
     System.Array.Copy (sourceArray, result, holeIndex)
     System.Array.Copy (sourceArray, holeIndex, result, holeIndex + 1, sourceArray.Length - holeIndex)
     result.[holeIndex] <- itemToInsert
     result
 
-  // let inline copyArrayMakeHole (holeIndex : int) (itemToInsert: 'T) (sourceArray: 'T []) : 'T [] =
-  //   let result = arrayCreate (sourceArray.Length + 1)
-  //   for i = 0 to holeIndex - 1 do
-  //     result.[i] <- sourceArray.[i]
-
-  //   result.[holeIndex] <- itemToInsert
-
-  //   for i = holeIndex + 1 to result.Length - 1 do
-  //     result.[i] <- sourceArray.[i - 1]
-
-  //   result
-
-  // let inline copyArrayRemoveHole (holeIndex: int) (sourceArray: 'T []) : 'T [] =
-  //   let result = arrayCreate (sourceArray.Length - 1)
-  //   System.Array.Copy (sourceArray, result, holeIndex)
-  //   System.Array.Copy (sourceArray, holeIndex + 1, result, holeIndex, sourceArray.Length - holeIndex - 1)
-  //   result
-
 open ArrayUtils
 
 module Compressed32PosArray =
 
-    let [<Literal>] LeastSigBitSet = 0x1us
+    let [<Literal>] LeastSigBitSet : uint64 = 0b1UL
   
-    //let inline leadingZeroCount x = X86.Lzcnt.LeadingZeroCount (uint32 x)
-    let inline popCount x = 
-        X86.Popcnt.PopCount (uint32 x) //20% faster approx
-        // let mutable v = x
-        // v <- v - ((v >>> 1) &&& 0x55555555u)
-        // v <- (v &&& 0x33333333u) + ((v >>> 2) &&& 0x33333333u)
-        // ((v + (v >>> 4) &&& 0xF0F0F0Fu) * 0x1010101u) >>> 24
+    let inline popCount (x: uint64) = X86.Popcnt.X64.PopCount x
 
-    let [<GeneralizableValue>] empty<'t> : Compressed32PosArray<'t> = { BitMap = 0us; Content = Array.zeroCreate 0 }
-
-    //let inline firstUncompressedIndexSet bitMap = leadingZeroCount bitMap
+    let [<GeneralizableValue>] empty<'t> : Compressed32PosArray<'t> = { BitMap = 0UL; Content = Array.zeroCreate 0 }
 
     let inline getBitMapForIndex index = LeastSigBitSet <<< (int index)
 
-    let inline boundsCheckIfSet bitMap index = (getBitMapForIndex index &&& bitMap) > 0us
-    let inline boundsCheckIfSetForBitMapIndex bitMap indexBitMap = (indexBitMap &&& bitMap) > 0us
+    let inline boundsCheckIfSet bitMap index = (getBitMapForIndex index &&& bitMap) > 0UL
+    let inline boundsCheckIfSetForBitMapIndex bitMap indexBitMap = (indexBitMap &&& bitMap) > 0UL
 
     let inline getCompressedIndex bitMap index = 
        let bitPos = getBitMapForIndex index // e.g. 00010000
-       (bitMap &&& (bitPos - 1us)) |> popCount |> int// e.g 00001111 then mask that against bitmap and count
+       (bitMap &&& (bitPos - 1UL)) |> popCount |> int// e.g 00001111 then mask that against bitmap and count
 
     let inline getCompressedIndexForIndexBitmap bitMap bitMapIndex =
-       (bitMap &&& (bitMapIndex - 1us)) |> popCount |> int
+       (bitMap &&& (bitMapIndex - 1UL)) |> popCount |> int
 
     let inline set index value ca = 
         let bit = getBitMapForIndex index
         let localIdx = getCompressedIndex ca.BitMap index |> int
-        if (bit &&& ca.BitMap) <> 0us then
+        if (bit &&& ca.BitMap) <> 0UL then
           let newContent = copyArray ca.Content
           newContent.[localIdx] <- value
           { BitMap = ca.BitMap; Content = newContent }
         else
           let newBitMap = ca.BitMap ||| bit
-          let newContent = copyArrayMakeHole localIdx value ca.Content
+          let newContent = copyArrayInsertInMiddle localIdx value ca.Content
           { BitMap = newBitMap; Content = newContent }
 
     // NOTE: This function when non-inlined after testing can cause performance regressions.
@@ -144,28 +105,30 @@ module Compressed32PosArray =
             { BitMap = newBitMap; Content = result }
         else ca // Do nothing; not set.
 
-type Uncompressed32PosArray<'t> = ('t voption) array
+//Compressed32PosArray.empty |> Compressed32PosArray.set 37 "T" |> Compressed32PosArray.get 38
 
-module Uncompressed4PosArray = 
+// type Uncompressed32PosArray<'t> = ('t voption) array
 
-  type private Generator<'t>() = 
-    static member val SizeOf : int = sizeof<'t voption>
+// module Uncompressed4PosArray = 
 
-  let inline empty<'t> : Uncompressed32PosArray<'t> = Array.zeroCreate 4
+//   type private Generator<'t>() = 
+//     static member val SizeOf : int = sizeof<'t voption>
 
-  let inline get index (ua: Uncompressed32PosArray<_>) = 
-    ua.[index]
+//   let inline empty<'t> : Uncompressed32PosArray<'t> = Array.zeroCreate 4
 
-  let inline set index (value: 't) (ua: Uncompressed32PosArray<'t>) = 
-    let r = empty
-    Array.Copy(ua, r, 4)
-    r.[index] <- ValueSome value
-    r
+//   let inline get index (ua: Uncompressed32PosArray<_>) = 
+//     ua.[index]
 
-  let inline unset index (ua: Uncompressed32PosArray<'t>) = 
-    let r = empty
-    Array.Copy(ua, r, 4)
-    r.[index] <- ValueNone
-    r
+//   let inline set index (value: 't) (ua: Uncompressed32PosArray<'t>) = 
+//     let r = empty
+//     Array.Copy(ua, r, 4)
+//     r.[index] <- ValueSome value
+//     r
 
-  let count (ua: Uncompressed32PosArray<_>) = ua |> Array.filter ValueOption.isSome |> Array.length
+//   let inline unset index (ua: Uncompressed32PosArray<'t>) = 
+//     let r = empty
+//     Array.Copy(ua, r, 4)
+//     r.[index] <- ValueNone
+//     r
+
+//   let count (ua: Uncompressed32PosArray<_>) = ua |> Array.filter ValueOption.isSome |> Array.length

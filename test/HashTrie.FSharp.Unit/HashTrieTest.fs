@@ -49,10 +49,6 @@ let mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) =
         let hashTrieResult = hashTrieToTest |> HashTrie.tryFind key
         Expect.equal hashTrieResult mapResult "Key update did not hold"
 
-let propertyTest (actions: KvAction<int64, int> list) = 
-    mapAndHashTrieAreTheSameAfterActions actions
-    mapAndHashTrieHaveSameGetValue actions
-
 let buildPropertyTest testName testFunction = 
     let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 1000 }    
     testCase testName <| fun () -> Check.One(config, testFunction)
