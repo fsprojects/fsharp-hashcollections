@@ -11,20 +11,7 @@ type [<IsReadOnly; Struct>] Compressed32PosArray<'t> = { BitMap: uint64; Content
 
 module ArrayUtils = 
 
-  // type MethodGenerator<'t>() = 
-  //   static member val ArrayCreate : int -> 't array = 
-  //     printfn "Generating method"
-  //     let il = DynamicMethod("GenerateArrayUnchecked", typeof<'t array>, [| typeof<int> |])
-  //     let gen = il.GetILGenerator()
-  //     gen.Emit(OpCodes.Ldarg_0)
-  //     gen.Emit(OpCodes.Newarr, typeof<'t>)
-  //     gen.Emit(OpCodes.Ret)
-  //     let d = il.CreateDelegate(typeof<Func<int, 't array>>) :?> Func<int, 't array>
-  //     d.Invoke
-
-  let inline arrayCreate<'t> length = 
-    Array.zeroCreate<'t> length
-    //MethodGenerator<'t>.ArrayCreate length
+  let inline arrayCreate<'t> length = Array.zeroCreate<'t> length
   
   let inline copyArray (sourceArray: 'T []) : 'T [] =
       let result = arrayCreate sourceArray.Length
@@ -42,6 +29,7 @@ open ArrayUtils
 
 module Compressed32PosArray =
 
+    let [<Literal>] MaxSize = 64
     let [<Literal>] LeastSigBitSet : uint64 = 0b1UL
   
     let inline popCount (x: uint64) = X86.Popcnt.X64.PopCount x
@@ -104,6 +92,12 @@ module Compressed32PosArray =
                     oldIndexUpTo <- oldIndexUpTo + 1
             { BitMap = newBitMap; Content = result }
         else ca // Do nothing; not set.
+
+    let ofArray (a: _ array) = 
+      let mutable cArray = empty
+      for i = 0 to a.Length - 1 do
+        cArray <- cArray |> set i a.[i]
+      cArray
 
 //Compressed32PosArray.empty |> Compressed32PosArray.set 37 "T" |> Compressed32PosArray.get 38
 

@@ -8,8 +8,8 @@ open System.Diagnostics
 open HashTrie.FSharp
 open System.Collections.Concurrent
 
-let testSize = 10000000
-let amountOfTimesToGetTest = 100
+let testSize = 5000000
+let amountOfTimesToGetTest = 200
 
 let preparedData = Array.init testSize id
 
@@ -61,12 +61,15 @@ let testShift() =
 //     readSw.Stop()
 //     printfn "Total time to read per get: %f" (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
 
+type Comparer = 
+    static member inline GetHashCode (o: int32) = o
+    static member inline CheckEquality (o1: int32, o2: int32) = o1.Equals(o2)
 
 let testHashTrie() = 
     
     printfn "Inserting into trie"    
     let insertSw = Stopwatch.StartNew()
-    let mutable data = HashTrie.empty
+    let mutable data : HashTrie<_, _, _> = HashTrie.empty
     for d in preparedData do
         data <- data |> HashTrie.add d d
     
@@ -79,7 +82,9 @@ let testHashTrie() =
         for i = 0 to testSize - 1 do
             data |> HashTrie.tryFind i |> ignore
     readSw.Stop()
-    printfn "Total time to read per get: %f" (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
+    printfn "Total time to read per get: %f, PerCall: %f" 
+        (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
+        (float (amountOfTimesToGetTest * testSize) / readSw.Elapsed.TotalMilliseconds)
 
 let testMap() = 
     
@@ -96,7 +101,8 @@ let testMap() =
         for i = 0 to testSize - 1 do
             data |> Map.tryFind i |> ignore
     readSw.Stop()
-    printfn "Total time to read per get: %f" (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
+    printfn "Total time to read per get: %f" 
+        (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
 
 let testConcurrentDict() = 
     
@@ -114,13 +120,14 @@ let testConcurrentDict() =
             data.TryGetValue(i) |> ignore
     readSw.Stop()
 
-    printfn "Total time to read per get: %f" (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
+    printfn "Total time to read per get: %f" 
+        (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
 
 [<EntryPoint>]
 let main argv =
-    testShift()
+   // testShift()
     // testThirdPartyHashTrie()
     testHashTrie()
-    testMap()
-    testConcurrentDict()
+    //testMap()
+    //testConcurrentDict()
     0 // return an integer exit code

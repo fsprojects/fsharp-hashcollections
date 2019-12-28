@@ -7,9 +7,9 @@ open HashTrie.FSharp
 // List of actions to generate
 type KvAction<'k, 'v> = 
     | Add of k: 'k * v: 'v
-    | Remove of k: 'k
+    // | Remove of k: 'k
 
-let mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) = 
+let inline mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) = 
     
     let mutable mapToTest = Map.empty
     let mutable hashTrieToTest = HashTrie.empty
@@ -19,9 +19,9 @@ let mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) =
         | Add(k, v) -> 
             mapToTest <- mapToTest |> Map.add k v
             hashTrieToTest <- hashTrieToTest |> HashTrie.add k v
-        | Remove k ->
-            mapToTest <- mapToTest |> Map.remove k
-            hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
+        // | Remove k ->
+        //     mapToTest <- mapToTest |> Map.remove k
+        //     hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
         Expect.equal 
             (hashTrieToTest |> HashTrie.toSeq |> set) 
             (mapToTest |> Map.toSeq |> Seq.map (fun (x, y) -> struct (x, y)) |> set)
@@ -41,17 +41,27 @@ let mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) =
             mapToTest <- mapToTest |> Map.add k v
             hashTrieToTest <- hashTrieToTest |> HashTrie.add k v
             key <- k
-        | Remove k ->
-            mapToTest <- mapToTest |> Map.remove k
-            hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
-            key <- k
+        // | Remove k ->
+        //     mapToTest <- mapToTest |> Map.remove k
+        //     hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
+        //     key <- k
         let mapResult = mapToTest |> Map.tryFind key |> toVOption
         let hashTrieResult = hashTrieToTest |> HashTrie.tryFind key
         Expect.equal hashTrieResult mapResult "Key update did not hold"
 
 let buildPropertyTest testName testFunction = 
-    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 1000 }    
+    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }    
     testCase testName <| fun () -> Check.One(config, testFunction)
+
+let inline generateLargeSizeMapTest() =
+  testCase
+    "Large map test of more than one depth"
+    (fun () -> 
+      let testData = Array.init 100000 id
+      let result = testData |> Array.fold (fun s t -> s |> HashTrie.add t t) HashTrie.empty
+      for i = 0 to testData.Length - 1 do
+        let testLookup = result |> HashTrie.tryFind i
+        Expect.equal testLookup (ValueSome i) "Not equal to what's expected")
 
 let [<Tests>] tests = 
     testList 
@@ -69,14 +79,16 @@ let [<Tests>] tests =
             "Map contains keys of the same hash (Hash = 0 for both 0 and -1"
             (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add(0L, 5); Add(-1L, 6) ] )
 
-          testCase
-            "Hash collision node in tree; then one is removed with a collision"
-            (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (1L,0); Add (-1L,0); Add (0L,0); Remove 0L ])
+          // testCase
+          //   "Hash collision node in tree; then one is removed with a collision"
+          //   (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (1L,0); Add (-1L,0); Add (0L,0); Remove 0L ])
 
-          testCase
-            "Add and remove value with same hash"
-            (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (0L,0); Remove 1L ])
-        
+          // testCase
+          //   "Add and remove value with same hash"
+          //   (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (0L,0); Remove 1L ])
+
+          generateLargeSizeMapTest()
+
           buildPropertyTest
             "Map and HashTrie behave the same on Add and Remove"
             (fun (x: KvAction<int64, int> list) -> mapAndHashTrieAreTheSameAfterActions x)
