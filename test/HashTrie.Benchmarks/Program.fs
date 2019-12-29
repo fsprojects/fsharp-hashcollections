@@ -8,7 +8,7 @@ open System.Diagnostics
 open HashTrie.FSharp
 open System.Collections.Concurrent
 
-let testSize = 5000000
+let testSize = 5_000_000
 let amountOfTimesToGetTest = 200
 
 let preparedData = Array.init testSize id
@@ -42,25 +42,6 @@ let testShift() =
     
     printfn "Time taken [Uint16: %i; Uint32 : %i]" uint16Sw.ElapsedMilliseconds uint32Sw.ElapsedMilliseconds
 
-// let testThirdPartyHashTrie() = 
-    
-//     printfn "Inserting into trie"    
-//     let insertSw = Stopwatch.StartNew()
-//     let mutable data = Persistent.PersistentHashMap.empty
-//     for d in preparedData do
-//         data <- data |> Persistent.PersistentHashMap.set d d
-    
-//     insertSw.Stop()
-
-//     printfn "Total time to insert: %i" insertSw.ElapsedMilliseconds
-
-//     let readSw = Stopwatch.StartNew()
-//     for i = 0 to amountOfTimesToGetTest - 1 do
-//         for i = 0 to testSize - 1 do
-//             data |> Persistent.PersistentHashMap.tryFind i |> ignore
-//     readSw.Stop()
-//     printfn "Total time to read per get: %f" (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
-
 type Comparer = 
     static member inline GetHashCode (o: int32) = o
     static member inline CheckEquality (o1: int32, o2: int32) = o1.Equals(o2)
@@ -69,7 +50,7 @@ let testHashTrie() =
     
     printfn "Inserting into trie"    
     let insertSw = Stopwatch.StartNew()
-    let mutable data : HashTrie<_, _, _> = HashTrie.empty
+    let mutable data = HashTrie.empty
     for d in preparedData do
         data <- data |> HashTrie.add d d
     
@@ -125,9 +106,7 @@ let testConcurrentDict() =
 
 [<EntryPoint>]
 let main argv =
-   // testShift()
-    // testThirdPartyHashTrie()
     testHashTrie()
-    //testMap()
-    //testConcurrentDict()
+    // testMap()
+    // testConcurrentDict()
     0 // return an integer exit code
