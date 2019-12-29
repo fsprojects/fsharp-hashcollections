@@ -1,7 +1,6 @@
 namespace HashTrie.FSharp
 
 open System
-open System.Collections.Generic
 
 type [<System.Runtime.CompilerServices.IsReadOnly; Struct>] HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
 
@@ -26,8 +25,6 @@ module HashTrie =
         let inline equals< ^eq, ^t when ^eq: (static member CheckEquality: ^t * ^t -> bool)> (o1: ^t) (o2: ^t) =
             ( ^eq : (static member CheckEquality: ^t * ^t -> bool) (o1, o2))
 
-    // let inline private hash o = o.GetHashCode() // Performance significantly faster for Get operations than "hash" F# func.
-    // let inline private (==) o1 o2 = o1.Equals(o2) // Shaves 30us of 10,000,000 factor test
 
     let tryFindValueInList equals k l =
         //printfn  "Attempting to find hash collision [K: %A, Node: %A]" k l
@@ -103,13 +100,14 @@ module HashTrie =
 
         let keyHash = hash k
         let newEntry = { Key = k; Value = v }
-        let rec traverseNodes node shift =
+
+        let rec addRec node shift =
             match node with
             | TrieNode(nodes) ->
                 let index = getIndex keyHash shift
                 match nodes |> CompressedArray.get index with
                 | ValueSome(nodeAtPos) ->
-                    let struct (newPosNode, isAdded) = traverseNodes nodeAtPos (shift + PartitionSize)
+                    let struct (newPosNode, isAdded) = addRec nodeAtPos (shift + PartitionSize)
                     let newNodes = nodes |> CompressedArray.set index newPosNode
                     struct (TrieNode newNodes, isAdded)
                 | ValueNone ->
@@ -122,7 +120,7 @@ module HashTrie =
                 let index = getIndex keyHash shift
                 if nodeIndex.Equals(index)
                 then
-                    let struct (newPosNode, isAdded) = traverseNodes nodeAtPos (shift + PartitionSize)
+                    let struct (newPosNode, isAdded) = addRec nodeAtPos (shift + PartitionSize)
                     struct (TrieNodeOne(index, newPosNode), isAdded)
                 else
                     let entryNode = EntryNode(newEntry)
@@ -131,7 +129,7 @@ module HashTrie =
             | TrieNodeFull(nodes) ->
                 let index = getIndex keyHash shift |> int
                 let nodeAtPos = nodes.[index]
-                let struct (newPosNode, isAdded) = traverseNodes nodeAtPos (shift + PartitionSize)
+                let struct (newPosNode, isAdded) = addRec nodeAtPos (shift + PartitionSize)
                 let newNodes = Array.zeroCreate CompressedArray.MaxSize
                 Array.Copy(nodes, newNodes, CompressedArray.MaxSize)
                 newNodes.[index] <- newPosNode
@@ -154,12 +152,8 @@ module HashTrie =
                 if replaced 
                 then struct (HashCollisionNode(newList), false) 
                 else struct (HashCollisionNode(newEntry :: entries), true)
-                // if shift < MaxShiftValue then failwithf "Not expected to exist"
-                // if entries |> List.exists (fun x -> x.Key = k)
-                // then struct (HashCollisionNode(entries |> List.map (fun x -> if x.Key = k then newEntry else x)), false)
-                // else struct (HashCollisionNode(newEntry :: entries), true)
-
-        let struct (newRootData, isAdded) = traverseNodes hashTrie.RootData 0
+               
+        let struct (newRootData, isAdded) = addRec hashTrie.RootData 0
 
         { CurrentCount = if isAdded then hashTrie.CurrentCount + 1 else hashTrie.CurrentCount
           RootData = newRootData }
@@ -247,6 +241,8 @@ module HashTrie =
         }
 
         seq { yield! yieldNodes hashTrie.RootData }
+
+    let isEmpty hashTrie = hashTrie.CurrentCount > 0
 
     type public StandardEqualityComparer =
         static member inline CheckEquality (x: 't, y: 't) = x.Equals(y)

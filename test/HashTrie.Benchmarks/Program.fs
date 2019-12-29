@@ -11,7 +11,14 @@ open System.Collections.Concurrent
 let testSize = 5_000_000
 let amountOfTimesToGetTest = 200
 
-let preparedData = Array.init testSize id
+let preparedData = 
+    let sw = Stopwatch.StartNew()
+    let r = Array.init testSize id
+    sw.Stop()
+    printfn "Total time to read per get: %f, CallsPerMillisecond: %f" 
+        (sw.Elapsed.TotalMilliseconds / float (testSize))
+        (float (testSize) / sw.Elapsed.TotalMilliseconds)
+    r
 
 let testShift() = 
     let size = 65535
@@ -42,10 +49,6 @@ let testShift() =
     
     printfn "Time taken [Uint16: %i; Uint32 : %i]" uint16Sw.ElapsedMilliseconds uint32Sw.ElapsedMilliseconds
 
-type Comparer = 
-    static member inline GetHashCode (o: int32) = o
-    static member inline CheckEquality (o1: int32, o2: int32) = o1.Equals(o2)
-
 let testHashTrie() = 
     
     printfn "Inserting into trie"    
@@ -56,14 +59,14 @@ let testHashTrie() =
     
     insertSw.Stop()
 
-    printfn "Total time to insert: %i" insertSw.ElapsedMilliseconds
+    printfn "Total time to insert: %i, time per insert op: %f" insertSw.ElapsedMilliseconds (float insertSw.ElapsedMilliseconds / float testSize)
 
     let readSw = Stopwatch.StartNew()
     for i = 0 to amountOfTimesToGetTest - 1 do
         for i = 0 to testSize - 1 do
             data |> HashTrie.tryFind i |> ignore
     readSw.Stop()
-    printfn "Total time to read per get: %f, PerCall: %f" 
+    printfn "Total time to read per get: %f, CallsPerMillisecond: %f" 
         (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
         (float (amountOfTimesToGetTest * testSize) / readSw.Elapsed.TotalMilliseconds)
 
@@ -75,15 +78,16 @@ let testMap() =
         data <- data |> Map.add d d
     
     insertSw.Stop()
-    printfn "Total time to insert: %i" insertSw.ElapsedMilliseconds
+    printfn "Total time to insert: %i, time per insert op: %f" insertSw.ElapsedMilliseconds (float insertSw.ElapsedMilliseconds / float testSize)
 
     let readSw = Stopwatch.StartNew()
     for i = 0 to amountOfTimesToGetTest - 1 do
         for i = 0 to testSize - 1 do
             data |> Map.tryFind i |> ignore
     readSw.Stop()
-    printfn "Total time to read per get: %f" 
+    printfn "Total time to read per get: %f, CallsPerMillisecond: %f" 
         (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
+        (float (amountOfTimesToGetTest * testSize) / readSw.Elapsed.TotalMilliseconds)
 
 let testConcurrentDict() = 
     
@@ -93,7 +97,7 @@ let testConcurrentDict() =
         data.[d] <- d
     
     insertSw.Stop()
-    printfn "Total time to insert: %i" insertSw.ElapsedMilliseconds
+    printfn "Total time to insert: %i, time per insert op: %f" insertSw.ElapsedMilliseconds (float insertSw.ElapsedMilliseconds / float testSize)
 
     let readSw = Stopwatch.StartNew()
     for i = 0 to amountOfTimesToGetTest - 1 do
@@ -106,7 +110,7 @@ let testConcurrentDict() =
 
 [<EntryPoint>]
 let main argv =
+    printfn "Running test [TestSize: %i, AmountOfGetRetries: %i]" testSize amountOfTimesToGetTest
     testHashTrie()
-    // testMap()
-    // testConcurrentDict()
+    testMap()
     0 // return an integer exit code
