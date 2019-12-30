@@ -9,7 +9,7 @@ type KvAction<'k, 'v> =
     | Add of k: 'k * v: 'v
     | Remove of k: 'k
 
-let mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) = 
+let inline mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) = 
     
     let mutable mapToTest = Map.empty
     let mutable hashTrieToTest = HashTrie.empty
@@ -27,9 +27,41 @@ let mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) =
             (mapToTest |> Map.toSeq |> Seq.map (fun (x, y) -> struct (x, y)) |> set)
             "Hash Trie and Map don't contain same data"
 
-let buildPropertyTest testName testFunction = 
-    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 10000; MaxTest = 1000 }
+let toVOption i = match i with | Some(x) -> ValueSome x | None -> ValueNone
+
+let inline mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) = 
+    
+    let mutable mapToTest = Map.empty
+    let mutable hashTrieToTest = HashTrie.empty
+    
+    for action in actions do 
+        let mutable key = Unchecked.defaultof<_>
+        match action with
+        | Add(k, v) -> 
+            mapToTest <- mapToTest |> Map.add k v
+            hashTrieToTest <- hashTrieToTest |> HashTrie.add k v
+            key <- k
+        | Remove k ->
+            mapToTest <- mapToTest |> Map.remove k
+            hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
+            key <- k
+        let mapResult = mapToTest |> Map.tryFind key |> toVOption
+        let hashTrieResult = hashTrieToTest |> HashTrie.tryFind key
+        Expect.equal hashTrieResult mapResult "Key update did not hold"
+
+let buildPropertyTest testName (testFunction: KvAction<int64, int> list -> _) = 
+    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }    
     testCase testName <| fun () -> Check.One(config, testFunction)
+
+let inline generateLargeSizeMapTest() =
+  testCase
+    "Large map test of more than one depth"
+    (fun () -> 
+      let testData = Array.init 100000 id
+      let result = testData |> Array.fold (fun s t -> s |> HashTrie.add t t) HashTrie.empty
+      for i = 0 to testData.Length - 1 do
+        let testLookup = result |> HashTrie.tryFind i
+        Expect.equal testLookup (ValueSome i) "Not equal to what's expected")
 
 let [<Tests>] tests = 
     testList 
@@ -42,6 +74,10 @@ let [<Tests>] tests =
           testCase
             "Adding another close approximate 3 kv-pairs with a hash collision from 0 and -1 keys"
             (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (1L,0); Add (-1L,0); Add (0L,0) ]) 
+
+          testCase
+            "Adding another close approximate 3 kv-pairs with a hash collision from 0 and -1 keys and then removing one of them"
+            (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (1L,0); Add (-1L,0); Add (0L,0); Remove 0L ]) 
           
           testCase
             "Map contains keys of the same hash (Hash = 0 for both 0 and -1"
@@ -55,7 +91,17 @@ let [<Tests>] tests =
             "Add and remove value with same hash"
             (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (0L,0); Remove 1L ])
 
+          testCase
+            "Add and remove same key"
+            (fun () -> mapAndHashTrieAreTheSameAfterActions [ Add (1L,0); Remove 1L] )
+
+          generateLargeSizeMapTest()
+
           buildPropertyTest
-            "Map and hash trie are always equal"
-            (fun (actions: KvAction<int64, int> list) -> mapAndHashTrieAreTheSameAfterActions actions)
+            "Map and HashTrie behave the same on Add and Remove"
+            mapAndHashTrieAreTheSameAfterActions
+
+          buildPropertyTest
+            "Map and HashTrie always have the same Get result"
+            mapAndHashTrieHaveSameGetValue
         ]
