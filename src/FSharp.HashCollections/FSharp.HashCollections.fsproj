@@ -6,7 +6,8 @@
 
   <ItemGroup>
     <Compile Include="CompressedArray.fs" />
-    <Compile Include="HashTrie.fs" />
+    <Compile Include="Types.fs" />
+    <Compile Include="HashMap.fs" />
   </ItemGroup>
 
 </Project>

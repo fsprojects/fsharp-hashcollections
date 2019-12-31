@@ -1,22 +1,8 @@
-namespace HashTrie.FSharp
+namespace FSharp.HashCollections
 
 open System
 
-type [<System.Runtime.CompilerServices.IsReadOnly; Struct>] HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
-
-type HashTrieNode<'tk, 'tv> =
-    | TrieNodeFull of nodes: HashTrieNode<'tk, 'tv> array
-    | TrieNode of nodes: CompressedArray<HashTrieNode<'tk, 'tv>>
-    | TrieNodeOne of index: uint64 * node: HashTrieNode<'tk, 'tv>
-    | EntryNode of entry: HashMapEntry<'tk, 'tv>
-    | HashCollisionNode of entries: HashMapEntry<'tk, 'tv> list
-
-type [<Struct; System.Runtime.CompilerServices.IsReadOnly>] HashTrie<'tk, 'tv, 'teq> = {
-    CurrentCount: int32
-    RootData: HashTrieNode<'tk, 'tv>
-}
-
-module HashTrie =
+module HashMap =
 
     module Constraints = 
         let inline hash< ^eq, ^t when ^eq: (static member GetHashCode: ^t -> int)> (o: ^t) =
@@ -26,7 +12,7 @@ module HashTrie =
             ( ^eq : (static member CheckEquality: ^t * ^t -> bool) (o1, o2))
 
 
-    let tryFindValueInList equals k l =
+    let tryFindValueInList equals k (l : HashMapEntry<_, _> list) =
         //printfn  "Attempting to find hash collision [K: %A, Node: %A]" k l
         let rec findInList currentList =
             match currentList with
@@ -41,7 +27,7 @@ module HashTrie =
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask
     let inline getIndex keyHash shift = getIndexNoShift (keyHash >>> shift)
 
-    let inline tryFind k (hashTrie: HashTrie< ^tk, ^tv, ^teq>) : ^tv voption =
+    let tryFind k (hashMap: HashMap<'tk, 'tv, 'teq>) : ^tv voption =
 
         let inline equals x y = Constraints.equals< ^teq, ^tk> x y
         
@@ -69,7 +55,7 @@ module HashTrie =
             | HashCollisionNode entries -> tryFindValueInList equals k entries
 
         let keyHash = Constraints.hash< ^teq, _> k
-        getRec hashTrie.RootData keyHash
+        getRec hashMap.RootData keyHash
 
     let inline createTrieNode (nodes: CompressedArray<_>) =
         match nodes.Content.Length with
@@ -94,7 +80,7 @@ module HashTrie =
                     TrieNodeOne(existingEntryIndex, subNode)
         createRequiredDepthNodes shift
 
-    let inline add k v (hashTrie: HashTrie< ^tk, ^tv, ^eq>) : HashTrie< ^tk, ^tv, ^eq> =
+    let inline add k v (hashMap: HashMap< ^tk, ^tv, ^eq>) : HashMap< ^tk, ^tv, ^eq> =
         let inline equals x y = Constraints.equals< ^eq, ^tk> x y
         let inline hash o = Constraints.hash< ^eq, ^tk> o
 
@@ -153,17 +139,17 @@ module HashTrie =
                 then struct (HashCollisionNode(newList), false) 
                 else struct (HashCollisionNode(newEntry :: entries), true)
                
-        let struct (newRootData, isAdded) = addRec hashTrie.RootData 0
+        let struct (newRootData, isAdded) = addRec hashMap.RootData 0
 
-        { CurrentCount = if isAdded then hashTrie.CurrentCount + 1 else hashTrie.CurrentCount
+        { CurrentCount = if isAdded then hashMap.CurrentCount + 1 else hashMap.CurrentCount
           RootData = newRootData }
 
-    let inline remove k (hashTrie: HashTrie< ^tk, ^tv, ^eq>) =
+    let inline remove k (hashMap: HashMap< ^tk, ^tv, ^eq>) =
 
         let keyHash = Constraints.hash< ^eq, ^tk> k
         let equals = Constraints.equals< ^eq, ^tk>
 
-        let removeInner k hashTrie =
+        let removeInner k hashMap =
             let rec traverseNodes node nodes shift =
                 let index = getIndex keyHash shift
                 match nodes |> CompressedArray.get index with
@@ -207,30 +193,30 @@ module HashTrie =
             // Need to start the chain. This is harder since we need knowledge of two levels at once (current + sublevel)
             // This is because deletions on a sub-level can mean we create a different node on the current level.
             let changeAndRemovalStatus =
-                match hashTrie.RootData with
-                | TrieNode(nodes) -> traverseNodes hashTrie.RootData nodes 0
-                | TrieNodeFull(nodes) -> traverseNodes hashTrie.RootData (CompressedArray.ofFullArrayAsTransient nodes) 0
+                match hashMap.RootData with
+                | TrieNode(nodes) -> traverseNodes hashMap.RootData nodes 0
+                | TrieNodeFull(nodes) -> traverseNodes hashMap.RootData (CompressedArray.ofFullArrayAsTransient nodes) 0
                 | TrieNodeOne(nodeIndex, node) ->
                     if nodeIndex = rootIndex
                     then
                         let subNodesEmulated = CompressedArray.ofSingleElement nodeIndex node
-                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes hashTrie.RootData subNodesEmulated 0
+                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes hashMap.RootData subNodesEmulated 0
                         match childNodeOpt with
                         | ValueSome(childNode) -> struct (ValueSome (TrieNodeOne(nodeIndex, childNode)), didWeRemove)
                         | ValueNone -> struct (ValueNone, didWeRemove)
-                    else struct (ValueSome hashTrie.RootData, false)
-                | _ -> failwithf "Not expected for other node types to be at root position [RootNode: %A]" hashTrie.RootData
+                    else struct (ValueSome hashMap.RootData, false)
+                | _ -> failwithf "Not expected for other node types to be at root position [RootNode: %A]" hashMap.RootData
 
             match changeAndRemovalStatus with
-            | struct (ValueSome newRootNode, true) -> { CurrentCount = hashTrie.CurrentCount - 1; RootData = newRootNode }
+            | struct (ValueSome newRootNode, true) -> { CurrentCount = hashMap.CurrentCount - 1; RootData = newRootNode }
             | struct (ValueNone, true) -> { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
-            | struct (_, false) -> hashTrie // If no removal then no change required (unlike Add where replace could occur).
+            | struct (_, false) -> hashMap // If no removal then no change required (unlike Add where replace could occur).
 
-        removeInner k hashTrie
+        removeInner k hashMap
 
-    let public count hashTrie = hashTrie.CurrentCount
+    let public count hashMap = hashMap.CurrentCount
 
-    let public toSeq hashTrie =
+    let public toSeq hashMap =
         let rec yieldNodes node = seq {
             match node with
             | TrieNode(nodes) -> for node in nodes.Content do yield! yieldNodes node
@@ -240,17 +226,17 @@ module HashTrie =
             | HashCollisionNode entries -> for entry in entries do yield struct (entry.Key, entry.Value)
         }
 
-        seq { yield! yieldNodes hashTrie.RootData }
+        seq { yield! yieldNodes hashMap.RootData }
 
-    let isEmpty hashTrie = hashTrie.CurrentCount > 0
+    let isEmpty hashMap = hashMap.CurrentCount > 0
 
     type public StandardEqualityComparer =
         static member inline CheckEquality (x: 't, y: 't) = x.Equals(y)
         static member inline GetHashCode(obj: 'tk): int = obj.GetHashCode()
 
-    let inline emptyWithComparer< ^tk, 'tv, ^eq when ^eq: (static member GetHashCode: ^tk -> int) and ^eq: (static member CheckEquality: ^tk * ^tk -> bool)> : HashTrie< ^tk, 'tv, ^eq> =
+    let inline emptyWithComparer< ^tk, 'tv, ^eq when ^eq: (static member GetHashCode: ^tk -> int) and ^eq: (static member CheckEquality: ^tk * ^tk -> bool)> : HashMap< ^tk, 'tv, ^eq> =
         { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
 
     [<GeneralizableValue>] 
-    let public empty< 'tk, 'tv when 'tk : equality> : HashTrie< 'tk, 'tv, StandardEqualityComparer> =
+    let public empty< 'tk, 'tv when 'tk : equality> : HashMap< 'tk, 'tv, StandardEqualityComparer> =
         { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }

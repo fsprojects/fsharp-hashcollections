@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="HashTrieTest.fs" />
+    <Compile Include="HashMapTest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HashTrie.FSharp\HashTrie.FSharp.fsproj" />
+    <ProjectReference Include="..\..\src\FSharp.HashCollections\FSharp.HashCollections.fsproj" />
   </ItemGroup>
 
 </Project>

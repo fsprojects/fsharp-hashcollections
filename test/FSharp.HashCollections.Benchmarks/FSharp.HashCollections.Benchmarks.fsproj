@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HashTrie.FSharp\HashTrie.FSharp.fsproj" />
+    <ProjectReference Include="..\..\src\FSharp.HashCollections\FSharp.HashCollections.fsproj" />
   </ItemGroup>
 
 </Project>

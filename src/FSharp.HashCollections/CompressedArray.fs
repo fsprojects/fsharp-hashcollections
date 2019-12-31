@@ -1,4 +1,4 @@
-namespace HashTrie.FSharp
+namespace FSharp.HashCollections
 
 open System.Runtime.Intrinsics
 open System

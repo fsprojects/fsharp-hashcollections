@@ -5,7 +5,7 @@ open System
 
 open System.Collections.Generic
 open System.Diagnostics
-open HashTrie.FSharp
+open FSharp.HashCollections
 open System.Collections.Concurrent
 
 let testSize = 5_000_000
@@ -53,9 +53,9 @@ let testHashTrie() =
     
     printfn "Inserting into trie"    
     let insertSw = Stopwatch.StartNew()
-    let mutable data = HashTrie.empty
+    let mutable data = HashMap.empty
     for d in preparedData do
-        data <- data |> HashTrie.add d d
+        data <- data |> HashMap.add d d
     
     insertSw.Stop()
 
@@ -64,7 +64,7 @@ let testHashTrie() =
     let readSw = Stopwatch.StartNew()
     for i = 0 to amountOfTimesToGetTest - 1 do
         for i = 0 to testSize - 1 do
-            data |> HashTrie.tryFind i |> ignore
+            data |> HashMap.tryFind i |> ignore
     readSw.Stop()
     printfn "Total time to read per get: %f, CallsPerMillisecond: %f" 
         (readSw.Elapsed.TotalMilliseconds / float (testSize * amountOfTimesToGetTest))
