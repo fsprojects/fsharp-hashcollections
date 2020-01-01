@@ -18,4 +18,8 @@
     <ProjectReference Include="..\..\src\FSharp.HashCollections\FSharp.HashCollections.fsproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
+  </ItemGroup>
+
 </Project>
