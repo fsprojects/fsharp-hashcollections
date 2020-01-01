@@ -27,7 +27,7 @@ module HashMap =
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask
     let inline getIndex keyHash shift = getIndexNoShift (keyHash >>> shift)
 
-    let tryFind k (hashMap: HashMap<'tk, 'tv, 'teq>) : ^tv voption =
+    let inline tryFind k (hashMap: HashMap< ^tk, ^tv, ^teq>) : ^tv voption =
 
         let inline equals x y = Constraints.equals< ^teq, ^tk> x y
         
@@ -39,7 +39,6 @@ module HashMap =
                 getRec nodes.[index] (remainderHash >>> PartitionSize)
             | TrieNode(nodes) ->
                 let bitPos = CompressedArray.getBitMapForIndex (getIndexNoShift remainderHash)
-                //printfn "BitMapOfArray: %i; BitPos: %i" nodes.BitMap bitPos
                 if CompressedArray.boundsCheckIfSetForBitMapIndex nodes.BitMap bitPos // This checks if the bit was set in the first place.
                 then
                     getRec
