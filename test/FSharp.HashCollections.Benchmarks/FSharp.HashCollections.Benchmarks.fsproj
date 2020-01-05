@@ -11,7 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Program.fs" />
+    <!-- <Compile Include="Program.fs" /> -->
+    <Compile Include="BenchmarkProgram.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
+    <PackageReference Include="FSharpX.Collections" Version="2.1.2" />
   </ItemGroup>
 
 </Project>

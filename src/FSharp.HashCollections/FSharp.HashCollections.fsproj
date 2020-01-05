@@ -8,6 +8,9 @@
     <Compile Include="CompressedArray.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="HashMap.fs" />
+    <Compile Include="PersistentHashMap.fsi" />
+    <Compile Include="PersistentHashMap.fs" />
+    <Compile Include="PersistentHashMapModule.fs" />
   </ItemGroup>
 
 </Project>

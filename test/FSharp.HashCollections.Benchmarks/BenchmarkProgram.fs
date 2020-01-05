@@ -10,18 +10,21 @@ open System.Collections.Concurrent
 open BenchmarkDotNet
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
-open Persistent
+open FSharpx.Collections
 
 module Constants = 
     let [<Literal>] OperationsPerInvokeInt = 100000
 
 type ReadBenchmarks() = 
 
-    let mutable sourceData = Array.zeroCreate 0
     let mutable hashMapData = HashMap.empty
     let mutable fsharpMapData = Map.empty
+    let mutable thirdPartyMapData = Persistent.PersistentHashMap.empty
+    let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable keyToLookup = Array.zeroCreate Constants.OperationsPerInvokeInt
-    let mutable dummyBuffer = Array.zeroCreate Constants.OperationsPerInvokeInt
+    let mutable dummyBufferVOption = Array.zeroCreate Constants.OperationsPerInvokeInt
+    let mutable dummyBufferOption = Array.zeroCreate Constants.OperationsPerInvokeInt
+    let mutable dummyBufferNoOption = Array.zeroCreate Constants.OperationsPerInvokeInt
     let randomGen = Random()
 
     [<Params(10, 100, 1000, 100_000, 500_000, 750_000, 1_000_000, 5_000_000, 10_000_000)>]
@@ -38,26 +41,54 @@ type ReadBenchmarks() =
             hashMapData <- hashMapData |> HashMap.add i i
         this.SetupKeyToLookup()
 
-    [<GlobalSetup(Target = "GetFSharpMap")>]
-    member this.SetupFSharpMapData() = 
-        fsharpMapData <- Map.empty        
+    // [<GlobalSetup(Target = "GetFSharpMap")>]
+    // member this.SetupFSharpMapData() = 
+    //     fsharpMapData <- Map.empty        
+    //     for i = 0 to this.CollectionSize - 1 do
+    //         fsharpMapData <- fsharpMapData |> Map.add i i
+    //     this.SetupKeyToLookup()
+
+    [<GlobalSetup(Target = "GetThirdPartyMap")>]
+    member this.SetupThirdPartyMapData() = 
+        thirdPartyMapData <- Persistent.PersistentHashMap.empty        
         for i = 0 to this.CollectionSize - 1 do
-            fsharpMapData <- fsharpMapData |> Map.add i i
+            thirdPartyMapData <- thirdPartyMapData |> Persistent.PersistentHashMap.set i i
         this.SetupKeyToLookup()       
+
+    // [<GlobalSetup(Target = "GetFSharpXHashMap")>]
+    // member this.SetupFSharpXMapData() = 
+    //     fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.empty        
+    //     for i = 0 to this.CollectionSize - 1 do
+    //         fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i i
+    //     this.SetupKeyToLookup() 
 
     [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
     member _.GetHashMap() = 
         let mutable i = 0
         for k in keyToLookup do
-            dummyBuffer.[i] <- hashMapData |> HashMap.tryFind k |> ignore    
+            dummyBufferVOption.[i] <- hashMapData |> HashMap.tryFind k
             i <- i + 1
 
+    // [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
+    // member _.GetFSharpMap() = 
+    //     let mutable i = 0
+    //     for k in keyToLookup do
+    //         dummyBufferOption.[i] <- fsharpMapData |> Map.tryFind k
+    //         i <- i + 1
+
     [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
-    member _.GetFSharpMap() = 
+    member _.GetThirdPartyMap() = 
         let mutable i = 0
         for k in keyToLookup do
-            dummyBuffer.[i] <- fsharpMapData |> Map.tryFind k |> ignore
+            dummyBufferOption.[i] <- thirdPartyMapData |> Persistent.PersistentHashMap.tryFind k
             i <- i + 1
+
+    // [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
+    // member _.GetFSharpXHashMap() = 
+    //     let mutable i = 0
+    //     for k in keyToLookup do
+    //         dummyBufferNoOption.[i] <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.find k
+    //         i <- i + 1            
 
 [<EntryPoint>]
 let main argv =

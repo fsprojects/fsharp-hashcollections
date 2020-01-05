@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Program.ReadBenchmarks-20200105-082638</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.12.0, OS=arch 
+AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
+.NET Core SDK=3.1.100
+  [Host]     : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT DEBUG
+  DefaultJob : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>    Method</th><th>CollectionSize</th><th>Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>GetHashMap</td><td>10</td><td>7.817 ns</td><td>0.0109 ns</td><td>0.0102 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>10</td><td>15.313 ns</td><td>0.1553 ns</td><td>0.1452 ns</td>
+</tr><tr><td>GetHashMap</td><td>100</td><td>10.565 ns</td><td>0.0432 ns</td><td>0.0404 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>100</td><td>16.630 ns</td><td>0.0467 ns</td><td>0.0364 ns</td>
+</tr><tr><td>GetHashMap</td><td>1000</td><td>8.580 ns</td><td>0.0659 ns</td><td>0.0617 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>1000</td><td>19.511 ns</td><td>0.1392 ns</td><td>0.1302 ns</td>
+</tr><tr><td>GetHashMap</td><td>100000</td><td>20.591 ns</td><td>0.3748 ns</td><td>0.5375 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>100000</td><td>50.930 ns</td><td>1.0045 ns</td><td>2.1623 ns</td>
+</tr><tr><td>GetHashMap</td><td>500000</td><td>76.574 ns</td><td>1.3555 ns</td><td>1.2680 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>500000</td><td>113.342 ns</td><td>2.2625 ns</td><td>2.5147 ns</td>
+</tr><tr><td>GetHashMap</td><td>750000</td><td>113.592 ns</td><td>1.8542 ns</td><td>1.7344 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>750000</td><td>125.598 ns</td><td>2.3901 ns</td><td>2.1188 ns</td>
+</tr><tr><td>GetHashMap</td><td>1000000</td><td>118.259 ns</td><td>1.9888 ns</td><td>1.8603 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>1000000</td><td>118.912 ns</td><td>1.5640 ns</td><td>1.3864 ns</td>
+</tr><tr><td>GetHashMap</td><td>5000000</td><td>136.655 ns</td><td>2.6383 ns</td><td>2.3387 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>5000000</td><td>207.126 ns</td><td>5.7608 ns</td><td>6.8578 ns</td>
+</tr><tr><td>GetHashMap</td><td>10000000</td><td>151.547 ns</td><td>1.7975 ns</td><td>1.6814 ns</td>
+</tr><tr><td>GetThirdPartyMap</td><td>10000000</td><td>228.637 ns</td><td>4.2868 ns</td><td>3.8001 ns</td>
+</tr></tbody></table>
+</body>
+</html>

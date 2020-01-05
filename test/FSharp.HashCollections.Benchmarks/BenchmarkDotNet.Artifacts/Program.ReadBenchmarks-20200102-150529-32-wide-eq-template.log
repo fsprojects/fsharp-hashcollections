@@ -1,0 +1,2931 @@
+// Validating benchmarks:
+// ***** BenchmarkRunner: Start   *****
+// ***** Found 36 benchmark(s) in total *****
+// ***** Building 1 exe(s) in Parallel: Start   *****
+// start dotnet restore  /p:UseSharedCompilation=false /p:BuildInParallel=false /m:1 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0
+// command took 0.86s and exited with 0
+// start dotnet build -c Release  --no-restore /p:UseSharedCompilation=false /p:BuildInParallel=false /m:1 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0
+// command took 1.6s and exited with 0
+// ***** Done, took 00:00:02 (2.57 sec)   *****
+// Found 36 benchmarks:
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=10]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=10]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=10]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=10]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=100]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=100]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=100]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=100]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=1000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=1000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=1000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=1000]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=100000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=100000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=100000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=100000]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=500000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=500000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=500000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=500000]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=750000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=750000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=750000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=750000]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=1000000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=1000000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=1000000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=1000000]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=5000000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=5000000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=5000000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=5000000]
+//   ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=10000000]
+//   ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=10000000]
+//   ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=10000000]
+//   ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=10000000]
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=10]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 10)" --job "Default" --benchmarkId 0 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 135630.00 ns, 1.3563 ns/op
+WorkloadJitting  1: 100000 op, 3463633.00 ns, 34.6363 ns/op
+
+OverheadJitting  2: 1600000 op, 156750.00 ns, 0.0980 ns/op
+WorkloadJitting  2: 1600000 op, 31518708.00 ns, 19.6992 ns/op
+
+WorkloadPilot    1: 1600000 op, 29245027.00 ns, 18.2781 ns/op
+WorkloadPilot    2: 3200000 op, 57383333.00 ns, 17.9323 ns/op
+WorkloadPilot    3: 6400000 op, 107437382.00 ns, 16.7871 ns/op
+WorkloadPilot    4: 12800000 op, 176954322.00 ns, 13.8246 ns/op
+WorkloadPilot    5: 25600000 op, 373737996.00 ns, 14.5991 ns/op
+WorkloadPilot    6: 51200000 op, 749573533.00 ns, 14.6401 ns/op
+
+OverheadWarmup   1: 51200000 op, 3330.00 ns, 0.0001 ns/op
+OverheadWarmup   2: 51200000 op, 1110.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 51200000 op, 1070.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 51200000 op, 1100.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadWarmup   9: 51200000 op, 1050.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   2: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   3: 51200000 op, 1110.00 ns, 0.0000 ns/op
+OverheadActual   4: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadActual   5: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   6: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual   7: 51200000 op, 1070.00 ns, 0.0000 ns/op
+OverheadActual   8: 51200000 op, 1070.00 ns, 0.0000 ns/op
+OverheadActual   9: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  10: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  11: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadActual  12: 51200000 op, 1040.00 ns, 0.0000 ns/op
+OverheadActual  13: 51200000 op, 1080.00 ns, 0.0000 ns/op
+OverheadActual  14: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  15: 51200000 op, 1070.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 51200000 op, 707082537.00 ns, 13.8102 ns/op
+WorkloadWarmup   2: 51200000 op, 715741673.00 ns, 13.9793 ns/op
+WorkloadWarmup   3: 51200000 op, 719535685.00 ns, 14.0534 ns/op
+WorkloadWarmup   4: 51200000 op, 699097633.00 ns, 13.6543 ns/op
+WorkloadWarmup   5: 51200000 op, 699847453.00 ns, 13.6689 ns/op
+WorkloadWarmup   6: 51200000 op, 703308836.00 ns, 13.7365 ns/op
+WorkloadWarmup   7: 51200000 op, 697998603.00 ns, 13.6328 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 51200000 op, 697083702.00 ns, 13.6149 ns/op
+WorkloadActual   2: 51200000 op, 696454722.00 ns, 13.6026 ns/op
+WorkloadActual   3: 51200000 op, 696772381.00 ns, 13.6088 ns/op
+WorkloadActual   4: 51200000 op, 691171758.00 ns, 13.4994 ns/op
+WorkloadActual   5: 51200000 op, 694743871.00 ns, 13.5692 ns/op
+WorkloadActual   6: 51200000 op, 700480813.00 ns, 13.6813 ns/op
+WorkloadActual   7: 51200000 op, 720570505.00 ns, 14.0736 ns/op
+WorkloadActual   8: 51200000 op, 706331237.00 ns, 13.7955 ns/op
+WorkloadActual   9: 51200000 op, 704525977.00 ns, 13.7603 ns/op
+WorkloadActual  10: 51200000 op, 702360745.00 ns, 13.7180 ns/op
+WorkloadActual  11: 51200000 op, 703981166.00 ns, 13.7496 ns/op
+WorkloadActual  12: 51200000 op, 713172612.00 ns, 13.9292 ns/op
+WorkloadActual  13: 51200000 op, 711248461.00 ns, 13.8916 ns/op
+WorkloadActual  14: 51200000 op, 699663273.00 ns, 13.6653 ns/op
+WorkloadActual  15: 51200000 op, 702264385.00 ns, 13.7161 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 51200000 op, 697082632.00 ns, 13.6149 ns/op
+WorkloadResult   2: 51200000 op, 696453652.00 ns, 13.6026 ns/op
+WorkloadResult   3: 51200000 op, 696771311.00 ns, 13.6088 ns/op
+WorkloadResult   4: 51200000 op, 691170688.00 ns, 13.4994 ns/op
+WorkloadResult   5: 51200000 op, 694742801.00 ns, 13.5692 ns/op
+WorkloadResult   6: 51200000 op, 700479743.00 ns, 13.6812 ns/op
+WorkloadResult   7: 51200000 op, 720569435.00 ns, 14.0736 ns/op
+WorkloadResult   8: 51200000 op, 706330167.00 ns, 13.7955 ns/op
+WorkloadResult   9: 51200000 op, 704524907.00 ns, 13.7603 ns/op
+WorkloadResult  10: 51200000 op, 702359675.00 ns, 13.7180 ns/op
+WorkloadResult  11: 51200000 op, 703980096.00 ns, 13.7496 ns/op
+WorkloadResult  12: 51200000 op, 713171542.00 ns, 13.9291 ns/op
+WorkloadResult  13: 51200000 op, 711247391.00 ns, 13.8916 ns/op
+WorkloadResult  14: 51200000 op, 699662203.00 ns, 13.6653 ns/op
+WorkloadResult  15: 51200000 op, 702263315.00 ns, 13.7161 ns/op
+
+// AfterAll
+// Benchmark Process 45947 has exited with code 0
+
+Mean = 13.7250 ns, StdErr = 0.0390 ns (0.28%); N = 15, StdDev = 0.1510 ns
+Min = 13.4994 ns, Q1 = 13.6088 ns, Median = 13.7161 ns, Q3 = 13.7955 ns, Max = 14.0736 ns
+IQR = 0.1867 ns, LowerFence = 13.3288 ns, UpperFence = 14.0756 ns
+ConfidenceInterval = [13.5636 ns; 13.8864 ns] (CI 99.9%), Margin = 0.1614 ns (1.18% of Mean)
+Skewness = 0.69, Kurtosis = 2.7, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=10]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 10)" --job "Default" --benchmarkId 1 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 132051.00 ns, 1.3205 ns/op
+WorkloadJitting  1: 100000 op, 5167683.00 ns, 51.6768 ns/op
+
+OverheadJitting  2: 1600000 op, 150380.00 ns, 0.0940 ns/op
+WorkloadJitting  2: 1600000 op, 72072151.00 ns, 45.0451 ns/op
+
+WorkloadPilot    1: 1600000 op, 68338930.00 ns, 42.7118 ns/op
+WorkloadPilot    2: 3200000 op, 137977049.00 ns, 43.1178 ns/op
+WorkloadPilot    3: 6400000 op, 257060829.00 ns, 40.1658 ns/op
+WorkloadPilot    4: 12800000 op, 501720970.00 ns, 39.1970 ns/op
+
+OverheadWarmup   1: 12800000 op, 2960.00 ns, 0.0002 ns/op
+OverheadWarmup   2: 12800000 op, 490.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 12800000 op, 370.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 12800000 op, 370.00 ns, 0.0000 ns/op
+OverheadWarmup   9: 12800000 op, 410.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 12800000 op, 490.00 ns, 0.0000 ns/op
+OverheadActual   2: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadActual   3: 12800000 op, 480.00 ns, 0.0000 ns/op
+OverheadActual   4: 12800000 op, 480.00 ns, 0.0000 ns/op
+OverheadActual   5: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadActual   6: 12800000 op, 360.00 ns, 0.0000 ns/op
+OverheadActual   7: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual   8: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual   9: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  10: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual  11: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  12: 12800000 op, 370.00 ns, 0.0000 ns/op
+OverheadActual  13: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  14: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  15: 12800000 op, 350.00 ns, 0.0000 ns/op
+OverheadActual  16: 12800000 op, 370.00 ns, 0.0000 ns/op
+OverheadActual  17: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual  18: 12800000 op, 490.00 ns, 0.0000 ns/op
+OverheadActual  19: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual  20: 12800000 op, 380.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 12800000 op, 496448137.00 ns, 38.7850 ns/op
+WorkloadWarmup   2: 12800000 op, 512451435.00 ns, 40.0353 ns/op
+WorkloadWarmup   3: 12800000 op, 510183644.00 ns, 39.8581 ns/op
+WorkloadWarmup   4: 12800000 op, 511648755.00 ns, 39.9726 ns/op
+WorkloadWarmup   5: 12800000 op, 506201172.00 ns, 39.5470 ns/op
+WorkloadWarmup   6: 12800000 op, 511794826.00 ns, 39.9840 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 12800000 op, 497194616.00 ns, 38.8433 ns/op
+WorkloadActual   2: 12800000 op, 496676967.00 ns, 38.8029 ns/op
+WorkloadActual   3: 12800000 op, 503458030.00 ns, 39.3327 ns/op
+WorkloadActual   4: 12800000 op, 500796718.00 ns, 39.1247 ns/op
+WorkloadActual   5: 12800000 op, 495428386.00 ns, 38.7053 ns/op
+WorkloadActual   6: 12800000 op, 512020765.00 ns, 40.0016 ns/op
+WorkloadActual   7: 12800000 op, 512200425.00 ns, 40.0157 ns/op
+WorkloadActual   8: 12800000 op, 501204619.00 ns, 39.1566 ns/op
+WorkloadActual   9: 12800000 op, 513931946.00 ns, 40.1509 ns/op
+WorkloadActual  10: 12800000 op, 511734395.00 ns, 39.9792 ns/op
+WorkloadActual  11: 12800000 op, 512433215.00 ns, 40.0338 ns/op
+WorkloadActual  12: 12800000 op, 517130648.00 ns, 40.4008 ns/op
+WorkloadActual  13: 12800000 op, 513463676.00 ns, 40.1143 ns/op
+WorkloadActual  14: 12800000 op, 512496535.00 ns, 40.0388 ns/op
+WorkloadActual  15: 12800000 op, 512968016.00 ns, 40.0756 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 12800000 op, 497194231.00 ns, 38.8433 ns/op
+WorkloadResult   2: 12800000 op, 496676582.00 ns, 38.8029 ns/op
+WorkloadResult   3: 12800000 op, 503457645.00 ns, 39.3326 ns/op
+WorkloadResult   4: 12800000 op, 500796333.00 ns, 39.1247 ns/op
+WorkloadResult   5: 12800000 op, 495428001.00 ns, 38.7053 ns/op
+WorkloadResult   6: 12800000 op, 512020380.00 ns, 40.0016 ns/op
+WorkloadResult   7: 12800000 op, 512200040.00 ns, 40.0156 ns/op
+WorkloadResult   8: 12800000 op, 501204234.00 ns, 39.1566 ns/op
+WorkloadResult   9: 12800000 op, 513931561.00 ns, 40.1509 ns/op
+WorkloadResult  10: 12800000 op, 511734010.00 ns, 39.9792 ns/op
+WorkloadResult  11: 12800000 op, 512432830.00 ns, 40.0338 ns/op
+WorkloadResult  12: 12800000 op, 517130263.00 ns, 40.4008 ns/op
+WorkloadResult  13: 12800000 op, 513463291.00 ns, 40.1143 ns/op
+WorkloadResult  14: 12800000 op, 512496150.00 ns, 40.0388 ns/op
+WorkloadResult  15: 12800000 op, 512967631.00 ns, 40.0756 ns/op
+
+// AfterAll
+// Benchmark Process 45982 has exited with code 0
+
+Mean = 39.6517 ns, StdErr = 0.1505 ns (0.38%); N = 15, StdDev = 0.5829 ns
+Min = 38.7053 ns, Q1 = 39.1247 ns, Median = 40.0016 ns, Q3 = 40.0756 ns, Max = 40.4008 ns
+IQR = 0.9509 ns, LowerFence = 37.6984 ns, UpperFence = 41.5019 ns
+ConfidenceInterval = [39.0286 ns; 40.2749 ns] (CI 99.9%), Margin = 0.6231 ns (1.57% of Mean)
+Skewness = -0.45, Kurtosis = 1.41, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=10]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 10)" --job "Default" --benchmarkId 2 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 139920.00 ns, 1.3992 ns/op
+WorkloadJitting  1: 100000 op, 4914363.00 ns, 49.1436 ns/op
+
+OverheadJitting  2: 1600000 op, 158670.00 ns, 0.0992 ns/op
+WorkloadJitting  2: 1600000 op, 86218010.00 ns, 53.8863 ns/op
+
+WorkloadPilot    1: 1600000 op, 83070238.00 ns, 51.9189 ns/op
+WorkloadPilot    2: 3200000 op, 129407155.00 ns, 40.4397 ns/op
+WorkloadPilot    3: 6400000 op, 98689157.00 ns, 15.4202 ns/op
+WorkloadPilot    4: 12800000 op, 196048563.00 ns, 15.3163 ns/op
+WorkloadPilot    5: 25600000 op, 395240868.00 ns, 15.4391 ns/op
+WorkloadPilot    6: 51200000 op, 792927038.00 ns, 15.4869 ns/op
+
+OverheadWarmup   1: 51200000 op, 3640.00 ns, 0.0001 ns/op
+OverheadWarmup   2: 51200000 op, 1160.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 51200000 op, 1350.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 51200000 op, 1080.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 51200000 op, 1130.00 ns, 0.0000 ns/op
+OverheadActual   2: 51200000 op, 1170.00 ns, 0.0000 ns/op
+OverheadActual   3: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   4: 51200000 op, 1140.00 ns, 0.0000 ns/op
+OverheadActual   5: 51200000 op, 1130.00 ns, 0.0000 ns/op
+OverheadActual   6: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadActual   7: 51200000 op, 1070.00 ns, 0.0000 ns/op
+OverheadActual   8: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadActual   9: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  10: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadActual  11: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  12: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  13: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadActual  14: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadActual  15: 51200000 op, 1040.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 51200000 op, 785369852.00 ns, 15.3393 ns/op
+WorkloadWarmup   2: 51200000 op, 786084633.00 ns, 15.3532 ns/op
+WorkloadWarmup   3: 51200000 op, 784825752.00 ns, 15.3286 ns/op
+WorkloadWarmup   4: 51200000 op, 784931193.00 ns, 15.3307 ns/op
+WorkloadWarmup   5: 51200000 op, 780877200.00 ns, 15.2515 ns/op
+WorkloadWarmup   6: 51200000 op, 785458873.00 ns, 15.3410 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 51200000 op, 783354552.00 ns, 15.2999 ns/op
+WorkloadActual   2: 51200000 op, 778987069.00 ns, 15.2146 ns/op
+WorkloadActual   3: 51200000 op, 780059230.00 ns, 15.2355 ns/op
+WorkloadActual   4: 51200000 op, 779668480.00 ns, 15.2279 ns/op
+WorkloadActual   5: 51200000 op, 783564081.00 ns, 15.3040 ns/op
+WorkloadActual   6: 51200000 op, 785365093.00 ns, 15.3392 ns/op
+WorkloadActual   7: 51200000 op, 782531131.00 ns, 15.2838 ns/op
+WorkloadActual   8: 51200000 op, 781300961.00 ns, 15.2598 ns/op
+WorkloadActual   9: 51200000 op, 788642035.00 ns, 15.4032 ns/op
+WorkloadActual  10: 51200000 op, 783315682.00 ns, 15.2991 ns/op
+WorkloadActual  11: 51200000 op, 783943053.00 ns, 15.3114 ns/op
+WorkloadActual  12: 51200000 op, 786127763.00 ns, 15.3541 ns/op
+WorkloadActual  13: 51200000 op, 785715274.00 ns, 15.3460 ns/op
+WorkloadActual  14: 51200000 op, 784721243.00 ns, 15.3266 ns/op
+WorkloadActual  15: 51200000 op, 787192685.00 ns, 15.3749 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 51200000 op, 783353492.00 ns, 15.2999 ns/op
+WorkloadResult   2: 51200000 op, 778986009.00 ns, 15.2146 ns/op
+WorkloadResult   3: 51200000 op, 780058170.00 ns, 15.2355 ns/op
+WorkloadResult   4: 51200000 op, 779667420.00 ns, 15.2279 ns/op
+WorkloadResult   5: 51200000 op, 783563021.00 ns, 15.3040 ns/op
+WorkloadResult   6: 51200000 op, 785364033.00 ns, 15.3391 ns/op
+WorkloadResult   7: 51200000 op, 782530071.00 ns, 15.2838 ns/op
+WorkloadResult   8: 51200000 op, 781299901.00 ns, 15.2598 ns/op
+WorkloadResult   9: 51200000 op, 788640975.00 ns, 15.4031 ns/op
+WorkloadResult  10: 51200000 op, 783314622.00 ns, 15.2991 ns/op
+WorkloadResult  11: 51200000 op, 783941993.00 ns, 15.3114 ns/op
+WorkloadResult  12: 51200000 op, 786126703.00 ns, 15.3540 ns/op
+WorkloadResult  13: 51200000 op, 785714214.00 ns, 15.3460 ns/op
+WorkloadResult  14: 51200000 op, 784720183.00 ns, 15.3266 ns/op
+WorkloadResult  15: 51200000 op, 787191625.00 ns, 15.3748 ns/op
+
+// AfterAll
+// Benchmark Process 46003 has exited with code 0
+
+Mean = 15.3053 ns, StdErr = 0.0141 ns (0.09%); N = 15, StdDev = 0.0546 ns
+Min = 15.2146 ns, Q1 = 15.2598 ns, Median = 15.3040 ns, Q3 = 15.3460 ns, Max = 15.4031 ns
+IQR = 0.0862 ns, LowerFence = 15.1304 ns, UpperFence = 15.4753 ns
+ConfidenceInterval = [15.2469 ns; 15.3637 ns] (CI 99.9%), Margin = 0.0584 ns (0.38% of Mean)
+Skewness = -0.06, Kurtosis = 1.92, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=10]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 10)" --job "Default" --benchmarkId 3 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 137460.00 ns, 1.3746 ns/op
+WorkloadJitting  1: 100000 op, 13945158.00 ns, 139.4516 ns/op
+
+OverheadJitting  2: 1600000 op, 166230.00 ns, 0.1039 ns/op
+WorkloadJitting  2: 1600000 op, 173628470.00 ns, 108.5178 ns/op
+
+WorkloadPilot    1: 1600000 op, 156668930.00 ns, 97.9181 ns/op
+WorkloadPilot    2: 3200000 op, 316187582.00 ns, 98.8086 ns/op
+WorkloadPilot    3: 6400000 op, 658906080.00 ns, 102.9541 ns/op
+
+OverheadWarmup   1: 6400000 op, 2620.00 ns, 0.0004 ns/op
+OverheadWarmup   2: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 240.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 6400000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 6400000 op, 250.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 6400000 op, 230.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 6400000 op, 250.00 ns, 0.0000 ns/op
+OverheadWarmup   9: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadWarmup  10: 6400000 op, 210.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 6400000 op, 410.00 ns, 0.0001 ns/op
+OverheadActual   2: 6400000 op, 410.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 430.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 400.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 390.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual   7: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual   8: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual   9: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  10: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  11: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual  12: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual  13: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual  14: 6400000 op, 250.00 ns, 0.0000 ns/op
+OverheadActual  15: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual  16: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual  17: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual  18: 6400000 op, 400.00 ns, 0.0001 ns/op
+OverheadActual  19: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual  20: 6400000 op, 310.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 6400000 op, 649090355.00 ns, 101.4204 ns/op
+WorkloadWarmup   2: 6400000 op, 653741577.00 ns, 102.1471 ns/op
+WorkloadWarmup   3: 6400000 op, 655610048.00 ns, 102.4391 ns/op
+WorkloadWarmup   4: 6400000 op, 653972588.00 ns, 102.1832 ns/op
+WorkloadWarmup   5: 6400000 op, 654138958.00 ns, 102.2092 ns/op
+WorkloadWarmup   6: 6400000 op, 649468125.00 ns, 101.4794 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 639326379.00 ns, 99.8947 ns/op
+WorkloadActual   2: 6400000 op, 644552912.00 ns, 100.7114 ns/op
+WorkloadActual   3: 6400000 op, 652923236.00 ns, 102.0193 ns/op
+WorkloadActual   4: 6400000 op, 645688963.00 ns, 100.8889 ns/op
+WorkloadActual   5: 6400000 op, 658793309.00 ns, 102.9365 ns/op
+WorkloadActual   6: 6400000 op, 644724142.00 ns, 100.7381 ns/op
+WorkloadActual   7: 6400000 op, 647878674.00 ns, 101.2310 ns/op
+WorkloadActual   8: 6400000 op, 648541795.00 ns, 101.3347 ns/op
+WorkloadActual   9: 6400000 op, 648876724.00 ns, 101.3870 ns/op
+WorkloadActual  10: 6400000 op, 646977213.00 ns, 101.0902 ns/op
+WorkloadActual  11: 6400000 op, 641725181.00 ns, 100.2696 ns/op
+WorkloadActual  12: 6400000 op, 646305223.00 ns, 100.9852 ns/op
+WorkloadActual  13: 6400000 op, 645790393.00 ns, 100.9047 ns/op
+WorkloadActual  14: 6400000 op, 650068565.00 ns, 101.5732 ns/op
+WorkloadActual  15: 6400000 op, 654303537.00 ns, 102.2349 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 639326069.00 ns, 99.8947 ns/op
+WorkloadResult   2: 6400000 op, 644552602.00 ns, 100.7113 ns/op
+WorkloadResult   3: 6400000 op, 652922926.00 ns, 102.0192 ns/op
+WorkloadResult   4: 6400000 op, 645688653.00 ns, 100.8889 ns/op
+WorkloadResult   5: 6400000 op, 644723832.00 ns, 100.7381 ns/op
+WorkloadResult   6: 6400000 op, 647878364.00 ns, 101.2310 ns/op
+WorkloadResult   7: 6400000 op, 648541485.00 ns, 101.3346 ns/op
+WorkloadResult   8: 6400000 op, 648876414.00 ns, 101.3869 ns/op
+WorkloadResult   9: 6400000 op, 646976903.00 ns, 101.0901 ns/op
+WorkloadResult  10: 6400000 op, 641724871.00 ns, 100.2695 ns/op
+WorkloadResult  11: 6400000 op, 646304913.00 ns, 100.9851 ns/op
+WorkloadResult  12: 6400000 op, 645790083.00 ns, 100.9047 ns/op
+WorkloadResult  13: 6400000 op, 650068255.00 ns, 101.5732 ns/op
+WorkloadResult  14: 6400000 op, 654303227.00 ns, 102.2349 ns/op
+
+// AfterAll
+// Benchmark Process 46022 has exited with code 0
+
+Mean = 101.0902 ns, StdErr = 0.1663 ns (0.16%); N = 14, StdDev = 0.6221 ns
+Min = 99.8947 ns, Q1 = 100.7381 ns, Median = 101.0376 ns, Q3 = 101.3869 ns, Max = 102.2349 ns
+IQR = 0.6488 ns, LowerFence = 99.7648 ns, UpperFence = 102.3602 ns
+ConfidenceInterval = [100.3884 ns; 101.7919 ns] (CI 99.9%), Margin = 0.7017 ns (0.69% of Mean)
+Skewness = 0.02, Kurtosis = 2.42, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 100)" --job "Default" --benchmarkId 4 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 141340.00 ns, 1.4134 ns/op
+WorkloadJitting  1: 100000 op, 3679512.00 ns, 36.7951 ns/op
+
+OverheadJitting  2: 1600000 op, 157750.00 ns, 0.0986 ns/op
+WorkloadJitting  2: 1600000 op, 34062059.00 ns, 21.2888 ns/op
+
+WorkloadPilot    1: 1600000 op, 31754978.00 ns, 19.8469 ns/op
+WorkloadPilot    2: 3200000 op, 63195827.00 ns, 19.7487 ns/op
+WorkloadPilot    3: 6400000 op, 114508926.00 ns, 17.8920 ns/op
+WorkloadPilot    4: 12800000 op, 199816186.00 ns, 15.6106 ns/op
+WorkloadPilot    5: 25600000 op, 398726009.00 ns, 15.5752 ns/op
+WorkloadPilot    6: 51200000 op, 798694141.00 ns, 15.5995 ns/op
+
+OverheadWarmup   1: 51200000 op, 3730.00 ns, 0.0001 ns/op
+OverheadWarmup   2: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 51200000 op, 1050.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 51200000 op, 1040.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   2: 51200000 op, 1160.00 ns, 0.0000 ns/op
+OverheadActual   3: 51200000 op, 1160.00 ns, 0.0000 ns/op
+OverheadActual   4: 51200000 op, 1110.00 ns, 0.0000 ns/op
+OverheadActual   5: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadActual   6: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadActual   7: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadActual   8: 51200000 op, 1060.00 ns, 0.0000 ns/op
+OverheadActual   9: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadActual  10: 51200000 op, 1020.00 ns, 0.0000 ns/op
+OverheadActual  11: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadActual  12: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadActual  13: 51200000 op, 1020.00 ns, 0.0000 ns/op
+OverheadActual  14: 51200000 op, 1010.00 ns, 0.0000 ns/op
+OverheadActual  15: 51200000 op, 1040.00 ns, 0.0000 ns/op
+OverheadActual  16: 51200000 op, 1010.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 51200000 op, 798279000.00 ns, 15.5914 ns/op
+WorkloadWarmup   2: 51200000 op, 798716821.00 ns, 15.5999 ns/op
+WorkloadWarmup   3: 51200000 op, 800600712.00 ns, 15.6367 ns/op
+WorkloadWarmup   4: 51200000 op, 798696631.00 ns, 15.5995 ns/op
+WorkloadWarmup   5: 51200000 op, 803060643.00 ns, 15.6848 ns/op
+WorkloadWarmup   6: 51200000 op, 800370912.00 ns, 15.6322 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 51200000 op, 797727170.00 ns, 15.5806 ns/op
+WorkloadActual   2: 51200000 op, 799801432.00 ns, 15.6211 ns/op
+WorkloadActual   3: 51200000 op, 797642460.00 ns, 15.5790 ns/op
+WorkloadActual   4: 51200000 op, 799878140.00 ns, 15.6226 ns/op
+WorkloadActual   5: 51200000 op, 797604410.00 ns, 15.5782 ns/op
+WorkloadActual   6: 51200000 op, 794538058.00 ns, 15.5183 ns/op
+WorkloadActual   7: 51200000 op, 794106248.00 ns, 15.5099 ns/op
+WorkloadActual   8: 51200000 op, 797094600.00 ns, 15.5683 ns/op
+WorkloadActual   9: 51200000 op, 789205535.00 ns, 15.4142 ns/op
+WorkloadActual  10: 51200000 op, 788322184.00 ns, 15.3969 ns/op
+WorkloadActual  11: 51200000 op, 789189736.00 ns, 15.4139 ns/op
+WorkloadActual  12: 51200000 op, 788382564.00 ns, 15.3981 ns/op
+WorkloadActual  13: 51200000 op, 789932415.00 ns, 15.4284 ns/op
+WorkloadActual  14: 51200000 op, 789039366.00 ns, 15.4109 ns/op
+WorkloadActual  15: 51200000 op, 787814414.00 ns, 15.3870 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 51200000 op, 797726140.00 ns, 15.5806 ns/op
+WorkloadResult   2: 51200000 op, 799800402.00 ns, 15.6211 ns/op
+WorkloadResult   3: 51200000 op, 797641430.00 ns, 15.5789 ns/op
+WorkloadResult   4: 51200000 op, 799877110.00 ns, 15.6226 ns/op
+WorkloadResult   5: 51200000 op, 797603380.00 ns, 15.5782 ns/op
+WorkloadResult   6: 51200000 op, 794537028.00 ns, 15.5183 ns/op
+WorkloadResult   7: 51200000 op, 794105218.00 ns, 15.5099 ns/op
+WorkloadResult   8: 51200000 op, 797093570.00 ns, 15.5682 ns/op
+WorkloadResult   9: 51200000 op, 789204505.00 ns, 15.4142 ns/op
+WorkloadResult  10: 51200000 op, 788321154.00 ns, 15.3969 ns/op
+WorkloadResult  11: 51200000 op, 789188706.00 ns, 15.4138 ns/op
+WorkloadResult  12: 51200000 op, 788381534.00 ns, 15.3981 ns/op
+WorkloadResult  13: 51200000 op, 789931385.00 ns, 15.4283 ns/op
+WorkloadResult  14: 51200000 op, 789038336.00 ns, 15.4109 ns/op
+WorkloadResult  15: 51200000 op, 787813384.00 ns, 15.3870 ns/op
+
+// AfterAll
+// Benchmark Process 46045 has exited with code 0
+
+Mean = 15.4951 ns, StdErr = 0.0234 ns (0.15%); N = 15, StdDev = 0.0906 ns
+Min = 15.3870 ns, Q1 = 15.4109 ns, Median = 15.5099 ns, Q3 = 15.5789 ns, Max = 15.6226 ns
+IQR = 0.1680 ns, LowerFence = 15.1589 ns, UpperFence = 15.8310 ns
+ConfidenceInterval = [15.3983 ns; 15.5920 ns] (CI 99.9%), Margin = 0.0969 ns (0.63% of Mean)
+Skewness = 0.1, Kurtosis = 1.16, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 100)" --job "Default" --benchmarkId 5 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 136060.00 ns, 1.3606 ns/op
+WorkloadJitting  1: 100000 op, 8900326.00 ns, 89.0033 ns/op
+
+OverheadJitting  2: 1600000 op, 177561.00 ns, 0.1110 ns/op
+WorkloadJitting  2: 1600000 op, 132051395.00 ns, 82.5321 ns/op
+
+WorkloadPilot    1: 1600000 op, 127054583.00 ns, 79.4091 ns/op
+WorkloadPilot    2: 3200000 op, 244053701.00 ns, 76.2668 ns/op
+WorkloadPilot    3: 6400000 op, 452946462.00 ns, 70.7729 ns/op
+WorkloadPilot    4: 12800000 op, 909675554.00 ns, 71.0684 ns/op
+
+OverheadWarmup   1: 12800000 op, 2900.00 ns, 0.0002 ns/op
+OverheadWarmup   2: 12800000 op, 500.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 12800000 op, 360.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 12800000 op, 440.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 12800000 op, 360.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 12800000 op, 360.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 12800000 op, 380.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 12800000 op, 480.00 ns, 0.0000 ns/op
+OverheadActual   2: 12800000 op, 480.00 ns, 0.0000 ns/op
+OverheadActual   3: 12800000 op, 510.00 ns, 0.0000 ns/op
+OverheadActual   4: 12800000 op, 510.00 ns, 0.0000 ns/op
+OverheadActual   5: 12800000 op, 520.00 ns, 0.0000 ns/op
+OverheadActual   6: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual   7: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual   8: 12800000 op, 370.00 ns, 0.0000 ns/op
+OverheadActual   9: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual  10: 12800000 op, 340.00 ns, 0.0000 ns/op
+OverheadActual  11: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  12: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  13: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual  14: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual  15: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual  16: 12800000 op, 430.00 ns, 0.0000 ns/op
+OverheadActual  17: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  18: 12800000 op, 500.00 ns, 0.0000 ns/op
+OverheadActual  19: 12800000 op, 370.00 ns, 0.0000 ns/op
+OverheadActual  20: 12800000 op, 410.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 12800000 op, 892231954.00 ns, 69.7056 ns/op
+WorkloadWarmup   2: 12800000 op, 927640595.00 ns, 72.4719 ns/op
+WorkloadWarmup   3: 12800000 op, 929704896.00 ns, 72.6332 ns/op
+WorkloadWarmup   4: 12800000 op, 929056876.00 ns, 72.5826 ns/op
+WorkloadWarmup   5: 12800000 op, 923359122.00 ns, 72.1374 ns/op
+WorkloadWarmup   6: 12800000 op, 897404028.00 ns, 70.1097 ns/op
+WorkloadWarmup   7: 12800000 op, 917288829.00 ns, 71.6632 ns/op
+WorkloadWarmup   8: 12800000 op, 900963380.00 ns, 70.3878 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 12800000 op, 898410518.00 ns, 70.1883 ns/op
+WorkloadActual   2: 12800000 op, 921272481.00 ns, 71.9744 ns/op
+WorkloadActual   3: 12800000 op, 897197618.00 ns, 70.0936 ns/op
+WorkloadActual   4: 12800000 op, 919819280.00 ns, 71.8609 ns/op
+WorkloadActual   5: 12800000 op, 904144711.00 ns, 70.6363 ns/op
+WorkloadActual   6: 12800000 op, 902163330.00 ns, 70.4815 ns/op
+WorkloadActual   7: 12800000 op, 882941799.00 ns, 68.9798 ns/op
+WorkloadActual   8: 12800000 op, 919617870.00 ns, 71.8451 ns/op
+WorkloadActual   9: 12800000 op, 901519771.00 ns, 70.4312 ns/op
+WorkloadActual  10: 12800000 op, 930670217.00 ns, 72.7086 ns/op
+WorkloadActual  11: 12800000 op, 890811954.00 ns, 69.5947 ns/op
+WorkloadActual  12: 12800000 op, 910010935.00 ns, 71.0946 ns/op
+WorkloadActual  13: 12800000 op, 907374063.00 ns, 70.8886 ns/op
+WorkloadActual  14: 12800000 op, 921494341.00 ns, 71.9917 ns/op
+WorkloadActual  15: 12800000 op, 916527189.00 ns, 71.6037 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 12800000 op, 898410123.00 ns, 70.1883 ns/op
+WorkloadResult   2: 12800000 op, 921272086.00 ns, 71.9744 ns/op
+WorkloadResult   3: 12800000 op, 897197223.00 ns, 70.0935 ns/op
+WorkloadResult   4: 12800000 op, 919818885.00 ns, 71.8609 ns/op
+WorkloadResult   5: 12800000 op, 904144316.00 ns, 70.6363 ns/op
+WorkloadResult   6: 12800000 op, 902162935.00 ns, 70.4815 ns/op
+WorkloadResult   7: 12800000 op, 882941404.00 ns, 68.9798 ns/op
+WorkloadResult   8: 12800000 op, 919617475.00 ns, 71.8451 ns/op
+WorkloadResult   9: 12800000 op, 901519376.00 ns, 70.4312 ns/op
+WorkloadResult  10: 12800000 op, 930669822.00 ns, 72.7086 ns/op
+WorkloadResult  11: 12800000 op, 890811559.00 ns, 69.5947 ns/op
+WorkloadResult  12: 12800000 op, 910010540.00 ns, 71.0946 ns/op
+WorkloadResult  13: 12800000 op, 907373668.00 ns, 70.8886 ns/op
+WorkloadResult  14: 12800000 op, 921493946.00 ns, 71.9917 ns/op
+WorkloadResult  15: 12800000 op, 916526794.00 ns, 71.6037 ns/op
+
+// AfterAll
+// Benchmark Process 46067 has exited with code 0
+
+Mean = 70.9582 ns, StdErr = 0.2666 ns (0.38%); N = 15, StdDev = 1.0326 ns
+Min = 68.9798 ns, Q1 = 70.1883 ns, Median = 70.8886 ns, Q3 = 71.8609 ns, Max = 72.7086 ns
+IQR = 1.6726 ns, LowerFence = 67.6795 ns, UpperFence = 74.3697 ns
+ConfidenceInterval = [69.8542 ns; 72.0621 ns] (CI 99.9%), Margin = 1.1039 ns (1.56% of Mean)
+Skewness = -0.15, Kurtosis = 1.93, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 100)" --job "Default" --benchmarkId 6 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 139480.00 ns, 1.3948 ns/op
+WorkloadJitting  1: 100000 op, 5368723.00 ns, 53.6872 ns/op
+
+OverheadJitting  2: 1600000 op, 159380.00 ns, 0.0996 ns/op
+WorkloadJitting  2: 1600000 op, 92803734.00 ns, 58.0023 ns/op
+
+WorkloadPilot    1: 1600000 op, 90011322.00 ns, 56.2571 ns/op
+WorkloadPilot    2: 3200000 op, 186678577.00 ns, 58.3371 ns/op
+WorkloadPilot    3: 6400000 op, 182870105.00 ns, 28.5735 ns/op
+WorkloadPilot    4: 12800000 op, 211990461.00 ns, 16.5618 ns/op
+WorkloadPilot    5: 25600000 op, 425119915.00 ns, 16.6062 ns/op
+WorkloadPilot    6: 51200000 op, 850880090.00 ns, 16.6188 ns/op
+
+OverheadWarmup   1: 51200000 op, 3720.00 ns, 0.0001 ns/op
+OverheadWarmup   2: 51200000 op, 1180.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 51200000 op, 1130.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 51200000 op, 1110.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 51200000 op, 1190.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 51200000 op, 1130.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 51200000 op, 1410.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 51200000 op, 1160.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 51200000 op, 1200.00 ns, 0.0000 ns/op
+OverheadActual   2: 51200000 op, 1180.00 ns, 0.0000 ns/op
+OverheadActual   3: 51200000 op, 1180.00 ns, 0.0000 ns/op
+OverheadActual   4: 51200000 op, 1180.00 ns, 0.0000 ns/op
+OverheadActual   5: 51200000 op, 1210.00 ns, 0.0000 ns/op
+OverheadActual   6: 51200000 op, 1140.00 ns, 0.0000 ns/op
+OverheadActual   7: 51200000 op, 1110.00 ns, 0.0000 ns/op
+OverheadActual   8: 51200000 op, 1160.00 ns, 0.0000 ns/op
+OverheadActual   9: 51200000 op, 1140.00 ns, 0.0000 ns/op
+OverheadActual  10: 51200000 op, 1130.00 ns, 0.0000 ns/op
+OverheadActual  11: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadActual  12: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual  13: 51200000 op, 1150.00 ns, 0.0000 ns/op
+OverheadActual  14: 51200000 op, 1090.00 ns, 0.0000 ns/op
+OverheadActual  15: 51200000 op, 1130.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 51200000 op, 848498120.00 ns, 16.5722 ns/op
+WorkloadWarmup   2: 51200000 op, 857433465.00 ns, 16.7467 ns/op
+WorkloadWarmup   3: 51200000 op, 852005571.00 ns, 16.6407 ns/op
+WorkloadWarmup   4: 51200000 op, 850890131.00 ns, 16.6189 ns/op
+WorkloadWarmup   5: 51200000 op, 852910352.00 ns, 16.6584 ns/op
+WorkloadWarmup   6: 51200000 op, 850556631.00 ns, 16.6124 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 51200000 op, 857604874.00 ns, 16.7501 ns/op
+WorkloadActual   2: 51200000 op, 855132803.00 ns, 16.7018 ns/op
+WorkloadActual   3: 51200000 op, 851582732.00 ns, 16.6325 ns/op
+WorkloadActual   4: 51200000 op, 849623330.00 ns, 16.5942 ns/op
+WorkloadActual   5: 51200000 op, 858655515.00 ns, 16.7706 ns/op
+WorkloadActual   6: 51200000 op, 850716121.00 ns, 16.6155 ns/op
+WorkloadActual   7: 51200000 op, 859048285.00 ns, 16.7783 ns/op
+WorkloadActual   8: 51200000 op, 856059774.00 ns, 16.7199 ns/op
+WorkloadActual   9: 51200000 op, 857929965.00 ns, 16.7564 ns/op
+WorkloadActual  10: 51200000 op, 854469163.00 ns, 16.6889 ns/op
+WorkloadActual  11: 51200000 op, 855016854.00 ns, 16.6995 ns/op
+WorkloadActual  12: 51200000 op, 852405721.00 ns, 16.6485 ns/op
+WorkloadActual  13: 51200000 op, 855030363.00 ns, 16.6998 ns/op
+WorkloadActual  14: 51200000 op, 854357063.00 ns, 16.6867 ns/op
+WorkloadActual  15: 51200000 op, 849829701.00 ns, 16.5982 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 51200000 op, 857603734.00 ns, 16.7501 ns/op
+WorkloadResult   2: 51200000 op, 855131663.00 ns, 16.7018 ns/op
+WorkloadResult   3: 51200000 op, 851581592.00 ns, 16.6325 ns/op
+WorkloadResult   4: 51200000 op, 849622190.00 ns, 16.5942 ns/op
+WorkloadResult   5: 51200000 op, 858654375.00 ns, 16.7706 ns/op
+WorkloadResult   6: 51200000 op, 850714981.00 ns, 16.6155 ns/op
+WorkloadResult   7: 51200000 op, 859047145.00 ns, 16.7783 ns/op
+WorkloadResult   8: 51200000 op, 856058634.00 ns, 16.7199 ns/op
+WorkloadResult   9: 51200000 op, 857928825.00 ns, 16.7564 ns/op
+WorkloadResult  10: 51200000 op, 854468023.00 ns, 16.6888 ns/op
+WorkloadResult  11: 51200000 op, 855015714.00 ns, 16.6995 ns/op
+WorkloadResult  12: 51200000 op, 852404581.00 ns, 16.6485 ns/op
+WorkloadResult  13: 51200000 op, 855029223.00 ns, 16.6998 ns/op
+WorkloadResult  14: 51200000 op, 854355923.00 ns, 16.6866 ns/op
+WorkloadResult  15: 51200000 op, 849828561.00 ns, 16.5982 ns/op
+
+// AfterAll
+// Benchmark Process 46095 has exited with code 0
+
+Mean = 16.6894 ns, StdErr = 0.0157 ns (0.09%); N = 15, StdDev = 0.0608 ns
+Min = 16.5942 ns, Q1 = 16.6325 ns, Median = 16.6995 ns, Q3 = 16.7501 ns, Max = 16.7783 ns
+IQR = 0.1176 ns, LowerFence = 16.4560 ns, UpperFence = 16.9265 ns
+ConfidenceInterval = [16.6244 ns; 16.7544 ns] (CI 99.9%), Margin = 0.0650 ns (0.39% of Mean)
+Skewness = -0.14, Kurtosis = 1.64, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 100)" --job "Default" --benchmarkId 7 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 144490.00 ns, 1.4449 ns/op
+WorkloadJitting  1: 100000 op, 15773429.00 ns, 157.7343 ns/op
+
+OverheadJitting  2: 1600000 op, 167720.00 ns, 0.1048 ns/op
+WorkloadJitting  2: 1600000 op, 202634637.00 ns, 126.6466 ns/op
+
+WorkloadPilot    1: 1600000 op, 176730462.00 ns, 110.4565 ns/op
+WorkloadPilot    2: 3200000 op, 367889172.00 ns, 114.9654 ns/op
+WorkloadPilot    3: 6400000 op, 723757457.00 ns, 113.0871 ns/op
+
+OverheadWarmup   1: 6400000 op, 3090.00 ns, 0.0005 ns/op
+OverheadWarmup   2: 6400000 op, 430.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 340.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 6400000 op, 270.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   2: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual   7: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual   8: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual   9: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadActual  10: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual  11: 6400000 op, 340.00 ns, 0.0001 ns/op
+OverheadActual  12: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  13: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  14: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  15: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  16: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  17: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual  18: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadActual  19: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadActual  20: 6400000 op, 300.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 6400000 op, 748281972.00 ns, 116.9191 ns/op
+WorkloadWarmup   2: 6400000 op, 736281855.00 ns, 115.0440 ns/op
+WorkloadWarmup   3: 6400000 op, 725199838.00 ns, 113.3125 ns/op
+WorkloadWarmup   4: 6400000 op, 747423431.00 ns, 116.7849 ns/op
+WorkloadWarmup   5: 6400000 op, 706727227.00 ns, 110.4261 ns/op
+WorkloadWarmup   6: 6400000 op, 705928607.00 ns, 110.3013 ns/op
+WorkloadWarmup   7: 6400000 op, 732953123.00 ns, 114.5239 ns/op
+WorkloadWarmup   8: 6400000 op, 723011877.00 ns, 112.9706 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 732178242.00 ns, 114.4029 ns/op
+WorkloadActual   2: 6400000 op, 741691338.00 ns, 115.8893 ns/op
+WorkloadActual   3: 6400000 op, 733112493.00 ns, 114.5488 ns/op
+WorkloadActual   4: 6400000 op, 707082778.00 ns, 110.4817 ns/op
+WorkloadActual   5: 6400000 op, 737485186.00 ns, 115.2321 ns/op
+WorkloadActual   6: 6400000 op, 737634475.00 ns, 115.2554 ns/op
+WorkloadActual   7: 6400000 op, 729131851.00 ns, 113.9269 ns/op
+WorkloadActual   8: 6400000 op, 734419104.00 ns, 114.7530 ns/op
+WorkloadActual   9: 6400000 op, 728722650.00 ns, 113.8629 ns/op
+WorkloadActual  10: 6400000 op, 729032811.00 ns, 113.9114 ns/op
+WorkloadActual  11: 6400000 op, 717617574.00 ns, 112.1277 ns/op
+WorkloadActual  12: 6400000 op, 735029624.00 ns, 114.8484 ns/op
+WorkloadActual  13: 6400000 op, 731483752.00 ns, 114.2943 ns/op
+WorkloadActual  14: 6400000 op, 741049717.00 ns, 115.7890 ns/op
+WorkloadActual  15: 6400000 op, 744518030.00 ns, 116.3309 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 732177942.00 ns, 114.4028 ns/op
+WorkloadResult   2: 6400000 op, 741691038.00 ns, 115.8892 ns/op
+WorkloadResult   3: 6400000 op, 733112193.00 ns, 114.5488 ns/op
+WorkloadResult   4: 6400000 op, 707082478.00 ns, 110.4816 ns/op
+WorkloadResult   5: 6400000 op, 737484886.00 ns, 115.2320 ns/op
+WorkloadResult   6: 6400000 op, 737634175.00 ns, 115.2553 ns/op
+WorkloadResult   7: 6400000 op, 729131551.00 ns, 113.9268 ns/op
+WorkloadResult   8: 6400000 op, 734418804.00 ns, 114.7529 ns/op
+WorkloadResult   9: 6400000 op, 728722350.00 ns, 113.8629 ns/op
+WorkloadResult  10: 6400000 op, 729032511.00 ns, 113.9113 ns/op
+WorkloadResult  11: 6400000 op, 717617274.00 ns, 112.1277 ns/op
+WorkloadResult  12: 6400000 op, 735029324.00 ns, 114.8483 ns/op
+WorkloadResult  13: 6400000 op, 731483452.00 ns, 114.2943 ns/op
+WorkloadResult  14: 6400000 op, 741049417.00 ns, 115.7890 ns/op
+WorkloadResult  15: 6400000 op, 744517730.00 ns, 116.3309 ns/op
+
+// AfterAll
+// Benchmark Process 46124 has exited with code 0
+
+Mean = 114.3769 ns, StdErr = 0.3837 ns (0.34%); N = 15, StdDev = 1.4861 ns
+Min = 110.4816 ns, Q1 = 113.9113 ns, Median = 114.5488 ns, Q3 = 115.2553 ns, Max = 116.3309 ns
+IQR = 1.3440 ns, LowerFence = 111.8953 ns, UpperFence = 117.2714 ns
+ConfidenceInterval = [112.7882 ns; 115.9656 ns] (CI 99.9%), Margin = 1.5887 ns (1.39% of Mean)
+Skewness = -1.13, Kurtosis = 3.84, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=1000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 1000)" --job "Default" --benchmarkId 8 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 133530.00 ns, 1.3353 ns/op
+WorkloadJitting  1: 100000 op, 3902962.00 ns, 39.0296 ns/op
+
+OverheadJitting  2: 1600000 op, 148930.00 ns, 0.0931 ns/op
+WorkloadJitting  2: 1600000 op, 38562412.00 ns, 24.1015 ns/op
+
+WorkloadPilot    1: 1600000 op, 35516030.00 ns, 22.1975 ns/op
+WorkloadPilot    2: 3200000 op, 70582721.00 ns, 22.0571 ns/op
+WorkloadPilot    3: 6400000 op, 128601164.00 ns, 20.0939 ns/op
+WorkloadPilot    4: 12800000 op, 239788628.00 ns, 18.7335 ns/op
+WorkloadPilot    5: 25600000 op, 489475163.00 ns, 19.1201 ns/op
+WorkloadPilot    6: 51200000 op, 1012791304.00 ns, 19.7811 ns/op
+
+OverheadWarmup   1: 51200000 op, 3420.00 ns, 0.0001 ns/op
+OverheadWarmup   2: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 51200000 op, 1000.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 51200000 op, 1000.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 51200000 op, 1070.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 51200000 op, 1030.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 51200000 op, 990.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 51200000 op, 1000.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   2: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   3: 51200000 op, 1110.00 ns, 0.0000 ns/op
+OverheadActual   4: 51200000 op, 1100.00 ns, 0.0000 ns/op
+OverheadActual   5: 51200000 op, 1120.00 ns, 0.0000 ns/op
+OverheadActual   6: 51200000 op, 960.00 ns, 0.0000 ns/op
+OverheadActual   7: 51200000 op, 970.00 ns, 0.0000 ns/op
+OverheadActual   8: 51200000 op, 970.00 ns, 0.0000 ns/op
+OverheadActual   9: 51200000 op, 1010.00 ns, 0.0000 ns/op
+OverheadActual  10: 51200000 op, 990.00 ns, 0.0000 ns/op
+OverheadActual  11: 51200000 op, 990.00 ns, 0.0000 ns/op
+OverheadActual  12: 51200000 op, 1020.00 ns, 0.0000 ns/op
+OverheadActual  13: 51200000 op, 990.00 ns, 0.0000 ns/op
+OverheadActual  14: 51200000 op, 980.00 ns, 0.0000 ns/op
+OverheadActual  15: 51200000 op, 980.00 ns, 0.0000 ns/op
+OverheadActual  16: 51200000 op, 960.00 ns, 0.0000 ns/op
+OverheadActual  17: 51200000 op, 950.00 ns, 0.0000 ns/op
+OverheadActual  18: 51200000 op, 1130.00 ns, 0.0000 ns/op
+OverheadActual  19: 51200000 op, 1000.00 ns, 0.0000 ns/op
+OverheadActual  20: 51200000 op, 970.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 51200000 op, 971178340.00 ns, 18.9683 ns/op
+WorkloadWarmup   2: 51200000 op, 968838679.00 ns, 18.9226 ns/op
+WorkloadWarmup   3: 51200000 op, 967095208.00 ns, 18.8886 ns/op
+WorkloadWarmup   4: 51200000 op, 969042559.00 ns, 18.9266 ns/op
+WorkloadWarmup   5: 51200000 op, 971074210.00 ns, 18.9663 ns/op
+WorkloadWarmup   6: 51200000 op, 969376299.00 ns, 18.9331 ns/op
+WorkloadWarmup   7: 51200000 op, 961331345.00 ns, 18.7760 ns/op
+WorkloadWarmup   8: 51200000 op, 963265826.00 ns, 18.8138 ns/op
+WorkloadWarmup   9: 51200000 op, 962745035.00 ns, 18.8036 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 51200000 op, 968725048.00 ns, 18.9204 ns/op
+WorkloadActual   2: 51200000 op, 965715628.00 ns, 18.8616 ns/op
+WorkloadActual   3: 51200000 op, 959786364.00 ns, 18.7458 ns/op
+WorkloadActual   4: 51200000 op, 958865643.00 ns, 18.7278 ns/op
+WorkloadActual   5: 51200000 op, 982815097.00 ns, 19.1956 ns/op
+WorkloadActual   6: 51200000 op, 963091436.00 ns, 18.8104 ns/op
+WorkloadActual   7: 51200000 op, 959049803.00 ns, 18.7314 ns/op
+WorkloadActual   8: 51200000 op, 963357415.00 ns, 18.8156 ns/op
+WorkloadActual   9: 51200000 op, 962140215.00 ns, 18.7918 ns/op
+WorkloadActual  10: 51200000 op, 962128155.00 ns, 18.7916 ns/op
+WorkloadActual  11: 51200000 op, 962300076.00 ns, 18.7949 ns/op
+WorkloadActual  12: 51200000 op, 961613675.00 ns, 18.7815 ns/op
+WorkloadActual  13: 51200000 op, 966823638.00 ns, 18.8833 ns/op
+WorkloadActual  14: 51200000 op, 968529678.00 ns, 18.9166 ns/op
+WorkloadActual  15: 51200000 op, 970384090.00 ns, 18.9528 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 51200000 op, 968724058.00 ns, 18.9204 ns/op
+WorkloadResult   2: 51200000 op, 965714638.00 ns, 18.8616 ns/op
+WorkloadResult   3: 51200000 op, 959785374.00 ns, 18.7458 ns/op
+WorkloadResult   4: 51200000 op, 958864653.00 ns, 18.7278 ns/op
+WorkloadResult   5: 51200000 op, 963090446.00 ns, 18.8104 ns/op
+WorkloadResult   6: 51200000 op, 959048813.00 ns, 18.7314 ns/op
+WorkloadResult   7: 51200000 op, 963356425.00 ns, 18.8156 ns/op
+WorkloadResult   8: 51200000 op, 962139225.00 ns, 18.7918 ns/op
+WorkloadResult   9: 51200000 op, 962127165.00 ns, 18.7915 ns/op
+WorkloadResult  10: 51200000 op, 962299086.00 ns, 18.7949 ns/op
+WorkloadResult  11: 51200000 op, 961612685.00 ns, 18.7815 ns/op
+WorkloadResult  12: 51200000 op, 966822648.00 ns, 18.8833 ns/op
+WorkloadResult  13: 51200000 op, 968528688.00 ns, 18.9166 ns/op
+WorkloadResult  14: 51200000 op, 970383100.00 ns, 18.9528 ns/op
+
+// AfterAll
+// Benchmark Process 46145 has exited with code 0
+
+Mean = 18.8232 ns, StdErr = 0.0194 ns (0.10%); N = 14, StdDev = 0.0725 ns
+Min = 18.7278 ns, Q1 = 18.7815 ns, Median = 18.8026 ns, Q3 = 18.8833 ns, Max = 18.9528 ns
+IQR = 0.1018 ns, LowerFence = 18.6289 ns, UpperFence = 19.0359 ns
+ConfidenceInterval = [18.7415 ns; 18.9050 ns] (CI 99.9%), Margin = 0.0818 ns (0.43% of Mean)
+Skewness = 0.36, Kurtosis = 1.7, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=1000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 1000)" --job "Default" --benchmarkId 9 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 137240.00 ns, 1.3724 ns/op
+WorkloadJitting  1: 100000 op, 12639068.00 ns, 126.3907 ns/op
+
+OverheadJitting  2: 1600000 op, 149990.00 ns, 0.0937 ns/op
+WorkloadJitting  2: 1600000 op, 199152045.00 ns, 124.4700 ns/op
+
+WorkloadPilot    1: 1600000 op, 163347324.00 ns, 102.0921 ns/op
+WorkloadPilot    2: 3200000 op, 334696073.00 ns, 104.5925 ns/op
+WorkloadPilot    3: 6400000 op, 686157506.00 ns, 107.2121 ns/op
+
+OverheadWarmup   1: 6400000 op, 2720.00 ns, 0.0004 ns/op
+OverheadWarmup   2: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 6400000 op, 340.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadWarmup   9: 6400000 op, 270.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   2: 6400000 op, 390.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 410.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 390.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual   7: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual   8: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual   9: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  10: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadActual  11: 6400000 op, 250.00 ns, 0.0000 ns/op
+OverheadActual  12: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadActual  13: 6400000 op, 340.00 ns, 0.0001 ns/op
+OverheadActual  14: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual  15: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual  16: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  17: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  18: 6400000 op, 390.00 ns, 0.0001 ns/op
+OverheadActual  19: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual  20: 6400000 op, 260.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 6400000 op, 674127909.00 ns, 105.3325 ns/op
+WorkloadWarmup   2: 6400000 op, 685826435.00 ns, 107.1604 ns/op
+WorkloadWarmup   3: 6400000 op, 683301184.00 ns, 106.7658 ns/op
+WorkloadWarmup   4: 6400000 op, 685454016.00 ns, 107.1022 ns/op
+WorkloadWarmup   5: 6400000 op, 686590156.00 ns, 107.2797 ns/op
+WorkloadWarmup   6: 6400000 op, 686823456.00 ns, 107.3162 ns/op
+WorkloadWarmup   7: 6400000 op, 683032654.00 ns, 106.7239 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 677017051.00 ns, 105.7839 ns/op
+WorkloadActual   2: 6400000 op, 680359073.00 ns, 106.3061 ns/op
+WorkloadActual   3: 6400000 op, 683227664.00 ns, 106.7543 ns/op
+WorkloadActual   4: 6400000 op, 673585249.00 ns, 105.2477 ns/op
+WorkloadActual   5: 6400000 op, 678082981.00 ns, 105.9505 ns/op
+WorkloadActual   6: 6400000 op, 685384926.00 ns, 107.0914 ns/op
+WorkloadActual   7: 6400000 op, 681054423.00 ns, 106.4148 ns/op
+WorkloadActual   8: 6400000 op, 685117205.00 ns, 107.0496 ns/op
+WorkloadActual   9: 6400000 op, 682920674.00 ns, 106.7064 ns/op
+WorkloadActual  10: 6400000 op, 686612086.00 ns, 107.2831 ns/op
+WorkloadActual  11: 6400000 op, 692094399.00 ns, 108.1397 ns/op
+WorkloadActual  12: 6400000 op, 686699336.00 ns, 107.2968 ns/op
+WorkloadActual  13: 6400000 op, 694911460.00 ns, 108.5799 ns/op
+WorkloadActual  14: 6400000 op, 687404716.00 ns, 107.4070 ns/op
+WorkloadActual  15: 6400000 op, 685111315.00 ns, 107.0486 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 677016756.00 ns, 105.7839 ns/op
+WorkloadResult   2: 6400000 op, 680358778.00 ns, 106.3061 ns/op
+WorkloadResult   3: 6400000 op, 683227369.00 ns, 106.7543 ns/op
+WorkloadResult   4: 6400000 op, 673584954.00 ns, 105.2476 ns/op
+WorkloadResult   5: 6400000 op, 678082686.00 ns, 105.9504 ns/op
+WorkloadResult   6: 6400000 op, 685384631.00 ns, 107.0913 ns/op
+WorkloadResult   7: 6400000 op, 681054128.00 ns, 106.4147 ns/op
+WorkloadResult   8: 6400000 op, 685116910.00 ns, 107.0495 ns/op
+WorkloadResult   9: 6400000 op, 682920379.00 ns, 106.7063 ns/op
+WorkloadResult  10: 6400000 op, 686611791.00 ns, 107.2831 ns/op
+WorkloadResult  11: 6400000 op, 692094104.00 ns, 108.1397 ns/op
+WorkloadResult  12: 6400000 op, 686699041.00 ns, 107.2967 ns/op
+WorkloadResult  13: 6400000 op, 694911165.00 ns, 108.5799 ns/op
+WorkloadResult  14: 6400000 op, 687404421.00 ns, 107.4069 ns/op
+WorkloadResult  15: 6400000 op, 685111020.00 ns, 107.0486 ns/op
+
+// AfterAll
+// Benchmark Process 46176 has exited with code 0
+
+Mean = 106.8706 ns, StdErr = 0.2237 ns (0.21%); N = 15, StdDev = 0.8666 ns
+Min = 105.2476 ns, Q1 = 106.3061 ns, Median = 107.0486 ns, Q3 = 107.2967 ns, Max = 108.5799 ns
+IQR = 0.9907 ns, LowerFence = 104.8201 ns, UpperFence = 108.7827 ns
+ConfidenceInterval = [105.9442 ns; 107.7970 ns] (CI 99.9%), Margin = 0.9264 ns (0.87% of Mean)
+Skewness = 0.08, Kurtosis = 2.42, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=1000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 1000)" --job "Default" --benchmarkId 10 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 136730.00 ns, 1.3673 ns/op
+WorkloadJitting  1: 100000 op, 5753203.00 ns, 57.5320 ns/op
+
+OverheadJitting  2: 1600000 op, 160730.00 ns, 0.1005 ns/op
+WorkloadJitting  2: 1600000 op, 100520948.00 ns, 62.8256 ns/op
+
+WorkloadPilot    1: 1600000 op, 97579016.00 ns, 60.9869 ns/op
+WorkloadPilot    2: 3200000 op, 186393287.00 ns, 58.2479 ns/op
+WorkloadPilot    3: 6400000 op, 123311561.00 ns, 19.2674 ns/op
+WorkloadPilot    4: 12800000 op, 251377105.00 ns, 19.6388 ns/op
+WorkloadPilot    5: 25600000 op, 500042669.00 ns, 19.5329 ns/op
+
+OverheadWarmup   1: 25600000 op, 3150.00 ns, 0.0001 ns/op
+OverheadWarmup   2: 25600000 op, 730.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 25600000 op, 700.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 25600000 op, 610.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 25600000 op, 730.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 25600000 op, 630.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 25600000 op, 660.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 25600000 op, 670.00 ns, 0.0000 ns/op
+OverheadWarmup   9: 25600000 op, 620.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 25600000 op, 720.00 ns, 0.0000 ns/op
+OverheadActual   2: 25600000 op, 730.00 ns, 0.0000 ns/op
+OverheadActual   3: 25600000 op, 730.00 ns, 0.0000 ns/op
+OverheadActual   4: 25600000 op, 740.00 ns, 0.0000 ns/op
+OverheadActual   5: 25600000 op, 780.00 ns, 0.0000 ns/op
+OverheadActual   6: 25600000 op, 640.00 ns, 0.0000 ns/op
+OverheadActual   7: 25600000 op, 610.00 ns, 0.0000 ns/op
+OverheadActual   8: 25600000 op, 660.00 ns, 0.0000 ns/op
+OverheadActual   9: 25600000 op, 630.00 ns, 0.0000 ns/op
+OverheadActual  10: 25600000 op, 620.00 ns, 0.0000 ns/op
+OverheadActual  11: 25600000 op, 630.00 ns, 0.0000 ns/op
+OverheadActual  12: 25600000 op, 620.00 ns, 0.0000 ns/op
+OverheadActual  13: 25600000 op, 620.00 ns, 0.0000 ns/op
+OverheadActual  14: 25600000 op, 700.00 ns, 0.0000 ns/op
+OverheadActual  15: 25600000 op, 650.00 ns, 0.0000 ns/op
+OverheadActual  16: 25600000 op, 630.00 ns, 0.0000 ns/op
+OverheadActual  17: 25600000 op, 680.00 ns, 0.0000 ns/op
+OverheadActual  18: 25600000 op, 740.00 ns, 0.0000 ns/op
+OverheadActual  19: 25600000 op, 630.00 ns, 0.0000 ns/op
+OverheadActual  20: 25600000 op, 710.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 25600000 op, 496114226.00 ns, 19.3795 ns/op
+WorkloadWarmup   2: 25600000 op, 492600545.00 ns, 19.2422 ns/op
+WorkloadWarmup   3: 25600000 op, 491510603.00 ns, 19.1996 ns/op
+WorkloadWarmup   4: 25600000 op, 491102973.00 ns, 19.1837 ns/op
+WorkloadWarmup   5: 25600000 op, 487377831.00 ns, 19.0382 ns/op
+WorkloadWarmup   6: 25600000 op, 485949880.00 ns, 18.9824 ns/op
+WorkloadWarmup   7: 25600000 op, 486815441.00 ns, 19.0162 ns/op
+WorkloadWarmup   8: 25600000 op, 489201422.00 ns, 19.1094 ns/op
+WorkloadWarmup   9: 25600000 op, 487572691.00 ns, 19.0458 ns/op
+WorkloadWarmup  10: 25600000 op, 489540183.00 ns, 19.1227 ns/op
+WorkloadWarmup  11: 25600000 op, 491578344.00 ns, 19.2023 ns/op
+WorkloadWarmup  12: 25600000 op, 491460003.00 ns, 19.1977 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 25600000 op, 489599552.00 ns, 19.1250 ns/op
+WorkloadActual   2: 25600000 op, 489173512.00 ns, 19.1083 ns/op
+WorkloadActual   3: 25600000 op, 490113643.00 ns, 19.1451 ns/op
+WorkloadActual   4: 25600000 op, 489417732.00 ns, 19.1179 ns/op
+WorkloadActual   5: 25600000 op, 491953153.00 ns, 19.2169 ns/op
+WorkloadActual   6: 25600000 op, 489586072.00 ns, 19.1245 ns/op
+WorkloadActual   7: 25600000 op, 490412122.00 ns, 19.1567 ns/op
+WorkloadActual   8: 25600000 op, 490476403.00 ns, 19.1592 ns/op
+WorkloadActual   9: 25600000 op, 491069763.00 ns, 19.1824 ns/op
+WorkloadActual  10: 25600000 op, 492130353.00 ns, 19.2238 ns/op
+WorkloadActual  11: 25600000 op, 488627192.00 ns, 19.0870 ns/op
+WorkloadActual  12: 25600000 op, 488982581.00 ns, 19.1009 ns/op
+WorkloadActual  13: 25600000 op, 488094132.00 ns, 19.0662 ns/op
+WorkloadActual  14: 25600000 op, 504144231.00 ns, 19.6931 ns/op
+WorkloadActual  15: 25600000 op, 504257050.00 ns, 19.6975 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 25600000 op, 489598897.00 ns, 19.1250 ns/op
+WorkloadResult   2: 25600000 op, 489172857.00 ns, 19.1083 ns/op
+WorkloadResult   3: 25600000 op, 490112988.00 ns, 19.1450 ns/op
+WorkloadResult   4: 25600000 op, 489417077.00 ns, 19.1179 ns/op
+WorkloadResult   5: 25600000 op, 491952498.00 ns, 19.2169 ns/op
+WorkloadResult   6: 25600000 op, 489585417.00 ns, 19.1244 ns/op
+WorkloadResult   7: 25600000 op, 490411467.00 ns, 19.1567 ns/op
+WorkloadResult   8: 25600000 op, 490475748.00 ns, 19.1592 ns/op
+WorkloadResult   9: 25600000 op, 491069108.00 ns, 19.1824 ns/op
+WorkloadResult  10: 25600000 op, 492129698.00 ns, 19.2238 ns/op
+WorkloadResult  11: 25600000 op, 488626537.00 ns, 19.0870 ns/op
+WorkloadResult  12: 25600000 op, 488981926.00 ns, 19.1009 ns/op
+WorkloadResult  13: 25600000 op, 488093477.00 ns, 19.0662 ns/op
+
+// AfterAll
+// Benchmark Process 46196 has exited with code 0
+
+Mean = 19.1395 ns, StdErr = 0.0132 ns (0.07%); N = 13, StdDev = 0.0476 ns
+Min = 19.0662 ns, Q1 = 19.1046 ns, Median = 19.1250 ns, Q3 = 19.1708 ns, Max = 19.2238 ns
+IQR = 0.0662 ns, LowerFence = 19.0053 ns, UpperFence = 19.2701 ns
+ConfidenceInterval = [19.0825 ns; 19.1965 ns] (CI 99.9%), Margin = 0.0570 ns (0.30% of Mean)
+Skewness = 0.36, Kurtosis = 1.95, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=1000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 1000)" --job "Default" --benchmarkId 11 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 138910.00 ns, 1.3891 ns/op
+WorkloadJitting  1: 100000 op, 15782059.00 ns, 157.8206 ns/op
+
+OverheadJitting  2: 1600000 op, 168970.00 ns, 0.1056 ns/op
+WorkloadJitting  2: 1600000 op, 195650283.00 ns, 122.2814 ns/op
+
+WorkloadPilot    1: 1600000 op, 179235544.00 ns, 112.0222 ns/op
+WorkloadPilot    2: 3200000 op, 371222344.00 ns, 116.0070 ns/op
+WorkloadPilot    3: 6400000 op, 734519954.00 ns, 114.7687 ns/op
+
+OverheadWarmup   1: 6400000 op, 2700.00 ns, 0.0004 ns/op
+OverheadWarmup   2: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 6400000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 6400000 op, 280.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadActual   2: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 340.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual   7: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual   8: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual   9: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  10: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual  11: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  12: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  13: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual  14: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  15: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual  16: 6400000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual  17: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual  18: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual  19: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual  20: 6400000 op, 270.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 6400000 op, 732595622.00 ns, 114.4681 ns/op
+WorkloadWarmup   2: 6400000 op, 744274980.00 ns, 116.2930 ns/op
+WorkloadWarmup   3: 6400000 op, 745211960.00 ns, 116.4394 ns/op
+WorkloadWarmup   4: 6400000 op, 751011433.00 ns, 117.3455 ns/op
+WorkloadWarmup   5: 6400000 op, 742051798.00 ns, 115.9456 ns/op
+WorkloadWarmup   6: 6400000 op, 737716086.00 ns, 115.2681 ns/op
+WorkloadWarmup   7: 6400000 op, 749912303.00 ns, 117.1738 ns/op
+WorkloadWarmup   8: 6400000 op, 752206305.00 ns, 117.5322 ns/op
+WorkloadWarmup   9: 6400000 op, 741805908.00 ns, 115.9072 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 711410921.00 ns, 111.1580 ns/op
+WorkloadActual   2: 6400000 op, 728810601.00 ns, 113.8767 ns/op
+WorkloadActual   3: 6400000 op, 726089399.00 ns, 113.4515 ns/op
+WorkloadActual   4: 6400000 op, 744337900.00 ns, 116.3028 ns/op
+WorkloadActual   5: 6400000 op, 741604698.00 ns, 115.8757 ns/op
+WorkloadActual   6: 6400000 op, 735110324.00 ns, 114.8610 ns/op
+WorkloadActual   7: 6400000 op, 746550381.00 ns, 116.6485 ns/op
+WorkloadActual   8: 6400000 op, 746935281.00 ns, 116.7086 ns/op
+WorkloadActual   9: 6400000 op, 731303312.00 ns, 114.2661 ns/op
+WorkloadActual  10: 6400000 op, 749143102.00 ns, 117.0536 ns/op
+WorkloadActual  11: 6400000 op, 746675880.00 ns, 116.6681 ns/op
+WorkloadActual  12: 6400000 op, 738392986.00 ns, 115.3739 ns/op
+WorkloadActual  13: 6400000 op, 744891719.00 ns, 116.3893 ns/op
+WorkloadActual  14: 6400000 op, 733234093.00 ns, 114.5678 ns/op
+WorkloadActual  15: 6400000 op, 746785751.00 ns, 116.6853 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 711410621.00 ns, 111.1579 ns/op
+WorkloadResult   2: 6400000 op, 728810301.00 ns, 113.8766 ns/op
+WorkloadResult   3: 6400000 op, 726089099.00 ns, 113.4514 ns/op
+WorkloadResult   4: 6400000 op, 744337600.00 ns, 116.3028 ns/op
+WorkloadResult   5: 6400000 op, 741604398.00 ns, 115.8757 ns/op
+WorkloadResult   6: 6400000 op, 735110024.00 ns, 114.8609 ns/op
+WorkloadResult   7: 6400000 op, 746550081.00 ns, 116.6485 ns/op
+WorkloadResult   8: 6400000 op, 746934981.00 ns, 116.7086 ns/op
+WorkloadResult   9: 6400000 op, 731303012.00 ns, 114.2661 ns/op
+WorkloadResult  10: 6400000 op, 749142802.00 ns, 117.0536 ns/op
+WorkloadResult  11: 6400000 op, 746675580.00 ns, 116.6681 ns/op
+WorkloadResult  12: 6400000 op, 738392686.00 ns, 115.3739 ns/op
+WorkloadResult  13: 6400000 op, 744891419.00 ns, 116.3893 ns/op
+WorkloadResult  14: 6400000 op, 733233793.00 ns, 114.5678 ns/op
+WorkloadResult  15: 6400000 op, 746785451.00 ns, 116.6852 ns/op
+
+// AfterAll
+// Benchmark Process 46211 has exited with code 0
+
+Mean = 115.3257 ns, StdErr = 0.4231 ns (0.37%); N = 15, StdDev = 1.6385 ns
+Min = 111.1579 ns, Q1 = 114.2661 ns, Median = 115.8757 ns, Q3 = 116.6681 ns, Max = 117.0536 ns
+IQR = 2.4020 ns, LowerFence = 110.6632 ns, UpperFence = 120.2710 ns
+ConfidenceInterval = [113.5741 ns; 117.0774 ns] (CI 99.9%), Margin = 1.7516 ns (1.52% of Mean)
+Skewness = -1.01, Kurtosis = 3.19, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=100000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 100000)" --job "Default" --benchmarkId 12 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 160660.00 ns, 1.6066 ns/op
+WorkloadJitting  1: 100000 op, 7335624.00 ns, 73.3562 ns/op
+
+OverheadJitting  2: 1600000 op, 161940.00 ns, 0.1012 ns/op
+WorkloadJitting  2: 1600000 op, 93043014.00 ns, 58.1519 ns/op
+
+WorkloadPilot    1: 1600000 op, 92262363.00 ns, 57.6640 ns/op
+WorkloadPilot    2: 3200000 op, 182818866.00 ns, 57.1309 ns/op
+WorkloadPilot    3: 6400000 op, 325770748.00 ns, 50.9017 ns/op
+WorkloadPilot    4: 12800000 op, 650456735.00 ns, 50.8169 ns/op
+
+OverheadWarmup   1: 12800000 op, 2950.00 ns, 0.0002 ns/op
+OverheadWarmup   2: 12800000 op, 530.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 12800000 op, 480.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 12800000 op, 410.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 12800000 op, 540.00 ns, 0.0000 ns/op
+OverheadActual   2: 12800000 op, 540.00 ns, 0.0000 ns/op
+OverheadActual   3: 12800000 op, 540.00 ns, 0.0000 ns/op
+OverheadActual   4: 12800000 op, 520.00 ns, 0.0000 ns/op
+OverheadActual   5: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadActual   6: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual   7: 12800000 op, 440.00 ns, 0.0000 ns/op
+OverheadActual   8: 12800000 op, 430.00 ns, 0.0000 ns/op
+OverheadActual   9: 12800000 op, 440.00 ns, 0.0000 ns/op
+OverheadActual  10: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual  11: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadActual  12: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual  13: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadActual  14: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadActual  15: 12800000 op, 450.00 ns, 0.0000 ns/op
+OverheadActual  16: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual  17: 12800000 op, 430.00 ns, 0.0000 ns/op
+OverheadActual  18: 12800000 op, 570.00 ns, 0.0000 ns/op
+OverheadActual  19: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadActual  20: 12800000 op, 410.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 12800000 op, 650385746.00 ns, 50.8114 ns/op
+WorkloadWarmup   2: 12800000 op, 650169055.00 ns, 50.7945 ns/op
+WorkloadWarmup   3: 12800000 op, 649789615.00 ns, 50.7648 ns/op
+WorkloadWarmup   4: 12800000 op, 649887845.00 ns, 50.7725 ns/op
+WorkloadWarmup   5: 12800000 op, 649715174.00 ns, 50.7590 ns/op
+WorkloadWarmup   6: 12800000 op, 648691084.00 ns, 50.6790 ns/op
+WorkloadWarmup   7: 12800000 op, 651084955.00 ns, 50.8660 ns/op
+WorkloadWarmup   8: 12800000 op, 652721527.00 ns, 50.9939 ns/op
+WorkloadWarmup   9: 12800000 op, 651023796.00 ns, 50.8612 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 12800000 op, 649933855.00 ns, 50.7761 ns/op
+WorkloadActual   2: 12800000 op, 650473845.00 ns, 50.8183 ns/op
+WorkloadActual   3: 12800000 op, 649344365.00 ns, 50.7300 ns/op
+WorkloadActual   4: 12800000 op, 649490715.00 ns, 50.7415 ns/op
+WorkloadActual   5: 12800000 op, 648888425.00 ns, 50.6944 ns/op
+WorkloadActual   6: 12800000 op, 648912124.00 ns, 50.6963 ns/op
+WorkloadActual   7: 12800000 op, 649182115.00 ns, 50.7174 ns/op
+WorkloadActual   8: 12800000 op, 649495964.00 ns, 50.7419 ns/op
+WorkloadActual   9: 12800000 op, 648883204.00 ns, 50.6940 ns/op
+WorkloadActual  10: 12800000 op, 649465904.00 ns, 50.7395 ns/op
+WorkloadActual  11: 12800000 op, 648992224.00 ns, 50.7025 ns/op
+WorkloadActual  12: 12800000 op, 653580867.00 ns, 51.0610 ns/op
+WorkloadActual  13: 12800000 op, 650250735.00 ns, 50.8008 ns/op
+WorkloadActual  14: 12800000 op, 649793305.00 ns, 50.7651 ns/op
+WorkloadActual  15: 12800000 op, 648246704.00 ns, 50.6443 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 12800000 op, 649933425.00 ns, 50.7760 ns/op
+WorkloadResult   2: 12800000 op, 650473415.00 ns, 50.8182 ns/op
+WorkloadResult   3: 12800000 op, 649343935.00 ns, 50.7300 ns/op
+WorkloadResult   4: 12800000 op, 649490285.00 ns, 50.7414 ns/op
+WorkloadResult   5: 12800000 op, 648887995.00 ns, 50.6944 ns/op
+WorkloadResult   6: 12800000 op, 648911694.00 ns, 50.6962 ns/op
+WorkloadResult   7: 12800000 op, 649181685.00 ns, 50.7173 ns/op
+WorkloadResult   8: 12800000 op, 649495534.00 ns, 50.7418 ns/op
+WorkloadResult   9: 12800000 op, 648882774.00 ns, 50.6940 ns/op
+WorkloadResult  10: 12800000 op, 649465474.00 ns, 50.7395 ns/op
+WorkloadResult  11: 12800000 op, 648991794.00 ns, 50.7025 ns/op
+WorkloadResult  12: 12800000 op, 650250305.00 ns, 50.8008 ns/op
+WorkloadResult  13: 12800000 op, 649792875.00 ns, 50.7651 ns/op
+WorkloadResult  14: 12800000 op, 648246274.00 ns, 50.6442 ns/op
+
+// AfterAll
+// Benchmark Process 46240 has exited with code 0
+
+Mean = 50.7330 ns, StdErr = 0.0125 ns (0.02%); N = 14, StdDev = 0.0467 ns
+Min = 50.6442 ns, Q1 = 50.6962 ns, Median = 50.7347 ns, Q3 = 50.7651 ns, Max = 50.8182 ns
+IQR = 0.0688 ns, LowerFence = 50.5930 ns, UpperFence = 50.8683 ns
+ConfidenceInterval = [50.6803 ns; 50.7857 ns] (CI 99.9%), Margin = 0.0527 ns (0.10% of Mean)
+Skewness = 0.1, Kurtosis = 2.22, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=100000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 100000)" --job "Default" --benchmarkId 13 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 140300.00 ns, 1.4030 ns/op
+WorkloadJitting  1: 100000 op, 20026731.00 ns, 200.2673 ns/op
+
+OverheadJitting  2: 1600000 op, 157080.00 ns, 0.0982 ns/op
+WorkloadJitting  2: 1600000 op, 317011883.00 ns, 198.1324 ns/op
+
+WorkloadPilot    1: 1600000 op, 317387173.00 ns, 198.3670 ns/op
+WorkloadPilot    2: 3200000 op, 635010136.00 ns, 198.4407 ns/op
+
+OverheadWarmup   1: 3200000 op, 2970.00 ns, 0.0009 ns/op
+OverheadWarmup   2: 3200000 op, 410.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadWarmup   5: 3200000 op, 270.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 3200000 op, 340.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 3200000 op, 330.00 ns, 0.0001 ns/op
+
+OverheadActual   1: 3200000 op, 240.00 ns, 0.0001 ns/op
+OverheadActual   2: 3200000 op, 230.00 ns, 0.0001 ns/op
+OverheadActual   3: 3200000 op, 420.00 ns, 0.0001 ns/op
+OverheadActual   4: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadActual   5: 3200000 op, 340.00 ns, 0.0001 ns/op
+OverheadActual   6: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual   7: 3200000 op, 310.00 ns, 0.0001 ns/op
+OverheadActual   8: 3200000 op, 390.00 ns, 0.0001 ns/op
+OverheadActual   9: 3200000 op, 360.00 ns, 0.0001 ns/op
+OverheadActual  10: 3200000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual  11: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadActual  12: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadActual  13: 3200000 op, 310.00 ns, 0.0001 ns/op
+OverheadActual  14: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual  15: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadActual  16: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual  17: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual  18: 3200000 op, 310.00 ns, 0.0001 ns/op
+OverheadActual  19: 3200000 op, 340.00 ns, 0.0001 ns/op
+OverheadActual  20: 3200000 op, 320.00 ns, 0.0001 ns/op
+
+WorkloadWarmup   1: 3200000 op, 634865806.00 ns, 198.3956 ns/op
+WorkloadWarmup   2: 3200000 op, 632514435.00 ns, 197.6608 ns/op
+WorkloadWarmup   3: 3200000 op, 635792057.00 ns, 198.6850 ns/op
+WorkloadWarmup   4: 3200000 op, 628813733.00 ns, 196.5043 ns/op
+WorkloadWarmup   5: 3200000 op, 631741414.00 ns, 197.4192 ns/op
+WorkloadWarmup   6: 3200000 op, 636740157.00 ns, 198.9813 ns/op
+WorkloadWarmup   7: 3200000 op, 631801525.00 ns, 197.4380 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 3200000 op, 630601753.00 ns, 197.0630 ns/op
+WorkloadActual   2: 3200000 op, 629475173.00 ns, 196.7110 ns/op
+WorkloadActual   3: 3200000 op, 631053234.00 ns, 197.2041 ns/op
+WorkloadActual   4: 3200000 op, 630578155.00 ns, 197.0557 ns/op
+WorkloadActual   5: 3200000 op, 631254404.00 ns, 197.2670 ns/op
+WorkloadActual   6: 3200000 op, 630499963.00 ns, 197.0312 ns/op
+WorkloadActual   7: 3200000 op, 630529204.00 ns, 197.0404 ns/op
+WorkloadActual   8: 3200000 op, 630490823.00 ns, 197.0284 ns/op
+WorkloadActual   9: 3200000 op, 628402393.00 ns, 196.3757 ns/op
+WorkloadActual  10: 3200000 op, 631029894.00 ns, 197.1968 ns/op
+WorkloadActual  11: 3200000 op, 629640023.00 ns, 196.7625 ns/op
+WorkloadActual  12: 3200000 op, 630911484.00 ns, 197.1598 ns/op
+WorkloadActual  13: 3200000 op, 629903443.00 ns, 196.8448 ns/op
+WorkloadActual  14: 3200000 op, 630901484.00 ns, 197.1567 ns/op
+WorkloadActual  15: 3200000 op, 631739775.00 ns, 197.4187 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 3200000 op, 630601423.00 ns, 197.0629 ns/op
+WorkloadResult   2: 3200000 op, 629474843.00 ns, 196.7109 ns/op
+WorkloadResult   3: 3200000 op, 631052904.00 ns, 197.2040 ns/op
+WorkloadResult   4: 3200000 op, 630577825.00 ns, 197.0556 ns/op
+WorkloadResult   5: 3200000 op, 631254074.00 ns, 197.2669 ns/op
+WorkloadResult   6: 3200000 op, 630499633.00 ns, 197.0311 ns/op
+WorkloadResult   7: 3200000 op, 630528874.00 ns, 197.0403 ns/op
+WorkloadResult   8: 3200000 op, 630490493.00 ns, 197.0283 ns/op
+WorkloadResult   9: 3200000 op, 628402063.00 ns, 196.3756 ns/op
+WorkloadResult  10: 3200000 op, 631029564.00 ns, 197.1967 ns/op
+WorkloadResult  11: 3200000 op, 629639693.00 ns, 196.7624 ns/op
+WorkloadResult  12: 3200000 op, 630911154.00 ns, 197.1597 ns/op
+WorkloadResult  13: 3200000 op, 629903113.00 ns, 196.8447 ns/op
+WorkloadResult  14: 3200000 op, 630901154.00 ns, 197.1566 ns/op
+WorkloadResult  15: 3200000 op, 631739445.00 ns, 197.4186 ns/op
+
+// AfterAll
+// Benchmark Process 46264 has exited with code 0
+
+Mean = 197.0210 ns, StdErr = 0.0667 ns (0.03%); N = 15, StdDev = 0.2584 ns
+Min = 196.3756 ns, Q1 = 196.8447 ns, Median = 197.0556 ns, Q3 = 197.1967 ns, Max = 197.4186 ns
+IQR = 0.3520 ns, LowerFence = 196.3167 ns, UpperFence = 197.7248 ns
+ConfidenceInterval = [196.7447 ns; 197.2972 ns] (CI 99.9%), Margin = 0.2762 ns (0.14% of Mean)
+Skewness = -0.88, Kurtosis = 3.28, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=100000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 100000)" --job "Default" --benchmarkId 14 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 157850.00 ns, 1.5785 ns/op
+WorkloadJitting  1: 100000 op, 8747155.00 ns, 87.4715 ns/op
+
+OverheadJitting  2: 1600000 op, 192460.00 ns, 0.1203 ns/op
+WorkloadJitting  2: 1600000 op, 160073572.00 ns, 100.0460 ns/op
+
+WorkloadPilot    1: 1600000 op, 127245222.00 ns, 79.5283 ns/op
+WorkloadPilot    2: 3200000 op, 142384382.00 ns, 44.4951 ns/op
+WorkloadPilot    3: 6400000 op, 290160807.00 ns, 45.3376 ns/op
+WorkloadPilot    4: 12800000 op, 577205893.00 ns, 45.0942 ns/op
+
+OverheadWarmup   1: 12800000 op, 3260.00 ns, 0.0003 ns/op
+OverheadWarmup   2: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadWarmup   3: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 12800000 op, 440.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadWarmup   6: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 12800000 op, 410.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual   2: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual   3: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadActual   4: 12800000 op, 410.00 ns, 0.0000 ns/op
+OverheadActual   5: 12800000 op, 540.00 ns, 0.0000 ns/op
+OverheadActual   6: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual   7: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual   8: 12800000 op, 430.00 ns, 0.0000 ns/op
+OverheadActual   9: 12800000 op, 380.00 ns, 0.0000 ns/op
+OverheadActual  10: 12800000 op, 420.00 ns, 0.0000 ns/op
+OverheadActual  11: 12800000 op, 340.00 ns, 0.0000 ns/op
+OverheadActual  12: 12800000 op, 440.00 ns, 0.0000 ns/op
+OverheadActual  13: 12800000 op, 390.00 ns, 0.0000 ns/op
+OverheadActual  14: 12800000 op, 480.00 ns, 0.0000 ns/op
+OverheadActual  15: 12800000 op, 360.00 ns, 0.0000 ns/op
+OverheadActual  16: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual  17: 12800000 op, 470.00 ns, 0.0000 ns/op
+OverheadActual  18: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual  19: 12800000 op, 400.00 ns, 0.0000 ns/op
+OverheadActual  20: 12800000 op, 400.00 ns, 0.0000 ns/op
+
+WorkloadWarmup   1: 12800000 op, 578027533.00 ns, 45.1584 ns/op
+WorkloadWarmup   2: 12800000 op, 578895824.00 ns, 45.2262 ns/op
+WorkloadWarmup   3: 12800000 op, 577822774.00 ns, 45.1424 ns/op
+WorkloadWarmup   4: 12800000 op, 578414124.00 ns, 45.1886 ns/op
+WorkloadWarmup   5: 12800000 op, 573794881.00 ns, 44.8277 ns/op
+WorkloadWarmup   6: 12800000 op, 578131614.00 ns, 45.1665 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 12800000 op, 578883043.00 ns, 45.2252 ns/op
+WorkloadActual   2: 12800000 op, 576851332.00 ns, 45.0665 ns/op
+WorkloadActual   3: 12800000 op, 576368142.00 ns, 45.0288 ns/op
+WorkloadActual   4: 12800000 op, 576614343.00 ns, 45.0480 ns/op
+WorkloadActual   5: 12800000 op, 576928562.00 ns, 45.0725 ns/op
+WorkloadActual   6: 12800000 op, 575163392.00 ns, 44.9346 ns/op
+WorkloadActual   7: 12800000 op, 580205064.00 ns, 45.3285 ns/op
+WorkloadActual   8: 12800000 op, 581057195.00 ns, 45.3951 ns/op
+WorkloadActual   9: 12800000 op, 582055736.00 ns, 45.4731 ns/op
+WorkloadActual  10: 12800000 op, 578642723.00 ns, 45.2065 ns/op
+WorkloadActual  11: 12800000 op, 578966784.00 ns, 45.2318 ns/op
+WorkloadActual  12: 12800000 op, 579286195.00 ns, 45.2567 ns/op
+WorkloadActual  13: 12800000 op, 580191724.00 ns, 45.3275 ns/op
+WorkloadActual  14: 12800000 op, 579191604.00 ns, 45.2493 ns/op
+WorkloadActual  15: 12800000 op, 576279933.00 ns, 45.0219 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 12800000 op, 578882638.00 ns, 45.2252 ns/op
+WorkloadResult   2: 12800000 op, 576850927.00 ns, 45.0665 ns/op
+WorkloadResult   3: 12800000 op, 576367737.00 ns, 45.0287 ns/op
+WorkloadResult   4: 12800000 op, 576613938.00 ns, 45.0480 ns/op
+WorkloadResult   5: 12800000 op, 576928157.00 ns, 45.0725 ns/op
+WorkloadResult   6: 12800000 op, 575162987.00 ns, 44.9346 ns/op
+WorkloadResult   7: 12800000 op, 580204659.00 ns, 45.3285 ns/op
+WorkloadResult   8: 12800000 op, 581056790.00 ns, 45.3951 ns/op
+WorkloadResult   9: 12800000 op, 582055331.00 ns, 45.4731 ns/op
+WorkloadResult  10: 12800000 op, 578642318.00 ns, 45.2064 ns/op
+WorkloadResult  11: 12800000 op, 578966379.00 ns, 45.2317 ns/op
+WorkloadResult  12: 12800000 op, 579285790.00 ns, 45.2567 ns/op
+WorkloadResult  13: 12800000 op, 580191319.00 ns, 45.3274 ns/op
+WorkloadResult  14: 12800000 op, 579191199.00 ns, 45.2493 ns/op
+WorkloadResult  15: 12800000 op, 576279528.00 ns, 45.0218 ns/op
+
+// AfterAll
+// Benchmark Process 46283 has exited with code 0
+
+Mean = 45.1910 ns, StdErr = 0.0402 ns (0.09%); N = 15, StdDev = 0.1559 ns
+Min = 44.9346 ns, Q1 = 45.0480 ns, Median = 45.2252 ns, Q3 = 45.3274 ns, Max = 45.4731 ns
+IQR = 0.2795 ns, LowerFence = 44.6287 ns, UpperFence = 45.7467 ns
+ConfidenceInterval = [45.0244 ns; 45.3577 ns] (CI 99.9%), Margin = 0.1667 ns (0.37% of Mean)
+Skewness = 0.07, Kurtosis = 1.75, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=100000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 100000)" --job "Default" --benchmarkId 15 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 164110.00 ns, 1.6411 ns/op
+WorkloadJitting  1: 100000 op, 16929500.00 ns, 169.2950 ns/op
+
+OverheadJitting  2: 1600000 op, 178560.00 ns, 0.1116 ns/op
+WorkloadJitting  2: 1600000 op, 243252541.00 ns, 152.0328 ns/op
+
+WorkloadPilot    1: 1600000 op, 223843889.00 ns, 139.9024 ns/op
+WorkloadPilot    2: 3200000 op, 449040159.00 ns, 140.3250 ns/op
+WorkloadPilot    3: 6400000 op, 927311945.00 ns, 144.8925 ns/op
+
+OverheadWarmup   1: 6400000 op, 3440.00 ns, 0.0005 ns/op
+OverheadWarmup   2: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadWarmup   4: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadWarmup   5: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadWarmup   7: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadWarmup   8: 6400000 op, 300.00 ns, 0.0000 ns/op
+
+OverheadActual   1: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual   2: 6400000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadActual   4: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual   5: 6400000 op, 250.00 ns, 0.0000 ns/op
+OverheadActual   6: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual   7: 6400000 op, 250.00 ns, 0.0000 ns/op
+OverheadActual   8: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual   9: 6400000 op, 300.00 ns, 0.0000 ns/op
+OverheadActual  10: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual  11: 6400000 op, 270.00 ns, 0.0000 ns/op
+OverheadActual  12: 6400000 op, 290.00 ns, 0.0000 ns/op
+OverheadActual  13: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  14: 6400000 op, 280.00 ns, 0.0000 ns/op
+OverheadActual  15: 6400000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual  16: 6400000 op, 260.00 ns, 0.0000 ns/op
+OverheadActual  17: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual  18: 6400000 op, 430.00 ns, 0.0001 ns/op
+OverheadActual  19: 6400000 op, 16980.00 ns, 0.0027 ns/op
+OverheadActual  20: 6400000 op, 1730.00 ns, 0.0003 ns/op
+
+WorkloadWarmup   1: 6400000 op, 913663367.00 ns, 142.7599 ns/op
+WorkloadWarmup   2: 6400000 op, 919955311.00 ns, 143.7430 ns/op
+WorkloadWarmup   3: 6400000 op, 916509729.00 ns, 143.2046 ns/op
+WorkloadWarmup   4: 6400000 op, 928456405.00 ns, 145.0713 ns/op
+WorkloadWarmup   5: 6400000 op, 894133316.00 ns, 139.7083 ns/op
+WorkloadWarmup   6: 6400000 op, 937358231.00 ns, 146.4622 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 912725937.00 ns, 142.6134 ns/op
+WorkloadActual   2: 6400000 op, 915551158.00 ns, 143.0549 ns/op
+WorkloadActual   3: 6400000 op, 894000566.00 ns, 139.6876 ns/op
+WorkloadActual   4: 6400000 op, 914053927.00 ns, 142.8209 ns/op
+WorkloadActual   5: 6400000 op, 907186634.00 ns, 141.7479 ns/op
+WorkloadActual   6: 6400000 op, 917589050.00 ns, 143.3733 ns/op
+WorkloadActual   7: 6400000 op, 913142567.00 ns, 142.6785 ns/op
+WorkloadActual   8: 6400000 op, 896498288.00 ns, 140.0779 ns/op
+WorkloadActual   9: 6400000 op, 907505513.00 ns, 141.7977 ns/op
+WorkloadActual  10: 6400000 op, 906287063.00 ns, 141.6074 ns/op
+WorkloadActual  11: 6400000 op, 920550551.00 ns, 143.8360 ns/op
+WorkloadActual  12: 6400000 op, 903143101.00 ns, 141.1161 ns/op
+WorkloadActual  13: 6400000 op, 912069876.00 ns, 142.5109 ns/op
+WorkloadActual  14: 6400000 op, 920831021.00 ns, 143.8798 ns/op
+WorkloadActual  15: 6400000 op, 928771495.00 ns, 145.1205 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 912725637.00 ns, 142.6134 ns/op
+WorkloadResult   2: 6400000 op, 915550858.00 ns, 143.0548 ns/op
+WorkloadResult   3: 6400000 op, 894000266.00 ns, 139.6875 ns/op
+WorkloadResult   4: 6400000 op, 914053627.00 ns, 142.8209 ns/op
+WorkloadResult   5: 6400000 op, 907186334.00 ns, 141.7479 ns/op
+WorkloadResult   6: 6400000 op, 917588750.00 ns, 143.3732 ns/op
+WorkloadResult   7: 6400000 op, 913142267.00 ns, 142.6785 ns/op
+WorkloadResult   8: 6400000 op, 896497988.00 ns, 140.0778 ns/op
+WorkloadResult   9: 6400000 op, 907505213.00 ns, 141.7977 ns/op
+WorkloadResult  10: 6400000 op, 906286763.00 ns, 141.6073 ns/op
+WorkloadResult  11: 6400000 op, 920550251.00 ns, 143.8360 ns/op
+WorkloadResult  12: 6400000 op, 903142801.00 ns, 141.1161 ns/op
+WorkloadResult  13: 6400000 op, 912069576.00 ns, 142.5109 ns/op
+WorkloadResult  14: 6400000 op, 920830721.00 ns, 143.8798 ns/op
+WorkloadResult  15: 6400000 op, 928771195.00 ns, 145.1205 ns/op
+
+// AfterAll
+// Benchmark Process 46307 has exited with code 0
+
+Mean = 142.3948 ns, StdErr = 0.3726 ns (0.26%); N = 15, StdDev = 1.4431 ns
+Min = 139.6875 ns, Q1 = 141.6073 ns, Median = 142.6134 ns, Q3 = 143.3732 ns, Max = 145.1205 ns
+IQR = 1.7659 ns, LowerFence = 138.9584 ns, UpperFence = 146.0221 ns
+ConfidenceInterval = [140.8520 ns; 143.9376 ns] (CI 99.9%), Margin = 1.5428 ns (1.08% of Mean)
+Skewness = -0.17, Kurtosis = 2.33, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=500000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 500000)" --job "Default" --benchmarkId 16 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 163120.00 ns, 1.6312 ns/op
+WorkloadJitting  1: 100000 op, 14383428.00 ns, 143.8343 ns/op
+
+OverheadJitting  2: 1600000 op, 258840.00 ns, 0.1618 ns/op
+WorkloadJitting  2: 1600000 op, 196699134.00 ns, 122.9370 ns/op
+
+WorkloadPilot    1: 1600000 op, 194144362.00 ns, 121.3402 ns/op
+WorkloadPilot    2: 3200000 op, 389878626.00 ns, 121.8371 ns/op
+WorkloadPilot    3: 6400000 op, 777482679.00 ns, 121.4817 ns/op
+
+OverheadWarmup   1: 6400000 op, 4110.00 ns, 0.0006 ns/op
+OverheadWarmup   2: 6400000 op, 540.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 610.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 6400000 op, 420.00 ns, 0.0001 ns/op
+OverheadWarmup   5: 6400000 op, 3900.00 ns, 0.0006 ns/op
+OverheadWarmup   6: 6400000 op, 380.00 ns, 0.0001 ns/op
+
+OverheadActual   1: 6400000 op, 310.00 ns, 0.0000 ns/op
+OverheadActual   2: 6400000 op, 360.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 540.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 450.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 380.00 ns, 0.0001 ns/op
+OverheadActual   7: 6400000 op, 19570.00 ns, 0.0031 ns/op
+OverheadActual   8: 6400000 op, 2180.00 ns, 0.0003 ns/op
+OverheadActual   9: 6400000 op, 2040.00 ns, 0.0003 ns/op
+OverheadActual  10: 6400000 op, 2180.00 ns, 0.0003 ns/op
+OverheadActual  11: 6400000 op, 2170.00 ns, 0.0003 ns/op
+OverheadActual  12: 6400000 op, 2150.00 ns, 0.0003 ns/op
+OverheadActual  13: 6400000 op, 2110.00 ns, 0.0003 ns/op
+OverheadActual  14: 6400000 op, 2140.00 ns, 0.0003 ns/op
+OverheadActual  15: 6400000 op, 10080.00 ns, 0.0016 ns/op
+OverheadActual  16: 6400000 op, 7950.00 ns, 0.0012 ns/op
+OverheadActual  17: 6400000 op, 1890.00 ns, 0.0003 ns/op
+OverheadActual  18: 6400000 op, 1610.00 ns, 0.0003 ns/op
+OverheadActual  19: 6400000 op, 1490.00 ns, 0.0002 ns/op
+OverheadActual  20: 6400000 op, 1600.00 ns, 0.0003 ns/op
+
+WorkloadWarmup   1: 6400000 op, 776193878.00 ns, 121.2803 ns/op
+WorkloadWarmup   2: 6400000 op, 781609121.00 ns, 122.1264 ns/op
+WorkloadWarmup   3: 6400000 op, 773414076.00 ns, 120.8459 ns/op
+WorkloadWarmup   4: 6400000 op, 775765927.00 ns, 121.2134 ns/op
+WorkloadWarmup   5: 6400000 op, 774186687.00 ns, 120.9667 ns/op
+WorkloadWarmup   6: 6400000 op, 773262256.00 ns, 120.8222 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 775054837.00 ns, 121.1023 ns/op
+WorkloadActual   2: 6400000 op, 776008708.00 ns, 121.2514 ns/op
+WorkloadActual   3: 6400000 op, 774967198.00 ns, 121.0886 ns/op
+WorkloadActual   4: 6400000 op, 775980508.00 ns, 121.2470 ns/op
+WorkloadActual   5: 6400000 op, 773152395.00 ns, 120.8051 ns/op
+WorkloadActual   6: 6400000 op, 775050827.00 ns, 121.1017 ns/op
+WorkloadActual   7: 6400000 op, 776151818.00 ns, 121.2737 ns/op
+WorkloadActual   8: 6400000 op, 777805369.00 ns, 121.5321 ns/op
+WorkloadActual   9: 6400000 op, 775592627.00 ns, 121.1863 ns/op
+WorkloadActual  10: 6400000 op, 775546197.00 ns, 121.1791 ns/op
+WorkloadActual  11: 6400000 op, 774322727.00 ns, 120.9879 ns/op
+WorkloadActual  12: 6400000 op, 776176988.00 ns, 121.2777 ns/op
+WorkloadActual  13: 6400000 op, 775333148.00 ns, 121.1458 ns/op
+WorkloadActual  14: 6400000 op, 776643788.00 ns, 121.3506 ns/op
+WorkloadActual  15: 6400000 op, 776066548.00 ns, 121.2604 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 775052872.00 ns, 121.1020 ns/op
+WorkloadResult   2: 6400000 op, 776006743.00 ns, 121.2511 ns/op
+WorkloadResult   3: 6400000 op, 774965233.00 ns, 121.0883 ns/op
+WorkloadResult   4: 6400000 op, 775978543.00 ns, 121.2466 ns/op
+WorkloadResult   5: 6400000 op, 773150430.00 ns, 120.8048 ns/op
+WorkloadResult   6: 6400000 op, 775048862.00 ns, 121.1014 ns/op
+WorkloadResult   7: 6400000 op, 776149853.00 ns, 121.2734 ns/op
+WorkloadResult   8: 6400000 op, 775590662.00 ns, 121.1860 ns/op
+WorkloadResult   9: 6400000 op, 775544232.00 ns, 121.1788 ns/op
+WorkloadResult  10: 6400000 op, 774320762.00 ns, 120.9876 ns/op
+WorkloadResult  11: 6400000 op, 776175023.00 ns, 121.2773 ns/op
+WorkloadResult  12: 6400000 op, 775331183.00 ns, 121.1455 ns/op
+WorkloadResult  13: 6400000 op, 776641823.00 ns, 121.3503 ns/op
+WorkloadResult  14: 6400000 op, 776064583.00 ns, 121.2601 ns/op
+
+// AfterAll
+// Benchmark Process 46341 has exited with code 0
+
+Mean = 121.1609 ns, StdErr = 0.0376 ns (0.03%); N = 14, StdDev = 0.1408 ns
+Min = 120.8048 ns, Q1 = 121.1014 ns, Median = 121.1824 ns, Q3 = 121.2601 ns, Max = 121.3503 ns
+IQR = 0.1587 ns, LowerFence = 120.8633 ns, UpperFence = 121.4982 ns
+ConfidenceInterval = [121.0021 ns; 121.3198 ns] (CI 99.9%), Margin = 0.1588 ns (0.13% of Mean)
+Skewness = -1, Kurtosis = 3.43, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=500000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 500000)" --job "Default" --benchmarkId 17 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 161980.00 ns, 1.6198 ns/op
+WorkloadJitting  1: 100000 op, 32498199.00 ns, 324.9820 ns/op
+
+OverheadJitting  2: 1600000 op, 241790.00 ns, 0.1511 ns/op
+WorkloadJitting  2: 1600000 op, 490973244.00 ns, 306.8583 ns/op
+
+WorkloadPilot    1: 1600000 op, 490870983.00 ns, 306.7944 ns/op
+WorkloadPilot    2: 3200000 op, 983183007.00 ns, 307.2447 ns/op
+
+OverheadWarmup   1: 3200000 op, 3900.00 ns, 0.0012 ns/op
+OverheadWarmup   2: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 3200000 op, 420.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   5: 3200000 op, 370.00 ns, 0.0001 ns/op
+OverheadWarmup   6: 3200000 op, 440.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 3200000 op, 210.00 ns, 0.0001 ns/op
+
+OverheadActual   1: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual   2: 3200000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual   3: 3200000 op, 450.00 ns, 0.0001 ns/op
+OverheadActual   4: 3200000 op, 320.00 ns, 0.0001 ns/op
+OverheadActual   5: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadActual   6: 3200000 op, 190.00 ns, 0.0001 ns/op
+OverheadActual   7: 3200000 op, 430.00 ns, 0.0001 ns/op
+OverheadActual   8: 3200000 op, 170.00 ns, 0.0001 ns/op
+OverheadActual   9: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadActual  10: 3200000 op, 200.00 ns, 0.0001 ns/op
+OverheadActual  11: 3200000 op, 350.00 ns, 0.0001 ns/op
+OverheadActual  12: 3200000 op, 510.00 ns, 0.0002 ns/op
+OverheadActual  13: 3200000 op, 270.00 ns, 0.0001 ns/op
+OverheadActual  14: 3200000 op, 13670.00 ns, 0.0043 ns/op
+OverheadActual  15: 3200000 op, 2580.00 ns, 0.0008 ns/op
+OverheadActual  16: 3200000 op, 2060.00 ns, 0.0006 ns/op
+OverheadActual  17: 3200000 op, 2240.00 ns, 0.0007 ns/op
+OverheadActual  18: 3200000 op, 2380.00 ns, 0.0007 ns/op
+OverheadActual  19: 3200000 op, 2150.00 ns, 0.0007 ns/op
+OverheadActual  20: 3200000 op, 2310.00 ns, 0.0007 ns/op
+
+WorkloadWarmup   1: 3200000 op, 985791129.00 ns, 308.0597 ns/op
+WorkloadWarmup   2: 3200000 op, 972529111.00 ns, 303.9153 ns/op
+WorkloadWarmup   3: 3200000 op, 972930272.00 ns, 304.0407 ns/op
+WorkloadWarmup   4: 3200000 op, 976266973.00 ns, 305.0834 ns/op
+WorkloadWarmup   5: 3200000 op, 975544142.00 ns, 304.8575 ns/op
+WorkloadWarmup   6: 3200000 op, 969669339.00 ns, 303.0217 ns/op
+WorkloadWarmup   7: 3200000 op, 972016201.00 ns, 303.7551 ns/op
+WorkloadWarmup   8: 3200000 op, 977314654.00 ns, 305.4108 ns/op
+WorkloadWarmup   9: 3200000 op, 975746422.00 ns, 304.9208 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 3200000 op, 972749881.00 ns, 303.9843 ns/op
+WorkloadActual   2: 3200000 op, 974127282.00 ns, 304.4148 ns/op
+WorkloadActual   3: 3200000 op, 972044260.00 ns, 303.7638 ns/op
+WorkloadActual   4: 3200000 op, 976228383.00 ns, 305.0714 ns/op
+WorkloadActual   5: 3200000 op, 974750462.00 ns, 304.6095 ns/op
+WorkloadActual   6: 3200000 op, 964283046.00 ns, 301.3385 ns/op
+WorkloadActual   7: 3200000 op, 967346098.00 ns, 302.2957 ns/op
+WorkloadActual   8: 3200000 op, 968146379.00 ns, 302.5457 ns/op
+WorkloadActual   9: 3200000 op, 965918247.00 ns, 301.8495 ns/op
+WorkloadActual  10: 3200000 op, 964383166.00 ns, 301.3697 ns/op
+WorkloadActual  11: 3200000 op, 966159848.00 ns, 301.9250 ns/op
+WorkloadActual  12: 3200000 op, 965533468.00 ns, 301.7292 ns/op
+WorkloadActual  13: 3200000 op, 966522128.00 ns, 302.0382 ns/op
+WorkloadActual  14: 3200000 op, 966988518.00 ns, 302.1839 ns/op
+WorkloadActual  15: 3200000 op, 966137967.00 ns, 301.9181 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 3200000 op, 972749491.00 ns, 303.9842 ns/op
+WorkloadResult   2: 3200000 op, 974126892.00 ns, 304.4147 ns/op
+WorkloadResult   3: 3200000 op, 972043870.00 ns, 303.7637 ns/op
+WorkloadResult   4: 3200000 op, 976227993.00 ns, 305.0712 ns/op
+WorkloadResult   5: 3200000 op, 974750072.00 ns, 304.6094 ns/op
+WorkloadResult   6: 3200000 op, 964282656.00 ns, 301.3383 ns/op
+WorkloadResult   7: 3200000 op, 967345708.00 ns, 302.2955 ns/op
+WorkloadResult   8: 3200000 op, 968145989.00 ns, 302.5456 ns/op
+WorkloadResult   9: 3200000 op, 965917857.00 ns, 301.8493 ns/op
+WorkloadResult  10: 3200000 op, 964382776.00 ns, 301.3696 ns/op
+WorkloadResult  11: 3200000 op, 966159458.00 ns, 301.9248 ns/op
+WorkloadResult  12: 3200000 op, 965533078.00 ns, 301.7291 ns/op
+WorkloadResult  13: 3200000 op, 966521738.00 ns, 302.0380 ns/op
+WorkloadResult  14: 3200000 op, 966988128.00 ns, 302.1838 ns/op
+WorkloadResult  15: 3200000 op, 966137577.00 ns, 301.9180 ns/op
+
+// AfterAll
+// Benchmark Process 46368 has exited with code 0
+
+Mean = 302.7357 ns, StdErr = 0.3263 ns (0.11%); N = 15, StdDev = 1.2639 ns
+Min = 301.3383 ns, Q1 = 301.8493 ns, Median = 302.1838 ns, Q3 = 303.9842 ns, Max = 305.0712 ns
+IQR = 2.1349 ns, LowerFence = 298.6470 ns, UpperFence = 307.1865 ns
+ConfidenceInterval = [301.3845 ns; 304.0869 ns] (CI 99.9%), Margin = 1.3512 ns (0.45% of Mean)
+Skewness = 0.61, Kurtosis = 1.67, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=500000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 500000)" --job "Default" --benchmarkId 18 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 171300.00 ns, 1.7130 ns/op
+WorkloadJitting  1: 100000 op, 17090190.00 ns, 170.9019 ns/op
+
+OverheadJitting  2: 1600000 op, 266750.00 ns, 0.1667 ns/op
+WorkloadJitting  2: 1600000 op, 212301482.00 ns, 132.6884 ns/op
+
+WorkloadPilot    1: 1600000 op, 145823924.00 ns, 91.1400 ns/op
+WorkloadPilot    2: 3200000 op, 295248241.00 ns, 92.2651 ns/op
+WorkloadPilot    3: 6400000 op, 592195741.00 ns, 92.5306 ns/op
+
+OverheadWarmup   1: 6400000 op, 4770.00 ns, 0.0007 ns/op
+OverheadWarmup   2: 6400000 op, 760.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 600.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 6400000 op, 470.00 ns, 0.0001 ns/op
+OverheadWarmup   5: 6400000 op, 4890.00 ns, 0.0008 ns/op
+OverheadWarmup   6: 6400000 op, 460.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 6400000 op, 540.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 6400000 op, 540.00 ns, 0.0001 ns/op
+
+OverheadActual   1: 6400000 op, 4090.00 ns, 0.0006 ns/op
+OverheadActual   2: 6400000 op, 740.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 830.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 810.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 530.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 580.00 ns, 0.0001 ns/op
+OverheadActual   7: 6400000 op, 22990.00 ns, 0.0036 ns/op
+OverheadActual   8: 6400000 op, 2740.00 ns, 0.0004 ns/op
+OverheadActual   9: 6400000 op, 2330.00 ns, 0.0004 ns/op
+OverheadActual  10: 6400000 op, 2650.00 ns, 0.0004 ns/op
+OverheadActual  11: 6400000 op, 5420.00 ns, 0.0008 ns/op
+OverheadActual  12: 6400000 op, 3030.00 ns, 0.0005 ns/op
+OverheadActual  13: 6400000 op, 2710.00 ns, 0.0004 ns/op
+OverheadActual  14: 6400000 op, 2560.00 ns, 0.0004 ns/op
+OverheadActual  15: 6400000 op, 2820.00 ns, 0.0004 ns/op
+OverheadActual  16: 6400000 op, 2650.00 ns, 0.0004 ns/op
+OverheadActual  17: 6400000 op, 2310.00 ns, 0.0004 ns/op
+OverheadActual  18: 6400000 op, 2070.00 ns, 0.0003 ns/op
+OverheadActual  19: 6400000 op, 2100.00 ns, 0.0003 ns/op
+OverheadActual  20: 6400000 op, 3610.00 ns, 0.0006 ns/op
+
+WorkloadWarmup   1: 6400000 op, 584779317.00 ns, 91.3718 ns/op
+WorkloadWarmup   2: 6400000 op, 582332956.00 ns, 90.9895 ns/op
+WorkloadWarmup   3: 6400000 op, 582399746.00 ns, 91.0000 ns/op
+WorkloadWarmup   4: 6400000 op, 584380367.00 ns, 91.3094 ns/op
+WorkloadWarmup   5: 6400000 op, 579821444.00 ns, 90.5971 ns/op
+WorkloadWarmup   6: 6400000 op, 583422596.00 ns, 91.1598 ns/op
+WorkloadWarmup   7: 6400000 op, 583609777.00 ns, 91.1890 ns/op
+WorkloadWarmup   8: 6400000 op, 584370618.00 ns, 91.3079 ns/op
+WorkloadWarmup   9: 6400000 op, 581376086.00 ns, 90.8400 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 584773688.00 ns, 91.3709 ns/op
+WorkloadActual   2: 6400000 op, 580283875.00 ns, 90.6694 ns/op
+WorkloadActual   3: 6400000 op, 579549024.00 ns, 90.5545 ns/op
+WorkloadActual   4: 6400000 op, 581557686.00 ns, 90.8684 ns/op
+WorkloadActual   5: 6400000 op, 588669910.00 ns, 91.9797 ns/op
+WorkloadActual   6: 6400000 op, 583029656.00 ns, 91.0984 ns/op
+WorkloadActual   7: 6400000 op, 584171367.00 ns, 91.2768 ns/op
+WorkloadActual   8: 6400000 op, 581457366.00 ns, 90.8527 ns/op
+WorkloadActual   9: 6400000 op, 584472887.00 ns, 91.3239 ns/op
+WorkloadActual  10: 6400000 op, 580523146.00 ns, 90.7067 ns/op
+WorkloadActual  11: 6400000 op, 585528937.00 ns, 91.4889 ns/op
+WorkloadActual  12: 6400000 op, 583725317.00 ns, 91.2071 ns/op
+WorkloadActual  13: 6400000 op, 582190746.00 ns, 90.9673 ns/op
+WorkloadActual  14: 6400000 op, 581865396.00 ns, 90.9165 ns/op
+WorkloadActual  15: 6400000 op, 584490647.00 ns, 91.3267 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 584771083.00 ns, 91.3705 ns/op
+WorkloadResult   2: 6400000 op, 580281270.00 ns, 90.6689 ns/op
+WorkloadResult   3: 6400000 op, 579546419.00 ns, 90.5541 ns/op
+WorkloadResult   4: 6400000 op, 581555081.00 ns, 90.8680 ns/op
+WorkloadResult   5: 6400000 op, 588667305.00 ns, 91.9793 ns/op
+WorkloadResult   6: 6400000 op, 583027051.00 ns, 91.0980 ns/op
+WorkloadResult   7: 6400000 op, 584168762.00 ns, 91.2764 ns/op
+WorkloadResult   8: 6400000 op, 581454761.00 ns, 90.8523 ns/op
+WorkloadResult   9: 6400000 op, 584470282.00 ns, 91.3235 ns/op
+WorkloadResult  10: 6400000 op, 580520541.00 ns, 90.7063 ns/op
+WorkloadResult  11: 6400000 op, 585526332.00 ns, 91.4885 ns/op
+WorkloadResult  12: 6400000 op, 583722712.00 ns, 91.2067 ns/op
+WorkloadResult  13: 6400000 op, 582188141.00 ns, 90.9669 ns/op
+WorkloadResult  14: 6400000 op, 581862791.00 ns, 90.9161 ns/op
+WorkloadResult  15: 6400000 op, 584488042.00 ns, 91.3263 ns/op
+
+// AfterAll
+// Benchmark Process 46392 has exited with code 0
+
+Mean = 91.1068 ns, StdErr = 0.0963 ns (0.11%); N = 15, StdDev = 0.3728 ns
+Min = 90.5541 ns, Q1 = 90.8523 ns, Median = 91.0980 ns, Q3 = 91.3263 ns, Max = 91.9793 ns
+IQR = 0.4740 ns, LowerFence = 90.1414 ns, UpperFence = 92.0372 ns
+ConfidenceInterval = [90.7082 ns; 91.5053 ns] (CI 99.9%), Margin = 0.3985 ns (0.44% of Mean)
+Skewness = 0.53, Kurtosis = 2.68, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=500000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 500000)" --job "Default" --benchmarkId 19 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 176500.00 ns, 1.7650 ns/op
+WorkloadJitting  1: 100000 op, 24883004.00 ns, 248.8300 ns/op
+
+OverheadJitting  2: 1600000 op, 252850.00 ns, 0.1580 ns/op
+WorkloadJitting  2: 1600000 op, 372723554.00 ns, 232.9522 ns/op
+
+WorkloadPilot    1: 1600000 op, 368632372.00 ns, 230.3952 ns/op
+WorkloadPilot    2: 3200000 op, 741299327.00 ns, 231.6560 ns/op
+
+OverheadWarmup   1: 3200000 op, 4510.00 ns, 0.0014 ns/op
+OverheadWarmup   2: 3200000 op, 580.00 ns, 0.0002 ns/op
+OverheadWarmup   3: 3200000 op, 410.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 3200000 op, 464330.00 ns, 0.1451 ns/op
+OverheadWarmup   5: 3200000 op, 2610.00 ns, 0.0008 ns/op
+OverheadWarmup   6: 3200000 op, 580.00 ns, 0.0002 ns/op
+OverheadWarmup   7: 3200000 op, 470.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 3200000 op, 2500.00 ns, 0.0008 ns/op
+OverheadWarmup   9: 3200000 op, 2470.00 ns, 0.0008 ns/op
+
+OverheadActual   1: 3200000 op, 2270.00 ns, 0.0007 ns/op
+OverheadActual   2: 3200000 op, 950.00 ns, 0.0003 ns/op
+OverheadActual   3: 3200000 op, 730.00 ns, 0.0002 ns/op
+OverheadActual   4: 3200000 op, 850.00 ns, 0.0003 ns/op
+OverheadActual   5: 3200000 op, 900.00 ns, 0.0003 ns/op
+OverheadActual   6: 3200000 op, 550.00 ns, 0.0002 ns/op
+OverheadActual   7: 3200000 op, 2850.00 ns, 0.0009 ns/op
+OverheadActual   8: 3200000 op, 2820.00 ns, 0.0009 ns/op
+OverheadActual   9: 3200000 op, 2670.00 ns, 0.0008 ns/op
+OverheadActual  10: 3200000 op, 3400.00 ns, 0.0011 ns/op
+OverheadActual  11: 3200000 op, 3420.00 ns, 0.0011 ns/op
+OverheadActual  12: 3200000 op, 3750.00 ns, 0.0012 ns/op
+OverheadActual  13: 3200000 op, 3350.00 ns, 0.0010 ns/op
+OverheadActual  14: 3200000 op, 3370.00 ns, 0.0011 ns/op
+OverheadActual  15: 3200000 op, 2970.00 ns, 0.0009 ns/op
+OverheadActual  16: 3200000 op, 3450.00 ns, 0.0011 ns/op
+OverheadActual  17: 3200000 op, 2850.00 ns, 0.0009 ns/op
+OverheadActual  18: 3200000 op, 3090.00 ns, 0.0010 ns/op
+OverheadActual  19: 3200000 op, 4790.00 ns, 0.0015 ns/op
+OverheadActual  20: 3200000 op, 3890.00 ns, 0.0012 ns/op
+
+WorkloadWarmup   1: 3200000 op, 736585235.00 ns, 230.1829 ns/op
+WorkloadWarmup   2: 3200000 op, 738020585.00 ns, 230.6314 ns/op
+WorkloadWarmup   3: 3200000 op, 736191125.00 ns, 230.0597 ns/op
+WorkloadWarmup   4: 3200000 op, 737185635.00 ns, 230.3705 ns/op
+WorkloadWarmup   5: 3200000 op, 737916295.00 ns, 230.5988 ns/op
+WorkloadWarmup   6: 3200000 op, 738841687.00 ns, 230.8880 ns/op
+WorkloadWarmup   7: 3200000 op, 743322389.00 ns, 232.2882 ns/op
+WorkloadWarmup   8: 3200000 op, 737033875.00 ns, 230.3231 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 3200000 op, 737656226.00 ns, 230.5176 ns/op
+WorkloadActual   2: 3200000 op, 737587125.00 ns, 230.4960 ns/op
+WorkloadActual   3: 3200000 op, 736716695.00 ns, 230.2240 ns/op
+WorkloadActual   4: 3200000 op, 740257496.00 ns, 231.3305 ns/op
+WorkloadActual   5: 3200000 op, 739662247.00 ns, 231.1445 ns/op
+WorkloadActual   6: 3200000 op, 739177006.00 ns, 230.9928 ns/op
+WorkloadActual   7: 3200000 op, 740051327.00 ns, 231.2660 ns/op
+WorkloadActual   8: 3200000 op, 739698087.00 ns, 231.1557 ns/op
+WorkloadActual   9: 3200000 op, 738578806.00 ns, 230.8059 ns/op
+WorkloadActual  10: 3200000 op, 738982236.00 ns, 230.9319 ns/op
+WorkloadActual  11: 3200000 op, 739405096.00 ns, 231.0641 ns/op
+WorkloadActual  12: 3200000 op, 736102755.00 ns, 230.0321 ns/op
+WorkloadActual  13: 3200000 op, 737231545.00 ns, 230.3849 ns/op
+WorkloadActual  14: 3200000 op, 737870785.00 ns, 230.5846 ns/op
+WorkloadActual  15: 3200000 op, 740605597.00 ns, 231.4392 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 3200000 op, 737653316.00 ns, 230.5167 ns/op
+WorkloadResult   2: 3200000 op, 737584215.00 ns, 230.4951 ns/op
+WorkloadResult   3: 3200000 op, 736713785.00 ns, 230.2231 ns/op
+WorkloadResult   4: 3200000 op, 740254586.00 ns, 231.3296 ns/op
+WorkloadResult   5: 3200000 op, 739659337.00 ns, 231.1435 ns/op
+WorkloadResult   6: 3200000 op, 739174096.00 ns, 230.9919 ns/op
+WorkloadResult   7: 3200000 op, 740048417.00 ns, 231.2651 ns/op
+WorkloadResult   8: 3200000 op, 739695177.00 ns, 231.1547 ns/op
+WorkloadResult   9: 3200000 op, 738575896.00 ns, 230.8050 ns/op
+WorkloadResult  10: 3200000 op, 738979326.00 ns, 230.9310 ns/op
+WorkloadResult  11: 3200000 op, 739402186.00 ns, 231.0632 ns/op
+WorkloadResult  12: 3200000 op, 736099845.00 ns, 230.0312 ns/op
+WorkloadResult  13: 3200000 op, 737228635.00 ns, 230.3839 ns/op
+WorkloadResult  14: 3200000 op, 737867875.00 ns, 230.5837 ns/op
+WorkloadResult  15: 3200000 op, 740602687.00 ns, 231.4383 ns/op
+
+// AfterAll
+// Benchmark Process 46416 has exited with code 0
+
+Mean = 230.8237 ns, StdErr = 0.1108 ns (0.05%); N = 15, StdDev = 0.4293 ns
+Min = 230.0312 ns, Q1 = 230.4951 ns, Median = 230.9310 ns, Q3 = 231.1547 ns, Max = 231.4383 ns
+IQR = 0.6597 ns, LowerFence = 229.5056 ns, UpperFence = 232.1443 ns
+ConfidenceInterval = [230.3648 ns; 231.2827 ns] (CI 99.9%), Margin = 0.4589 ns (0.20% of Mean)
+Skewness = -0.29, Kurtosis = 1.69, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=750000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 750000)" --job "Default" --benchmarkId 20 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 161370.00 ns, 1.6137 ns/op
+WorkloadJitting  1: 100000 op, 17493080.00 ns, 174.9308 ns/op
+
+OverheadJitting  2: 1600000 op, 243120.00 ns, 0.1520 ns/op
+WorkloadJitting  2: 1600000 op, 239083668.00 ns, 149.4273 ns/op
+
+WorkloadPilot    1: 1600000 op, 237692088.00 ns, 148.5576 ns/op
+WorkloadPilot    2: 3200000 op, 479909507.00 ns, 149.9717 ns/op
+WorkloadPilot    3: 6400000 op, 947377396.00 ns, 148.0277 ns/op
+
+OverheadWarmup   1: 6400000 op, 3550.00 ns, 0.0006 ns/op
+OverheadWarmup   2: 6400000 op, 370.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 470.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 6400000 op, 30870.00 ns, 0.0048 ns/op
+OverheadWarmup   5: 6400000 op, 2260.00 ns, 0.0004 ns/op
+OverheadWarmup   6: 6400000 op, 450.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 6400000 op, 950.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 6400000 op, 2290.00 ns, 0.0004 ns/op
+OverheadWarmup   9: 6400000 op, 2590.00 ns, 0.0004 ns/op
+OverheadWarmup  10: 6400000 op, 2180.00 ns, 0.0003 ns/op
+
+OverheadActual   1: 6400000 op, 2330.00 ns, 0.0004 ns/op
+OverheadActual   2: 6400000 op, 630.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 440.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 450.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 610.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 2590.00 ns, 0.0004 ns/op
+OverheadActual   7: 6400000 op, 2340.00 ns, 0.0004 ns/op
+OverheadActual   8: 6400000 op, 2430.00 ns, 0.0004 ns/op
+OverheadActual   9: 6400000 op, 2710.00 ns, 0.0004 ns/op
+OverheadActual  10: 6400000 op, 2740.00 ns, 0.0004 ns/op
+OverheadActual  11: 6400000 op, 1760.00 ns, 0.0003 ns/op
+OverheadActual  12: 6400000 op, 1810.00 ns, 0.0003 ns/op
+OverheadActual  13: 6400000 op, 2040.00 ns, 0.0003 ns/op
+OverheadActual  14: 6400000 op, 2200.00 ns, 0.0003 ns/op
+OverheadActual  15: 6400000 op, 1770.00 ns, 0.0003 ns/op
+OverheadActual  16: 6400000 op, 1750.00 ns, 0.0003 ns/op
+OverheadActual  17: 6400000 op, 1800.00 ns, 0.0003 ns/op
+OverheadActual  18: 6400000 op, 2010.00 ns, 0.0003 ns/op
+OverheadActual  19: 6400000 op, 1700.00 ns, 0.0003 ns/op
+OverheadActual  20: 6400000 op, 1950.00 ns, 0.0003 ns/op
+
+WorkloadWarmup   1: 6400000 op, 955334620.00 ns, 149.2710 ns/op
+WorkloadWarmup   2: 6400000 op, 954542661.00 ns, 149.1473 ns/op
+WorkloadWarmup   3: 6400000 op, 953999030.00 ns, 149.0623 ns/op
+WorkloadWarmup   4: 6400000 op, 953515589.00 ns, 148.9868 ns/op
+WorkloadWarmup   5: 6400000 op, 952395140.00 ns, 148.8117 ns/op
+WorkloadWarmup   6: 6400000 op, 953893460.00 ns, 149.0459 ns/op
+WorkloadWarmup   7: 6400000 op, 952443830.00 ns, 148.8193 ns/op
+WorkloadWarmup   8: 6400000 op, 955778661.00 ns, 149.3404 ns/op
+WorkloadWarmup   9: 6400000 op, 953011929.00 ns, 148.9081 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 953629060.00 ns, 149.0045 ns/op
+WorkloadActual   2: 6400000 op, 954205761.00 ns, 149.0947 ns/op
+WorkloadActual   3: 6400000 op, 953084980.00 ns, 148.9195 ns/op
+WorkloadActual   4: 6400000 op, 952896409.00 ns, 148.8901 ns/op
+WorkloadActual   5: 6400000 op, 953046389.00 ns, 148.9135 ns/op
+WorkloadActual   6: 6400000 op, 953822491.00 ns, 149.0348 ns/op
+WorkloadActual   7: 6400000 op, 951731289.00 ns, 148.7080 ns/op
+WorkloadActual   8: 6400000 op, 953180539.00 ns, 148.9345 ns/op
+WorkloadActual   9: 6400000 op, 952985069.00 ns, 148.9039 ns/op
+WorkloadActual  10: 6400000 op, 952702190.00 ns, 148.8597 ns/op
+WorkloadActual  11: 6400000 op, 953371390.00 ns, 148.9643 ns/op
+WorkloadActual  12: 6400000 op, 952952640.00 ns, 148.8989 ns/op
+WorkloadActual  13: 6400000 op, 942303734.00 ns, 147.2350 ns/op
+WorkloadActual  14: 6400000 op, 943721835.00 ns, 147.4565 ns/op
+WorkloadActual  15: 6400000 op, 943513864.00 ns, 147.4240 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 953627180.00 ns, 149.0042 ns/op
+WorkloadResult   2: 6400000 op, 954203881.00 ns, 149.0944 ns/op
+WorkloadResult   3: 6400000 op, 953083100.00 ns, 148.9192 ns/op
+WorkloadResult   4: 6400000 op, 952894529.00 ns, 148.8898 ns/op
+WorkloadResult   5: 6400000 op, 953044509.00 ns, 148.9132 ns/op
+WorkloadResult   6: 6400000 op, 953820611.00 ns, 149.0345 ns/op
+WorkloadResult   7: 6400000 op, 951729409.00 ns, 148.7077 ns/op
+WorkloadResult   8: 6400000 op, 953178659.00 ns, 148.9342 ns/op
+WorkloadResult   9: 6400000 op, 952983189.00 ns, 148.9036 ns/op
+WorkloadResult  10: 6400000 op, 952700310.00 ns, 148.8594 ns/op
+WorkloadResult  11: 6400000 op, 953369510.00 ns, 148.9640 ns/op
+WorkloadResult  12: 6400000 op, 952950760.00 ns, 148.8986 ns/op
+WorkloadResult  13: 6400000 op, 942301854.00 ns, 147.2347 ns/op
+WorkloadResult  14: 6400000 op, 943719955.00 ns, 147.4562 ns/op
+WorkloadResult  15: 6400000 op, 943511984.00 ns, 147.4237 ns/op
+
+// AfterAll
+// Benchmark Process 46436 has exited with code 0
+
+Mean = 148.6158 ns, StdErr = 0.1681 ns (0.11%); N = 15, StdDev = 0.6512 ns
+Min = 147.2347 ns, Q1 = 148.7077 ns, Median = 148.9036 ns, Q3 = 148.9640 ns, Max = 149.0944 ns
+IQR = 0.2563 ns, LowerFence = 148.3233 ns, UpperFence = 149.3484 ns
+ConfidenceInterval = [147.9196 ns; 149.3120 ns] (CI 99.9%), Margin = 0.6962 ns (0.47% of Mean)
+Skewness = -1.31, Kurtosis = 2.83, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=750000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 750000)" --job "Default" --benchmarkId 21 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 162190.00 ns, 1.6219 ns/op
+WorkloadJitting  1: 100000 op, 41943754.00 ns, 419.4375 ns/op
+
+WorkloadPilot    1: 200000 op, 80089336.00 ns, 400.4467 ns/op
+WorkloadPilot    2: 300000 op, 119677349.00 ns, 398.9245 ns/op
+WorkloadPilot    3: 400000 op, 157713481.00 ns, 394.2837 ns/op
+WorkloadPilot    4: 500000 op, 197206973.00 ns, 394.4139 ns/op
+WorkloadPilot    5: 600000 op, 234893876.00 ns, 391.4898 ns/op
+WorkloadPilot    6: 700000 op, 280846222.00 ns, 401.2089 ns/op
+WorkloadPilot    7: 800000 op, 315553792.00 ns, 394.4422 ns/op
+WorkloadPilot    8: 900000 op, 356789196.00 ns, 396.4324 ns/op
+WorkloadPilot    9: 1000000 op, 394408417.00 ns, 394.4084 ns/op
+WorkloadPilot   10: 1100000 op, 433896620.00 ns, 394.4515 ns/op
+WorkloadPilot   11: 1200000 op, 472086892.00 ns, 393.4057 ns/op
+WorkloadPilot   12: 1300000 op, 514733947.00 ns, 395.9492 ns/op
+
+WorkloadWarmup   1: 1300000 op, 507790073.00 ns, 390.6077 ns/op
+WorkloadWarmup   2: 1300000 op, 504711472.00 ns, 388.2396 ns/op
+WorkloadWarmup   3: 1300000 op, 509905075.00 ns, 392.2347 ns/op
+WorkloadWarmup   4: 1300000 op, 510392875.00 ns, 392.6099 ns/op
+WorkloadWarmup   5: 1300000 op, 511015955.00 ns, 393.0892 ns/op
+WorkloadWarmup   6: 1300000 op, 510676074.00 ns, 392.8277 ns/op
+WorkloadWarmup   7: 1300000 op, 508169063.00 ns, 390.8993 ns/op
+WorkloadWarmup   8: 1300000 op, 512614046.00 ns, 394.3185 ns/op
+WorkloadWarmup   9: 1300000 op, 512366835.00 ns, 394.1283 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 1300000 op, 512878056.00 ns, 394.5216 ns/op
+WorkloadActual   2: 1300000 op, 510777455.00 ns, 392.9057 ns/op
+WorkloadActual   3: 1300000 op, 506502472.00 ns, 389.6173 ns/op
+WorkloadActual   4: 1300000 op, 513185747.00 ns, 394.7583 ns/op
+WorkloadActual   5: 1300000 op, 510212555.00 ns, 392.4712 ns/op
+WorkloadActual   6: 1300000 op, 507854983.00 ns, 390.6577 ns/op
+WorkloadActual   7: 1300000 op, 502846279.00 ns, 386.8048 ns/op
+WorkloadActual   8: 1300000 op, 504289031.00 ns, 387.9146 ns/op
+WorkloadActual   9: 1300000 op, 499454979.00 ns, 384.1961 ns/op
+WorkloadActual  10: 1300000 op, 499955968.00 ns, 384.5815 ns/op
+WorkloadActual  11: 1300000 op, 502702130.00 ns, 386.6939 ns/op
+WorkloadActual  12: 1300000 op, 504845421.00 ns, 388.3426 ns/op
+WorkloadActual  13: 1300000 op, 504957821.00 ns, 388.4291 ns/op
+WorkloadActual  14: 1300000 op, 503498721.00 ns, 387.3067 ns/op
+WorkloadActual  15: 1300000 op, 508013313.00 ns, 390.7795 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 1300000 op, 512878056.00 ns, 394.5216 ns/op
+WorkloadResult   2: 1300000 op, 510777455.00 ns, 392.9057 ns/op
+WorkloadResult   3: 1300000 op, 506502472.00 ns, 389.6173 ns/op
+WorkloadResult   4: 1300000 op, 513185747.00 ns, 394.7583 ns/op
+WorkloadResult   5: 1300000 op, 510212555.00 ns, 392.4712 ns/op
+WorkloadResult   6: 1300000 op, 507854983.00 ns, 390.6577 ns/op
+WorkloadResult   7: 1300000 op, 502846279.00 ns, 386.8048 ns/op
+WorkloadResult   8: 1300000 op, 504289031.00 ns, 387.9146 ns/op
+WorkloadResult   9: 1300000 op, 499454979.00 ns, 384.1961 ns/op
+WorkloadResult  10: 1300000 op, 499955968.00 ns, 384.5815 ns/op
+WorkloadResult  11: 1300000 op, 502702130.00 ns, 386.6939 ns/op
+WorkloadResult  12: 1300000 op, 504845421.00 ns, 388.3426 ns/op
+WorkloadResult  13: 1300000 op, 504957821.00 ns, 388.4291 ns/op
+WorkloadResult  14: 1300000 op, 503498721.00 ns, 387.3067 ns/op
+WorkloadResult  15: 1300000 op, 508013313.00 ns, 390.7795 ns/op
+
+// AfterAll
+// Benchmark Process 46464 has exited with code 0
+
+Mean = 389.3320 ns, StdErr = 0.8539 ns (0.22%); N = 15, StdDev = 3.3073 ns
+Min = 384.1961 ns, Q1 = 386.8048 ns, Median = 388.4291 ns, Q3 = 392.4712 ns, Max = 394.7583 ns
+IQR = 5.6664 ns, LowerFence = 378.3053 ns, UpperFence = 400.9707 ns
+ConfidenceInterval = [385.7964 ns; 392.8677 ns] (CI 99.9%), Margin = 3.5357 ns (0.91% of Mean)
+Skewness = 0.17, Kurtosis = 1.77, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=750000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 750000)" --job "Default" --benchmarkId 22 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 160550.00 ns, 1.6055 ns/op
+WorkloadJitting  1: 100000 op, 18605350.00 ns, 186.0535 ns/op
+
+OverheadJitting  2: 1600000 op, 262120.00 ns, 0.1638 ns/op
+WorkloadJitting  2: 1600000 op, 240119579.00 ns, 150.0747 ns/op
+
+WorkloadPilot    1: 1600000 op, 165481426.00 ns, 103.4259 ns/op
+WorkloadPilot    2: 3200000 op, 331546021.00 ns, 103.6081 ns/op
+WorkloadPilot    3: 6400000 op, 663993933.00 ns, 103.7491 ns/op
+
+OverheadWarmup   1: 6400000 op, 3340.00 ns, 0.0005 ns/op
+OverheadWarmup   2: 6400000 op, 710.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 6400000 op, 670.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 6400000 op, 19940.00 ns, 0.0031 ns/op
+OverheadWarmup   5: 6400000 op, 2630.00 ns, 0.0004 ns/op
+OverheadWarmup   6: 6400000 op, 540.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 6400000 op, 820.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 6400000 op, 470.00 ns, 0.0001 ns/op
+
+OverheadActual   1: 6400000 op, 2720.00 ns, 0.0004 ns/op
+OverheadActual   2: 6400000 op, 1160.00 ns, 0.0002 ns/op
+OverheadActual   3: 6400000 op, 870.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 630.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 860.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 1300.00 ns, 0.0002 ns/op
+OverheadActual   7: 6400000 op, 3040.00 ns, 0.0005 ns/op
+OverheadActual   8: 6400000 op, 5440.00 ns, 0.0008 ns/op
+OverheadActual   9: 6400000 op, 2530.00 ns, 0.0004 ns/op
+OverheadActual  10: 6400000 op, 2560.00 ns, 0.0004 ns/op
+OverheadActual  11: 6400000 op, 4910.00 ns, 0.0008 ns/op
+OverheadActual  12: 6400000 op, 2540.00 ns, 0.0004 ns/op
+OverheadActual  13: 6400000 op, 12400.00 ns, 0.0019 ns/op
+OverheadActual  14: 6400000 op, 4770.00 ns, 0.0007 ns/op
+OverheadActual  15: 6400000 op, 2220.00 ns, 0.0003 ns/op
+OverheadActual  16: 6400000 op, 2690.00 ns, 0.0004 ns/op
+OverheadActual  17: 6400000 op, 2520.00 ns, 0.0004 ns/op
+OverheadActual  18: 6400000 op, 2520.00 ns, 0.0004 ns/op
+OverheadActual  19: 6400000 op, 2570.00 ns, 0.0004 ns/op
+OverheadActual  20: 6400000 op, 2330.00 ns, 0.0004 ns/op
+
+WorkloadWarmup   1: 6400000 op, 668438536.00 ns, 104.4435 ns/op
+WorkloadWarmup   2: 6400000 op, 670315017.00 ns, 104.7367 ns/op
+WorkloadWarmup   3: 6400000 op, 665450514.00 ns, 103.9766 ns/op
+WorkloadWarmup   4: 6400000 op, 670046097.00 ns, 104.6947 ns/op
+WorkloadWarmup   5: 6400000 op, 667178105.00 ns, 104.2466 ns/op
+WorkloadWarmup   6: 6400000 op, 668044185.00 ns, 104.3819 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 662566323.00 ns, 103.5260 ns/op
+WorkloadActual   2: 6400000 op, 665848464.00 ns, 104.0388 ns/op
+WorkloadActual   3: 6400000 op, 663983733.00 ns, 103.7475 ns/op
+WorkloadActual   4: 6400000 op, 667070695.00 ns, 104.2298 ns/op
+WorkloadActual   5: 6400000 op, 667757265.00 ns, 104.3371 ns/op
+WorkloadActual   6: 6400000 op, 671552507.00 ns, 104.9301 ns/op
+WorkloadActual   7: 6400000 op, 666361755.00 ns, 104.1190 ns/op
+WorkloadActual   8: 6400000 op, 669955487.00 ns, 104.6805 ns/op
+WorkloadActual   9: 6400000 op, 671759947.00 ns, 104.9625 ns/op
+WorkloadActual  10: 6400000 op, 670116797.00 ns, 104.7057 ns/op
+WorkloadActual  11: 6400000 op, 665241704.00 ns, 103.9440 ns/op
+WorkloadActual  12: 6400000 op, 670302106.00 ns, 104.7347 ns/op
+WorkloadActual  13: 6400000 op, 667531535.00 ns, 104.3018 ns/op
+WorkloadActual  14: 6400000 op, 665629274.00 ns, 104.0046 ns/op
+WorkloadActual  15: 6400000 op, 669129715.00 ns, 104.5515 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 662563788.00 ns, 103.5256 ns/op
+WorkloadResult   2: 6400000 op, 665845929.00 ns, 104.0384 ns/op
+WorkloadResult   3: 6400000 op, 663981198.00 ns, 103.7471 ns/op
+WorkloadResult   4: 6400000 op, 667068160.00 ns, 104.2294 ns/op
+WorkloadResult   5: 6400000 op, 667754730.00 ns, 104.3367 ns/op
+WorkloadResult   6: 6400000 op, 671549972.00 ns, 104.9297 ns/op
+WorkloadResult   7: 6400000 op, 666359220.00 ns, 104.1186 ns/op
+WorkloadResult   8: 6400000 op, 669952952.00 ns, 104.6801 ns/op
+WorkloadResult   9: 6400000 op, 671757412.00 ns, 104.9621 ns/op
+WorkloadResult  10: 6400000 op, 670114262.00 ns, 104.7054 ns/op
+WorkloadResult  11: 6400000 op, 665239169.00 ns, 103.9436 ns/op
+WorkloadResult  12: 6400000 op, 670299571.00 ns, 104.7343 ns/op
+WorkloadResult  13: 6400000 op, 667529000.00 ns, 104.3014 ns/op
+WorkloadResult  14: 6400000 op, 665626739.00 ns, 104.0042 ns/op
+WorkloadResult  15: 6400000 op, 669127180.00 ns, 104.5511 ns/op
+
+// AfterAll
+// Benchmark Process 46482 has exited with code 0
+
+Mean = 104.3205 ns, StdErr = 0.1116 ns (0.11%); N = 15, StdDev = 0.4323 ns
+Min = 103.5256 ns, Q1 = 104.0042 ns, Median = 104.3014 ns, Q3 = 104.7054 ns, Max = 104.9621 ns
+IQR = 0.7012 ns, LowerFence = 102.9524 ns, UpperFence = 105.7571 ns
+ConfidenceInterval = [103.8583 ns; 104.7827 ns] (CI 99.9%), Margin = 0.4622 ns (0.44% of Mean)
+Skewness = -0.11, Kurtosis = 1.76, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=750000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 750000)" --job "Default" --benchmarkId 23 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 169420.00 ns, 1.6942 ns/op
+WorkloadJitting  1: 100000 op, 37232981.00 ns, 372.3298 ns/op
+
+WorkloadPilot    1: 200000 op, 83511008.00 ns, 417.5550 ns/op
+WorkloadPilot    2: 300000 op, 116949927.00 ns, 389.8331 ns/op
+WorkloadPilot    3: 400000 op, 151346818.00 ns, 378.3670 ns/op
+WorkloadPilot    4: 500000 op, 199783326.00 ns, 399.5667 ns/op
+WorkloadPilot    5: 600000 op, 234359235.00 ns, 390.5987 ns/op
+WorkloadPilot    6: 700000 op, 255296078.00 ns, 364.7087 ns/op
+WorkloadPilot    7: 800000 op, 289438157.00 ns, 361.7977 ns/op
+WorkloadPilot    8: 900000 op, 324812368.00 ns, 360.9026 ns/op
+WorkloadPilot    9: 1000000 op, 357625097.00 ns, 357.6251 ns/op
+WorkloadPilot   10: 1100000 op, 391910156.00 ns, 356.2820 ns/op
+WorkloadPilot   11: 1200000 op, 427456116.00 ns, 356.2134 ns/op
+WorkloadPilot   12: 1300000 op, 460771756.00 ns, 354.4398 ns/op
+WorkloadPilot   13: 1400000 op, 495682076.00 ns, 354.0586 ns/op
+WorkloadPilot   14: 1500000 op, 529643456.00 ns, 353.0956 ns/op
+
+WorkloadWarmup   1: 1500000 op, 529540055.00 ns, 353.0267 ns/op
+WorkloadWarmup   2: 1500000 op, 530833216.00 ns, 353.8888 ns/op
+WorkloadWarmup   3: 1500000 op, 529578485.00 ns, 353.0523 ns/op
+WorkloadWarmup   4: 1500000 op, 528358525.00 ns, 352.2390 ns/op
+WorkloadWarmup   5: 1500000 op, 529738105.00 ns, 353.1587 ns/op
+WorkloadWarmup   6: 1500000 op, 531036586.00 ns, 354.0244 ns/op
+WorkloadWarmup   7: 1500000 op, 528443635.00 ns, 352.2958 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 1500000 op, 528486684.00 ns, 352.3245 ns/op
+WorkloadActual   2: 1500000 op, 529761125.00 ns, 353.1741 ns/op
+WorkloadActual   3: 1500000 op, 527655694.00 ns, 351.7705 ns/op
+WorkloadActual   4: 1500000 op, 529441366.00 ns, 352.9609 ns/op
+WorkloadActual   5: 1500000 op, 528891005.00 ns, 352.5940 ns/op
+WorkloadActual   6: 1500000 op, 530018405.00 ns, 353.3456 ns/op
+WorkloadActual   7: 1500000 op, 529061075.00 ns, 352.7074 ns/op
+WorkloadActual   8: 1500000 op, 528415945.00 ns, 352.2773 ns/op
+WorkloadActual   9: 1500000 op, 528742525.00 ns, 352.4950 ns/op
+WorkloadActual  10: 1500000 op, 530304786.00 ns, 353.5365 ns/op
+WorkloadActual  11: 1500000 op, 529108105.00 ns, 352.7387 ns/op
+WorkloadActual  12: 1500000 op, 529440466.00 ns, 352.9603 ns/op
+WorkloadActual  13: 1500000 op, 529061535.00 ns, 352.7077 ns/op
+WorkloadActual  14: 1500000 op, 528753174.00 ns, 352.5021 ns/op
+WorkloadActual  15: 1500000 op, 530314547.00 ns, 353.5430 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 1500000 op, 528486684.00 ns, 352.3245 ns/op
+WorkloadResult   2: 1500000 op, 529761125.00 ns, 353.1741 ns/op
+WorkloadResult   3: 1500000 op, 527655694.00 ns, 351.7705 ns/op
+WorkloadResult   4: 1500000 op, 529441366.00 ns, 352.9609 ns/op
+WorkloadResult   5: 1500000 op, 528891005.00 ns, 352.5940 ns/op
+WorkloadResult   6: 1500000 op, 530018405.00 ns, 353.3456 ns/op
+WorkloadResult   7: 1500000 op, 529061075.00 ns, 352.7074 ns/op
+WorkloadResult   8: 1500000 op, 528415945.00 ns, 352.2773 ns/op
+WorkloadResult   9: 1500000 op, 528742525.00 ns, 352.4950 ns/op
+WorkloadResult  10: 1500000 op, 530304786.00 ns, 353.5365 ns/op
+WorkloadResult  11: 1500000 op, 529108105.00 ns, 352.7387 ns/op
+WorkloadResult  12: 1500000 op, 529440466.00 ns, 352.9603 ns/op
+WorkloadResult  13: 1500000 op, 529061535.00 ns, 352.7077 ns/op
+WorkloadResult  14: 1500000 op, 528753174.00 ns, 352.5021 ns/op
+WorkloadResult  15: 1500000 op, 530314547.00 ns, 353.5430 ns/op
+
+// AfterAll
+// Benchmark Process 46508 has exited with code 0
+
+Mean = 352.7758 ns, StdErr = 0.1269 ns (0.04%); N = 15, StdDev = 0.4913 ns
+Min = 351.7705 ns, Q1 = 352.4950 ns, Median = 352.7077 ns, Q3 = 353.1741 ns, Max = 353.5430 ns
+IQR = 0.6791 ns, LowerFence = 351.4764 ns, UpperFence = 354.1927 ns
+ConfidenceInterval = [352.2506 ns; 353.3011 ns] (CI 99.9%), Margin = 0.5252 ns (0.15% of Mean)
+Skewness = -0.07, Kurtosis = 2.23, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=1000000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 1000000)" --job "Default" --benchmarkId 24 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 161640.00 ns, 1.6164 ns/op
+WorkloadJitting  1: 100000 op, 17983921.00 ns, 179.8392 ns/op
+
+OverheadJitting  2: 1600000 op, 252640.00 ns, 0.1579 ns/op
+WorkloadJitting  2: 1600000 op, 257757679.00 ns, 161.0985 ns/op
+
+WorkloadPilot    1: 1600000 op, 257807058.00 ns, 161.1294 ns/op
+WorkloadPilot    2: 3200000 op, 520058200.00 ns, 162.5182 ns/op
+
+OverheadWarmup   1: 3200000 op, 3810.00 ns, 0.0012 ns/op
+OverheadWarmup   2: 3200000 op, 320.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 3200000 op, 390.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 3200000 op, 14150.00 ns, 0.0044 ns/op
+OverheadWarmup   5: 3200000 op, 2090.00 ns, 0.0007 ns/op
+OverheadWarmup   6: 3200000 op, 300.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 3200000 op, 240.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 3200000 op, 2220.00 ns, 0.0007 ns/op
+OverheadWarmup   9: 3200000 op, 2470.00 ns, 0.0008 ns/op
+OverheadWarmup  10: 3200000 op, 2330.00 ns, 0.0007 ns/op
+
+OverheadActual   1: 3200000 op, 2510.00 ns, 0.0008 ns/op
+OverheadActual   2: 3200000 op, 570.00 ns, 0.0002 ns/op
+OverheadActual   3: 3200000 op, 730.00 ns, 0.0002 ns/op
+OverheadActual   4: 3200000 op, 560.00 ns, 0.0002 ns/op
+OverheadActual   5: 3200000 op, 580.00 ns, 0.0002 ns/op
+OverheadActual   6: 3200000 op, 3950.00 ns, 0.0012 ns/op
+OverheadActual   7: 3200000 op, 2260.00 ns, 0.0007 ns/op
+OverheadActual   8: 3200000 op, 2080.00 ns, 0.0006 ns/op
+OverheadActual   9: 3200000 op, 2230.00 ns, 0.0007 ns/op
+OverheadActual  10: 3200000 op, 2860.00 ns, 0.0009 ns/op
+OverheadActual  11: 3200000 op, 2110.00 ns, 0.0007 ns/op
+OverheadActual  12: 3200000 op, 1850.00 ns, 0.0006 ns/op
+OverheadActual  13: 3200000 op, 1590.00 ns, 0.0005 ns/op
+OverheadActual  14: 3200000 op, 1590.00 ns, 0.0005 ns/op
+OverheadActual  15: 3200000 op, 1510.00 ns, 0.0005 ns/op
+OverheadActual  16: 3200000 op, 1720.00 ns, 0.0005 ns/op
+OverheadActual  17: 3200000 op, 1410.00 ns, 0.0004 ns/op
+OverheadActual  18: 3200000 op, 1630.00 ns, 0.0005 ns/op
+OverheadActual  19: 3200000 op, 1240.00 ns, 0.0004 ns/op
+OverheadActual  20: 3200000 op, 1480.00 ns, 0.0005 ns/op
+
+WorkloadWarmup   1: 3200000 op, 515127107.00 ns, 160.9772 ns/op
+WorkloadWarmup   2: 3200000 op, 515365537.00 ns, 161.0517 ns/op
+WorkloadWarmup   3: 3200000 op, 514765418.00 ns, 160.8642 ns/op
+WorkloadWarmup   4: 3200000 op, 517640308.00 ns, 161.7626 ns/op
+WorkloadWarmup   5: 3200000 op, 516181808.00 ns, 161.3068 ns/op
+WorkloadWarmup   6: 3200000 op, 515419878.00 ns, 161.0687 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 3200000 op, 515059997.00 ns, 160.9562 ns/op
+WorkloadActual   2: 3200000 op, 514109016.00 ns, 160.6591 ns/op
+WorkloadActual   3: 3200000 op, 514302307.00 ns, 160.7195 ns/op
+WorkloadActual   4: 3200000 op, 513907026.00 ns, 160.5959 ns/op
+WorkloadActual   5: 3200000 op, 514536906.00 ns, 160.7928 ns/op
+WorkloadActual   6: 3200000 op, 514149057.00 ns, 160.6716 ns/op
+WorkloadActual   7: 3200000 op, 514147186.00 ns, 160.6710 ns/op
+WorkloadActual   8: 3200000 op, 514223086.00 ns, 160.6947 ns/op
+WorkloadActual   9: 3200000 op, 514827027.00 ns, 160.8834 ns/op
+WorkloadActual  10: 3200000 op, 514913387.00 ns, 160.9104 ns/op
+WorkloadActual  11: 3200000 op, 514783117.00 ns, 160.8697 ns/op
+WorkloadActual  12: 3200000 op, 514785478.00 ns, 160.8705 ns/op
+WorkloadActual  13: 3200000 op, 514590296.00 ns, 160.8095 ns/op
+WorkloadActual  14: 3200000 op, 515210707.00 ns, 161.0033 ns/op
+WorkloadActual  15: 3200000 op, 513945546.00 ns, 160.6080 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 3200000 op, 515058387.00 ns, 160.9557 ns/op
+WorkloadResult   2: 3200000 op, 514107406.00 ns, 160.6586 ns/op
+WorkloadResult   3: 3200000 op, 514300697.00 ns, 160.7190 ns/op
+WorkloadResult   4: 3200000 op, 513905416.00 ns, 160.5954 ns/op
+WorkloadResult   5: 3200000 op, 514535296.00 ns, 160.7923 ns/op
+WorkloadResult   6: 3200000 op, 514147447.00 ns, 160.6711 ns/op
+WorkloadResult   7: 3200000 op, 514145576.00 ns, 160.6705 ns/op
+WorkloadResult   8: 3200000 op, 514221476.00 ns, 160.6942 ns/op
+WorkloadResult   9: 3200000 op, 514825417.00 ns, 160.8829 ns/op
+WorkloadResult  10: 3200000 op, 514911777.00 ns, 160.9099 ns/op
+WorkloadResult  11: 3200000 op, 514781507.00 ns, 160.8692 ns/op
+WorkloadResult  12: 3200000 op, 514783868.00 ns, 160.8700 ns/op
+WorkloadResult  13: 3200000 op, 514588686.00 ns, 160.8090 ns/op
+WorkloadResult  14: 3200000 op, 515209097.00 ns, 161.0028 ns/op
+WorkloadResult  15: 3200000 op, 513943936.00 ns, 160.6075 ns/op
+
+// AfterAll
+// Benchmark Process 46533 has exited with code 0
+
+Mean = 160.7805 ns, StdErr = 0.0337 ns (0.02%); N = 15, StdDev = 0.1305 ns
+Min = 160.5954 ns, Q1 = 160.6705 ns, Median = 160.7923 ns, Q3 = 160.8829 ns, Max = 161.0028 ns
+IQR = 0.2125 ns, LowerFence = 160.3518 ns, UpperFence = 161.2016 ns
+ConfidenceInterval = [160.6410 ns; 160.9201 ns] (CI 99.9%), Margin = 0.1396 ns (0.09% of Mean)
+Skewness = 0.13, Kurtosis = 1.5, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpMap: DefaultJob [CollectionSize=1000000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpMap(CollectionSize: 1000000)" --job "Default" --benchmarkId 25 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 161930.00 ns, 1.6193 ns/op
+WorkloadJitting  1: 100000 op, 48659498.00 ns, 486.5950 ns/op
+
+WorkloadPilot    1: 200000 op, 93044693.00 ns, 465.2235 ns/op
+WorkloadPilot    2: 300000 op, 140621001.00 ns, 468.7367 ns/op
+WorkloadPilot    3: 400000 op, 184391337.00 ns, 460.9783 ns/op
+WorkloadPilot    4: 500000 op, 230113292.00 ns, 460.2266 ns/op
+WorkloadPilot    5: 600000 op, 277527350.00 ns, 462.5456 ns/op
+WorkloadPilot    6: 700000 op, 328631099.00 ns, 469.4730 ns/op
+WorkloadPilot    7: 800000 op, 368583893.00 ns, 460.7299 ns/op
+WorkloadPilot    8: 900000 op, 419609421.00 ns, 466.2327 ns/op
+WorkloadPilot    9: 1000000 op, 467009159.00 ns, 467.0092 ns/op
+WorkloadPilot   10: 1100000 op, 511789155.00 ns, 465.2629 ns/op
+
+WorkloadWarmup   1: 1100000 op, 512292935.00 ns, 465.7208 ns/op
+WorkloadWarmup   2: 1100000 op, 508480253.00 ns, 462.2548 ns/op
+WorkloadWarmup   3: 1100000 op, 501796310.00 ns, 456.1785 ns/op
+WorkloadWarmup   4: 1100000 op, 503726441.00 ns, 457.9331 ns/op
+WorkloadWarmup   5: 1100000 op, 503283291.00 ns, 457.5303 ns/op
+WorkloadWarmup   6: 1100000 op, 503919430.00 ns, 458.1086 ns/op
+WorkloadWarmup   7: 1100000 op, 501480300.00 ns, 455.8912 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 1100000 op, 497267087.00 ns, 452.0610 ns/op
+WorkloadActual   2: 1100000 op, 499971938.00 ns, 454.5199 ns/op
+WorkloadActual   3: 1100000 op, 496598826.00 ns, 451.4535 ns/op
+WorkloadActual   4: 1100000 op, 500236759.00 ns, 454.7607 ns/op
+WorkloadActual   5: 1100000 op, 496861797.00 ns, 451.6925 ns/op
+WorkloadActual   6: 1100000 op, 500203269.00 ns, 454.7302 ns/op
+WorkloadActual   7: 1100000 op, 499008968.00 ns, 453.6445 ns/op
+WorkloadActual   8: 1100000 op, 504436701.00 ns, 458.5788 ns/op
+WorkloadActual   9: 1100000 op, 497314597.00 ns, 452.1042 ns/op
+WorkloadActual  10: 1100000 op, 498309438.00 ns, 453.0086 ns/op
+WorkloadActual  11: 1100000 op, 497377867.00 ns, 452.1617 ns/op
+WorkloadActual  12: 1100000 op, 489011571.00 ns, 444.5560 ns/op
+WorkloadActual  13: 1100000 op, 489540052.00 ns, 445.0364 ns/op
+WorkloadActual  14: 1100000 op, 494263085.00 ns, 449.3301 ns/op
+WorkloadActual  15: 1100000 op, 493512424.00 ns, 448.6477 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 1100000 op, 497267087.00 ns, 452.0610 ns/op
+WorkloadResult   2: 1100000 op, 499971938.00 ns, 454.5199 ns/op
+WorkloadResult   3: 1100000 op, 496598826.00 ns, 451.4535 ns/op
+WorkloadResult   4: 1100000 op, 500236759.00 ns, 454.7607 ns/op
+WorkloadResult   5: 1100000 op, 496861797.00 ns, 451.6925 ns/op
+WorkloadResult   6: 1100000 op, 500203269.00 ns, 454.7302 ns/op
+WorkloadResult   7: 1100000 op, 499008968.00 ns, 453.6445 ns/op
+WorkloadResult   8: 1100000 op, 504436701.00 ns, 458.5788 ns/op
+WorkloadResult   9: 1100000 op, 497314597.00 ns, 452.1042 ns/op
+WorkloadResult  10: 1100000 op, 498309438.00 ns, 453.0086 ns/op
+WorkloadResult  11: 1100000 op, 497377867.00 ns, 452.1617 ns/op
+WorkloadResult  12: 1100000 op, 489011571.00 ns, 444.5560 ns/op
+WorkloadResult  13: 1100000 op, 489540052.00 ns, 445.0364 ns/op
+WorkloadResult  14: 1100000 op, 494263085.00 ns, 449.3301 ns/op
+WorkloadResult  15: 1100000 op, 493512424.00 ns, 448.6477 ns/op
+
+// AfterAll
+// Benchmark Process 46547 has exited with code 0
+
+Mean = 451.7524 ns, StdErr = 0.9517 ns (0.21%); N = 15, StdDev = 3.6860 ns
+Min = 444.5560 ns, Q1 = 449.3301 ns, Median = 452.1042 ns, Q3 = 454.5199 ns, Max = 458.5788 ns
+IQR = 5.1899 ns, LowerFence = 441.5453 ns, UpperFence = 462.3047 ns
+ConfidenceInterval = [447.8118 ns; 455.6930 ns] (CI 99.9%), Margin = 3.9406 ns (0.87% of Mean)
+Skewness = -0.42, Kurtosis = 2.62, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetThirdPartyMap: DefaultJob [CollectionSize=1000000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetThirdPartyMap(CollectionSize: 1000000)" --job "Default" --benchmarkId 26 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 160701.00 ns, 1.6070 ns/op
+WorkloadJitting  1: 100000 op, 20250712.00 ns, 202.5071 ns/op
+
+OverheadJitting  2: 1600000 op, 266210.00 ns, 0.1664 ns/op
+WorkloadJitting  2: 1600000 op, 226116730.00 ns, 141.3230 ns/op
+
+WorkloadPilot    1: 1600000 op, 177084892.00 ns, 110.6781 ns/op
+WorkloadPilot    2: 3200000 op, 360549688.00 ns, 112.6718 ns/op
+WorkloadPilot    3: 6400000 op, 728834360.00 ns, 113.8804 ns/op
+
+OverheadWarmup   1: 6400000 op, 4170.00 ns, 0.0007 ns/op
+OverheadWarmup   2: 6400000 op, 1000.00 ns, 0.0002 ns/op
+OverheadWarmup   3: 6400000 op, 780.00 ns, 0.0001 ns/op
+OverheadWarmup   4: 6400000 op, 20960.00 ns, 0.0033 ns/op
+OverheadWarmup   5: 6400000 op, 2620.00 ns, 0.0004 ns/op
+OverheadWarmup   6: 6400000 op, 790.00 ns, 0.0001 ns/op
+OverheadWarmup   7: 6400000 op, 680.00 ns, 0.0001 ns/op
+OverheadWarmup   8: 6400000 op, 2870.00 ns, 0.0004 ns/op
+OverheadWarmup   9: 6400000 op, 3090.00 ns, 0.0005 ns/op
+OverheadWarmup  10: 6400000 op, 4980.00 ns, 0.0008 ns/op
+
+OverheadActual   1: 6400000 op, 3100.00 ns, 0.0005 ns/op
+OverheadActual   2: 6400000 op, 690.00 ns, 0.0001 ns/op
+OverheadActual   3: 6400000 op, 710.00 ns, 0.0001 ns/op
+OverheadActual   4: 6400000 op, 820.00 ns, 0.0001 ns/op
+OverheadActual   5: 6400000 op, 820.00 ns, 0.0001 ns/op
+OverheadActual   6: 6400000 op, 2720.00 ns, 0.0004 ns/op
+OverheadActual   7: 6400000 op, 2580.00 ns, 0.0004 ns/op
+OverheadActual   8: 6400000 op, 3030.00 ns, 0.0005 ns/op
+OverheadActual   9: 6400000 op, 5160.00 ns, 0.0008 ns/op
+OverheadActual  10: 6400000 op, 4750.00 ns, 0.0007 ns/op
+OverheadActual  11: 6400000 op, 2570.00 ns, 0.0004 ns/op
+OverheadActual  12: 6400000 op, 2180.00 ns, 0.0003 ns/op
+OverheadActual  13: 6400000 op, 2410.00 ns, 0.0004 ns/op
+OverheadActual  14: 6400000 op, 2380.00 ns, 0.0004 ns/op
+OverheadActual  15: 6400000 op, 2060.00 ns, 0.0003 ns/op
+OverheadActual  16: 6400000 op, 2380.00 ns, 0.0004 ns/op
+OverheadActual  17: 6400000 op, 2400.00 ns, 0.0004 ns/op
+OverheadActual  18: 6400000 op, 2500.00 ns, 0.0004 ns/op
+OverheadActual  19: 6400000 op, 2200.00 ns, 0.0003 ns/op
+OverheadActual  20: 6400000 op, 2200.00 ns, 0.0003 ns/op
+
+WorkloadWarmup   1: 6400000 op, 724864138.00 ns, 113.2600 ns/op
+WorkloadWarmup   2: 6400000 op, 724453368.00 ns, 113.1958 ns/op
+WorkloadWarmup   3: 6400000 op, 724922038.00 ns, 113.2691 ns/op
+WorkloadWarmup   4: 6400000 op, 725133628.00 ns, 113.3021 ns/op
+WorkloadWarmup   5: 6400000 op, 721054806.00 ns, 112.6648 ns/op
+WorkloadWarmup   6: 6400000 op, 725204848.00 ns, 113.3133 ns/op
+WorkloadWarmup   7: 6400000 op, 721598316.00 ns, 112.7497 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 6400000 op, 729275131.00 ns, 113.9492 ns/op
+WorkloadActual   2: 6400000 op, 722905257.00 ns, 112.9539 ns/op
+WorkloadActual   3: 6400000 op, 727545010.00 ns, 113.6789 ns/op
+WorkloadActual   4: 6400000 op, 725107419.00 ns, 113.2980 ns/op
+WorkloadActual   5: 6400000 op, 729059601.00 ns, 113.9156 ns/op
+WorkloadActual   6: 6400000 op, 722737907.00 ns, 112.9278 ns/op
+WorkloadActual   7: 6400000 op, 729585181.00 ns, 113.9977 ns/op
+WorkloadActual   8: 6400000 op, 723403467.00 ns, 113.0318 ns/op
+WorkloadActual   9: 6400000 op, 729653451.00 ns, 114.0084 ns/op
+WorkloadActual  10: 6400000 op, 722577847.00 ns, 112.9028 ns/op
+WorkloadActual  11: 6400000 op, 729387640.00 ns, 113.9668 ns/op
+WorkloadActual  12: 6400000 op, 722989087.00 ns, 112.9670 ns/op
+WorkloadActual  13: 6400000 op, 727994140.00 ns, 113.7491 ns/op
+WorkloadActual  14: 6400000 op, 727425339.00 ns, 113.6602 ns/op
+WorkloadActual  15: 6400000 op, 727907660.00 ns, 113.7356 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 6400000 op, 729272741.00 ns, 113.9489 ns/op
+WorkloadResult   2: 6400000 op, 722902867.00 ns, 112.9536 ns/op
+WorkloadResult   3: 6400000 op, 727542620.00 ns, 113.6785 ns/op
+WorkloadResult   4: 6400000 op, 725105029.00 ns, 113.2977 ns/op
+WorkloadResult   5: 6400000 op, 729057211.00 ns, 113.9152 ns/op
+WorkloadResult   6: 6400000 op, 722735517.00 ns, 112.9274 ns/op
+WorkloadResult   7: 6400000 op, 729582791.00 ns, 113.9973 ns/op
+WorkloadResult   8: 6400000 op, 723401077.00 ns, 113.0314 ns/op
+WorkloadResult   9: 6400000 op, 729651061.00 ns, 114.0080 ns/op
+WorkloadResult  10: 6400000 op, 722575457.00 ns, 112.9024 ns/op
+WorkloadResult  11: 6400000 op, 729385250.00 ns, 113.9664 ns/op
+WorkloadResult  12: 6400000 op, 722986697.00 ns, 112.9667 ns/op
+WorkloadResult  13: 6400000 op, 727991750.00 ns, 113.7487 ns/op
+WorkloadResult  14: 6400000 op, 727422949.00 ns, 113.6598 ns/op
+WorkloadResult  15: 6400000 op, 727905270.00 ns, 113.7352 ns/op
+
+// AfterAll
+// Benchmark Process 46570 has exited with code 0
+
+Mean = 113.5158 ns, StdErr = 0.1154 ns (0.10%); N = 15, StdDev = 0.4469 ns
+Min = 112.9024 ns, Q1 = 112.9667 ns, Median = 113.6785 ns, Q3 = 113.9489 ns, Max = 114.0080 ns
+IQR = 0.9822 ns, LowerFence = 111.4934 ns, UpperFence = 115.4222 ns
+ConfidenceInterval = [113.0380 ns; 113.9936 ns] (CI 99.9%), Margin = 0.4778 ns (0.42% of Mean)
+Skewness = -0.3, Kurtosis = 1.22, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetFSharpXHashMap: DefaultJob [CollectionSize=1000000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetFSharpXHashMap(CollectionSize: 1000000)" --job "Default" --benchmarkId 27 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 179670.00 ns, 1.7967 ns/op
+WorkloadJitting  1: 100000 op, 35231701.00 ns, 352.3170 ns/op
+
+WorkloadPilot    1: 200000 op, 85864979.00 ns, 429.3249 ns/op
+WorkloadPilot    2: 300000 op, 119177189.00 ns, 397.2573 ns/op
+WorkloadPilot    3: 400000 op, 171846929.00 ns, 429.6173 ns/op
+WorkloadPilot    4: 500000 op, 205015218.00 ns, 410.0304 ns/op
+WorkloadPilot    5: 600000 op, 219915927.00 ns, 366.5265 ns/op
+WorkloadPilot    6: 700000 op, 254878708.00 ns, 364.1124 ns/op
+WorkloadPilot    7: 800000 op, 289375167.00 ns, 361.7190 ns/op
+WorkloadPilot    8: 900000 op, 322746036.00 ns, 358.6067 ns/op
+WorkloadPilot    9: 1000000 op, 355372635.00 ns, 355.3726 ns/op
+WorkloadPilot   10: 1100000 op, 388416794.00 ns, 353.1062 ns/op
+WorkloadPilot   11: 1200000 op, 422338874.00 ns, 351.9491 ns/op
+WorkloadPilot   12: 1300000 op, 456084233.00 ns, 350.8340 ns/op
+WorkloadPilot   13: 1400000 op, 487515021.00 ns, 348.2250 ns/op
+WorkloadPilot   14: 1500000 op, 520740210.00 ns, 347.1601 ns/op
+
+WorkloadWarmup   1: 1500000 op, 522957312.00 ns, 348.6382 ns/op
+WorkloadWarmup   2: 1500000 op, 519878859.00 ns, 346.5859 ns/op
+WorkloadWarmup   3: 1500000 op, 521763730.00 ns, 347.8425 ns/op
+WorkloadWarmup   4: 1500000 op, 518751349.00 ns, 345.8342 ns/op
+WorkloadWarmup   5: 1500000 op, 520255560.00 ns, 346.8370 ns/op
+WorkloadWarmup   6: 1500000 op, 522790072.00 ns, 348.5267 ns/op
+WorkloadWarmup   7: 1500000 op, 520693491.00 ns, 347.1290 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 1500000 op, 520662420.00 ns, 347.1083 ns/op
+WorkloadActual   2: 1500000 op, 520240770.00 ns, 346.8272 ns/op
+WorkloadActual   3: 1500000 op, 519689120.00 ns, 346.4594 ns/op
+WorkloadActual   4: 1500000 op, 521766301.00 ns, 347.8442 ns/op
+WorkloadActual   5: 1500000 op, 521416191.00 ns, 347.6108 ns/op
+WorkloadActual   6: 1500000 op, 520333391.00 ns, 346.8889 ns/op
+WorkloadActual   7: 1500000 op, 521886691.00 ns, 347.9245 ns/op
+WorkloadActual   8: 1500000 op, 520917850.00 ns, 347.2786 ns/op
+WorkloadActual   9: 1500000 op, 519568750.00 ns, 346.3792 ns/op
+WorkloadActual  10: 1500000 op, 519799990.00 ns, 346.5333 ns/op
+WorkloadActual  11: 1500000 op, 520028220.00 ns, 346.6855 ns/op
+WorkloadActual  12: 1500000 op, 521640341.00 ns, 347.7602 ns/op
+WorkloadActual  13: 1500000 op, 519767420.00 ns, 346.5116 ns/op
+WorkloadActual  14: 1500000 op, 517306958.00 ns, 344.8713 ns/op
+WorkloadActual  15: 1500000 op, 521818231.00 ns, 347.8788 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 1500000 op, 520662420.00 ns, 347.1083 ns/op
+WorkloadResult   2: 1500000 op, 520240770.00 ns, 346.8272 ns/op
+WorkloadResult   3: 1500000 op, 519689120.00 ns, 346.4594 ns/op
+WorkloadResult   4: 1500000 op, 521766301.00 ns, 347.8442 ns/op
+WorkloadResult   5: 1500000 op, 521416191.00 ns, 347.6108 ns/op
+WorkloadResult   6: 1500000 op, 520333391.00 ns, 346.8889 ns/op
+WorkloadResult   7: 1500000 op, 521886691.00 ns, 347.9245 ns/op
+WorkloadResult   8: 1500000 op, 520917850.00 ns, 347.2786 ns/op
+WorkloadResult   9: 1500000 op, 519568750.00 ns, 346.3792 ns/op
+WorkloadResult  10: 1500000 op, 519799990.00 ns, 346.5333 ns/op
+WorkloadResult  11: 1500000 op, 520028220.00 ns, 346.6855 ns/op
+WorkloadResult  12: 1500000 op, 521640341.00 ns, 347.7602 ns/op
+WorkloadResult  13: 1500000 op, 519767420.00 ns, 346.5116 ns/op
+WorkloadResult  14: 1500000 op, 517306958.00 ns, 344.8713 ns/op
+WorkloadResult  15: 1500000 op, 521818231.00 ns, 347.8788 ns/op
+
+// AfterAll
+// Benchmark Process 46595 has exited with code 0
+
+Mean = 346.9708 ns, StdErr = 0.2090 ns (0.06%); N = 15, StdDev = 0.8095 ns
+Min = 344.8713 ns, Q1 = 346.5116 ns, Median = 346.8889 ns, Q3 = 347.7602 ns, Max = 347.9245 ns
+IQR = 1.2486 ns, LowerFence = 344.6387 ns, UpperFence = 349.6331 ns
+ConfidenceInterval = [346.1054 ns; 347.8362 ns] (CI 99.9%), Margin = 0.8654 ns (0.25% of Mean)
+Skewness = -0.85, Kurtosis = 3.47, MValue = 2
+
+// **************************
+// Benchmark: ReadBenchmarks.GetHashMap: DefaultJob [CollectionSize=5000000]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet "df275756-11f6-47b7-98ee-ffe656cadfe0.dll" --benchmarkName "Program+ReadBenchmarks.GetHashMap(CollectionSize: 5000000)" --job "Default" --benchmarkId 28 in /home/mark/Projects/mvkra/hash-trie-fsharp/test/FSharp.HashCollections.Benchmarks/bin/Release/netcoreapp3.1/df275756-11f6-47b7-98ee-ffe656cadfe0/bin/Release/netcoreapp3.1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 100000 op, 142940.00 ns, 1.4294 ns/op
+WorkloadJitting  1: 100000 op, 30298868.00 ns, 302.9887 ns/op
+
+OverheadJitting  2: 1600000 op, 249230.00 ns, 0.1558 ns/op
+WorkloadJitting  2: 1600000 op, 453661572.00 ns, 283.5385 ns/op
+
+WorkloadPilot    1: 1600000 op, 453152332.00 ns, 283.2202 ns/op
+WorkloadPilot    2: 3200000 op, 950369759.00 ns, 296.9905 ns/op
+
+OverheadWarmup   1: 3200000 op, 3700.00 ns, 0.0012 ns/op
+OverheadWarmup   2: 3200000 op, 330.00 ns, 0.0001 ns/op
+OverheadWarmup   3: 3200000 op, 13570.00 ns, 0.0042 ns/op
+OverheadWarmup   4: 3200000 op, 2340.00 ns, 0.0007 ns/op
+OverheadWarmup   5: 3200000 op, 2570.00 ns, 0.0008 ns/op
+OverheadWarmup   6: 3200000 op, 580.00 ns, 0.0002 ns/op
+
+OverheadActual   1: 3200000 op, 2540.00 ns, 0.0008 ns/op
+OverheadActual   2: 3200000 op, 500.00 ns, 0.0002 ns/op
+OverheadActual   3: 3200000 op, 2000.00 ns, 0.0006 ns/op
+OverheadActual   4: 3200000 op, 400.00 ns, 0.0001 ns/op
+OverheadActual   5: 3200000 op, 2260.00 ns, 0.0007 ns/op
+OverheadActual   6: 3200000 op, 2160.00 ns, 0.0007 ns/op
+OverheadActual   7: 3200000 op, 2120.00 ns, 0.0007 ns/op
+OverheadActual   8: 3200000 op, 3050.00 ns, 0.0010 ns/op
+OverheadActual   9: 3200000 op, 2640.00 ns, 0.0008 ns/op
+OverheadActual  10: 3200000 op, 2750.00 ns, 0.0009 ns/op
+OverheadActual  11: 3200000 op, 7740.00 ns, 0.0024 ns/op
+OverheadActual  12: 3200000 op, 2490.00 ns, 0.0008 ns/op
+OverheadActual  13: 3200000 op, 2550.00 ns, 0.0008 ns/op
+OverheadActual  14: 3200000 op, 2660.00 ns, 0.0008 ns/op
+OverheadActual  15: 3200000 op, 2660.00 ns, 0.0008 ns/op
+OverheadActual  16: 3200000 op, 2070.00 ns, 0.0006 ns/op
+OverheadActual  17: 3200000 op, 2260.00 ns, 0.0007 ns/op
+OverheadActual  18: 3200000 op, 2550.00 ns, 0.0008 ns/op
+OverheadActual  19: 3200000 op, 2290.00 ns, 0.0007 ns/op
+OverheadActual  20: 3200000 op, 2630.00 ns, 0.0008 ns/op
+
+WorkloadWarmup   1: 3200000 op, 908883814.00 ns, 284.0262 ns/op
+WorkloadWarmup   2: 3200000 op, 908835304.00 ns, 284.0110 ns/op
+WorkloadWarmup   3: 3200000 op, 904974572.00 ns, 282.8046 ns/op
+WorkloadWarmup   4: 3200000 op, 913668327.00 ns, 285.5214 ns/op
