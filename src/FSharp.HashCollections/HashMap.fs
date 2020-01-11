@@ -5,16 +5,7 @@ open System.Collections.Generic
 
 module HashMap =
 
-    module Constraints = 
-        let inline hash< ^eq, ^t when ^eq: (static member GetHashCode: ^t -> int)> (o: ^t) =
-            ( ^eq : (static member GetHashCode: ^t -> int) (o)) |> uint64
-
-        let inline equals< ^eq, ^t when ^eq: (static member CheckEquality: ^t * ^t -> bool)> (o1: ^t) (o2: ^t) =
-            ( ^eq : (static member CheckEquality: ^t * ^t -> bool) (o1, o2))
-
-
     let tryFindValueInList equals k (l : HashMapEntry<_, _> list) =
-        //printfn  "Attempting to find hash collision [K: %A, Node: %A]" k l
         let rec findInList currentList =
             match currentList with
             | entry :: tail -> if equals entry.Key k then ValueSome entry.Value else findInList tail
@@ -28,13 +19,8 @@ module HashMap =
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask |> int
     let inline getIndex keyHash shift = getIndexNoShift (keyHash >>> shift)
 
-    type EqualityLookup<'tk when 'tk : equality>() = 
-        static member val EqLookup = HashIdentity.Structural<'tk> with get
-
-    let inline tryFind (k: ^tk) (hashMap: HashMap< ^tk, 'tv, 'teq>) : 'tv voption =
-    
-        let inline equals x y = x = y// hashMap.EqualityTemplate.Equals(x, y) // Constraints.equals< ^teq, ^tk> x y
-        
+    let tryFind (k: 'tk) (hashMap: HashMap< 'tk, 'tv, 'teq>) : 'tv voption =
+        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
         let rec getRec node remainderHash =
             //printfn "Rec: Hash: %A, Node: %A" remainderHash node
             match node with
@@ -56,11 +42,11 @@ module HashMap =
                 then getRec node (remainderHash >>> PartitionSize)
                 else ValueNone
             | EntryNode (entry: HashMapEntry<'tk, _>) -> 
-                if equals k entry.Key then ValueSome entry.Value else ValueNone
-            | HashCollisionNode entries -> tryFindValueInList equals k entries
+                if eqTemplate.Equals(k, entry.Key) then ValueSome entry.Value else ValueNone
+            | HashCollisionNode entries -> 
+                tryFindValueInList (fun x y -> eqTemplate.Equals(x, y)) k entries
 
-        let keyHash = hash k //hashMap.EqualityTemplate.GetHashCode(k)
-        //hashMap.EqualityTemplate.GetHashCode(k)//Constraints.hash< ^teq, _> k
+        let keyHash = eqTemplate.GetHashCode(k)
         getRec hashMap.RootData keyHash
 
     let inline createTrieNode (nodes: CompressedArray<_>) =
@@ -86,10 +72,10 @@ module HashMap =
                     TrieNodeOne(existingEntryIndex, subNode)
         createRequiredDepthNodes shift
 
-    let inline add k v (hashMap: HashMap< ^tk, ^tv, ^teq>) : HashMap< ^tk, ^tv, ^teq> =
-        
-        let inline equals x y = EqualityLookup<'tk>.EqLookup.Equals(x, y)//Constraints.equals< ^eq, ^tk> x y
-        let inline hash o = EqualityLookup<'tk>.EqLookup.GetHashCode(o) //Constraints.hash< ^eq, ^tk> o
+    let add k v (hashMap: HashMap< 'tk, 'tv, 'teq>) : HashMap< 'tk, 'tv, 'teq> =
+        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
+        let inline equals x y = eqTemplate.Equals(x, y)
+        let inline hash o = eqTemplate.GetHashCode(o)
 
         let keyHash = hash k
         let newEntry = { Key = k; Value = v }
@@ -149,16 +135,14 @@ module HashMap =
         let struct (newRootData, isAdded) = addRec hashMap.RootData 0
 
         { CurrentCount = if isAdded then hashMap.CurrentCount + 1 else hashMap.CurrentCount
-          RootData = newRootData;
-          EqualityTemplate = hashMap.EqualityTemplate }
+          RootData = newRootData }
 
-    let inline remove k (hashMap: HashMap< ^tk, ^t, ^teq>) =
-
-        let inline equals x y = hashMap.EqualityTemplate.Equals(x, y)//Constraints.equals< ^eq, ^tk> x y
-        let inline hash o = hashMap.EqualityTemplate.GetHashCode(o) //Constraints.hash< ^eq, ^tk> o
+    let remove k (hashMap: HashMap< 'tk, _, 'teq>) =
+        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
+        let inline equals x y = eqTemplate.Equals(x, y)
+        let inline hash o = eqTemplate.GetHashCode(o)
 
         let keyHash = hash k
-        //let equals = Constraints.equals< ^eq, ^tk>
 
         let removeInner k hashMap =
             let rec traverseNodes node nodes shift =
@@ -219,8 +203,8 @@ module HashMap =
                 | _ -> failwithf "Not expected for other node types to be at root position [RootNode: %A]" hashMap.RootData
 
             match changeAndRemovalStatus with
-            | struct (ValueSome newRootNode, true) -> { CurrentCount = hashMap.CurrentCount - 1; RootData = newRootNode; EqualityTemplate = hashMap.EqualityTemplate }
-            | struct (ValueNone, true) -> { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty); EqualityTemplate = hashMap.EqualityTemplate }
+            | struct (ValueSome newRootNode, true) -> { CurrentCount = hashMap.CurrentCount - 1; RootData = newRootNode; }
+            | struct (ValueNone, true) -> { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty); }
             | struct (_, false) -> hashMap // If no removal then no change required (unlike Add where replace could occur).
 
         removeInner k hashMap
@@ -246,8 +230,8 @@ module HashMap =
         static member inline GetHashCode(obj: 'tk): int = obj.GetHashCode()
 
     [<GeneralizableValue>] 
-    let emptyWithComparer< 'tk, 'tv, 'eq when 'eq :> IEqualityComparer<'tk> and 'eq : (new : unit -> 'eq) and 'tk :> IEquatable<'tk>> : HashMap< ^tk, 'tv, ^eq> =
-        { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty); EqualityTemplate = EqualityTemplateLookup.eqComparer }
+    let emptyWithComparer< 'tk, 'tv, 'eq when 'eq : (new : unit -> 'eq) and 'eq :> IEqualityComparer<'tk>> : HashMap< ^tk, 'tv, ^eq> =
+        { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
 
     [<GeneralizableValue>] 
     let public empty<'tk, 'tv when 'tk :> IEquatable<'tk> and 'tk : equality> : HashMap< 'tk, 'tv, StandardEqualityTemplate<'tk>> =

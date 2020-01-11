@@ -38,7 +38,7 @@ open System.Collections.Generic
 module CompressedArray =
 
     let [<Literal>] MaxSize = 64
-    let [<Literal>] LeastSigBitSet : uint64 = 0b1UL
+    let [<Literal>] LeastSigBitSet = 0b1UL
     let [<Literal>] AllNodesSetBitMap = UInt64.MaxValue
     let [<Literal>] Zero = 0UL
     let [<Literal>] One = 1UL
@@ -56,7 +56,7 @@ module CompressedArray =
 
     let inline getCompressedIndex bitMap index =
        let bitPos = getBitMapForIndex index
-       (bitMap &&& (bitPos - 1UL)) |> popCount |> int// e.g 00001111 then mask that against bitmap and count
+       (bitMap &&& (bitPos - One)) |> popCount |> int// e.g 00001111 then mask that against bitmap and count
 
     let inline getCompressedIndexForIndexBitmap bitMap bitMapIndex =
        (bitMap &&& (bitMapIndex - One)) |> popCount |> int

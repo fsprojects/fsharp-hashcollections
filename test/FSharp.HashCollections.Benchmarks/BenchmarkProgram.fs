@@ -1,5 +1,4 @@
-﻿// Learn more about F# at http://fsharp.org
-module Program 
+﻿module Program 
 
 open System
 
@@ -21,6 +20,7 @@ type ReadBenchmarks() =
     let mutable fsharpMapData = Map.empty
     let mutable thirdPartyMapData = Persistent.PersistentHashMap.empty
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
+    let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
     let mutable keyToLookup = Array.zeroCreate Constants.OperationsPerInvokeInt
     let mutable dummyBufferVOption = Array.zeroCreate Constants.OperationsPerInvokeInt
     let mutable dummyBufferOption = Array.zeroCreate Constants.OperationsPerInvokeInt
@@ -41,12 +41,12 @@ type ReadBenchmarks() =
             hashMapData <- hashMapData |> HashMap.add i i
         this.SetupKeyToLookup()
 
-    // [<GlobalSetup(Target = "GetFSharpMap")>]
-    // member this.SetupFSharpMapData() = 
-    //     fsharpMapData <- Map.empty        
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         fsharpMapData <- fsharpMapData |> Map.add i i
-    //     this.SetupKeyToLookup()
+    [<GlobalSetup(Target = "GetFSharpMap")>]
+    member this.SetupFSharpMapData() = 
+        fsharpMapData <- Map.empty        
+        for i = 0 to this.CollectionSize - 1 do
+            fsharpMapData <- fsharpMapData |> Map.add i i
+        this.SetupKeyToLookup()
 
     [<GlobalSetup(Target = "GetThirdPartyMap")>]
     member this.SetupThirdPartyMapData() = 
@@ -55,12 +55,19 @@ type ReadBenchmarks() =
             thirdPartyMapData <- thirdPartyMapData |> Persistent.PersistentHashMap.set i i
         this.SetupKeyToLookup()       
 
-    // [<GlobalSetup(Target = "GetFSharpXHashMap")>]
-    // member this.SetupFSharpXMapData() = 
-    //     fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.empty        
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i i
-    //     this.SetupKeyToLookup() 
+    [<GlobalSetup(Target = "GetFSharpXHashMap")>]
+    member this.SetupFSharpXMapData() = 
+        fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.empty        
+        for i = 0 to this.CollectionSize - 1 do
+            fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i i
+        this.SetupKeyToLookup() 
+
+    [<GlobalSetup(Target = "GetSystemCollectionsImmutableMap")>]
+    member this.SetupSystemCollectionsImmutableMapData() = 
+        systemImmutableMap <- System.Collections.Immutable.ImmutableDictionary.Empty 
+        for i = 0 to this.CollectionSize - 1 do
+            systemImmutableMap <- systemImmutableMap.Add(i, i)
+        this.SetupKeyToLookup()  
 
     [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
     member _.GetHashMap() = 
@@ -88,6 +95,15 @@ type ReadBenchmarks() =
     //     let mutable i = 0
     //     for k in keyToLookup do
     //         dummyBufferNoOption.[i] <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.find k
+    //         i <- i + 1
+
+    // [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
+    // member _.GetSystemCollectionsImmutableMap() = 
+    //     let mutable i = 0
+    //     for k in keyToLookup do
+    //         match systemImmutableMap.TryGetValue(k) with
+    //         | (true, x) -> dummyBufferNoOption.[i] <- x
+    //         | _ -> ()
     //         i <- i + 1            
 
 [<EntryPoint>]
