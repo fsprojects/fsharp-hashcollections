@@ -7,8 +7,8 @@ Made for my own purposes the goal is to allow faster lookup table performance in
 ## Goals
 
 1) More efficient persistent collection type where F#'s Map type isn't fast enough.
-2) Remain idiomatic to F#; and use F# features.
-3) Performance where it does not impede goal 2; even at the cost of cross language compatibility if required.
+2) Provide an idiomatic API to F#. The library ideally should allow C# usage/interop if required.
+3) Performance where it does not impede goal 2.
 4) Maintainable to an average F# developer.
 5) Allow a range of key types and equality logic to be used even if provided by consumers without sacrificing performance (e.g. no need for keys to be comparable).
 
