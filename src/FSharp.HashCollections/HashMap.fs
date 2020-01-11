@@ -24,3 +24,5 @@ let toSeq (h: HashMap<'tk, 'tv, _>) : (struct ('tk * 'tv) seq) =
         for i in h.HashTrieRoot |> HashTrie.toSeq do
             yield struct (i.Key, i.Value)
     }
+
+let isEmpty (h: HashMap<_, _, _>) = h.HashTrieRoot |> HashTrie.isEmpty

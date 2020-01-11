@@ -11,7 +11,7 @@
     <PackageVersion>0.0.1-alpha1</PackageVersion>
     <Authors>mvkra</Authors>
     <PackageTags>fsharp;collections;hamt</PackageTags>
-    <RepositoryUrl>https://github.com/mvkra/hash-trie-fsharp</RepositoryUrl>
+    <RepositoryUrl>https://github.com/mvkra/fsharp-hashcollections</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
