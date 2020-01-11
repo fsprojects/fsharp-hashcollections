@@ -50,7 +50,7 @@ Any equality comparer specified in the type signature must:
 
 - Have a parameterless public constructor.
 - Implement IEqualityComparer<> for either the contents (HashSet) or the key (HashMap).
-- (Optional): Be a struct type. This is recommended for performance as it triggers many JIT inlining optimisations (no virtual dispatch).
+- (Optional): Be a struct type. This is recommended for performance as it produces more optimised equality checking code at runtime.
 
 ## Performance
 
