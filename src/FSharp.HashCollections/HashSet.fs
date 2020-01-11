@@ -14,7 +14,7 @@ let remove (k: 'tk) (hashMap: HashSet<'tk, 'teq>) =
 
 let count (h: HashSet<_, _>) = HashTrie.count h.HashTrieRoot
 
-let emptyWithComparer<'tk, 'teq when 'teq :> System.Collections.Generic.IEqualityComparer<'tk> and 'teq : struct and 'teq : (new : unit -> 'teq)> : HashSet<'tk, 'teq> = 
+let emptyWithComparer<'tk, 'teq when 'teq :> System.Collections.Generic.IEqualityComparer<'tk> and 'teq : (new : unit -> 'teq)> : HashSet<'tk, 'teq> = 
     HashTrie.emptyWithComparer<'tk, 'teq> |> HashSet
 
 let empty<'tk when 'tk :> System.IEquatable<'tk> and 'tk : equality> : HashSet<'tk, StandardEqualityTemplate<'tk>> = HashTrie.emptyWithComparer<'tk, StandardEqualityTemplate<'tk>> |> HashSet

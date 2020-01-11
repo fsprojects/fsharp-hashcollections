@@ -1,12 +1,7 @@
 ﻿module Program 
 
 open System
-
-open System.Collections.Generic
-open System.Diagnostics
 open FSharp.HashCollections
-open System.Collections.Concurrent
-open BenchmarkDotNet
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
 open FSharpx.Collections
@@ -18,7 +13,6 @@ type ReadBenchmarks() =
 
     let mutable hashMapData = HashMap.empty
     let mutable fsharpMapData = Map.empty
-    let mutable thirdPartyMapData = Persistent.PersistentHashMap.empty
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
     let mutable keyToLookup = Array.zeroCreate Constants.OperationsPerInvokeInt
@@ -48,13 +42,6 @@ type ReadBenchmarks() =
             fsharpMapData <- fsharpMapData |> Map.add i i
         this.SetupKeyToLookup()
 
-    [<GlobalSetup(Target = "GetThirdPartyMap")>]
-    member this.SetupThirdPartyMapData() = 
-        thirdPartyMapData <- Persistent.PersistentHashMap.empty        
-        for i = 0 to this.CollectionSize - 1 do
-            thirdPartyMapData <- thirdPartyMapData |> Persistent.PersistentHashMap.set i i
-        this.SetupKeyToLookup()       
-
     [<GlobalSetup(Target = "GetFSharpXHashMap")>]
     member this.SetupFSharpXMapData() = 
         fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.empty        
@@ -76,39 +63,31 @@ type ReadBenchmarks() =
             dummyBufferVOption.[i] <- hashMapData |> HashMap.tryFind k
             i <- i + 1
 
-    // [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
-    // member _.GetFSharpMap() = 
-    //     let mutable i = 0
-    //     for k in keyToLookup do
-    //         dummyBufferOption.[i] <- fsharpMapData |> Map.tryFind k
-    //         i <- i + 1
-
     [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
-    member _.GetThirdPartyMap() = 
+    member _.GetFSharpMap() = 
         let mutable i = 0
         for k in keyToLookup do
-            dummyBufferOption.[i] <- thirdPartyMapData |> Persistent.PersistentHashMap.tryFind k
+            dummyBufferOption.[i] <- fsharpMapData |> Map.tryFind k
             i <- i + 1
 
-    // [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
-    // member _.GetFSharpXHashMap() = 
-    //     let mutable i = 0
-    //     for k in keyToLookup do
-    //         dummyBufferNoOption.[i] <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.find k
-    //         i <- i + 1
+    [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
+    member _.GetFSharpXHashMap() = 
+        let mutable i = 0
+        for k in keyToLookup do
+            dummyBufferNoOption.[i] <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.find k
+            i <- i + 1
 
-    // [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
-    // member _.GetSystemCollectionsImmutableMap() = 
-    //     let mutable i = 0
-    //     for k in keyToLookup do
-    //         match systemImmutableMap.TryGetValue(k) with
-    //         | (true, x) -> dummyBufferNoOption.[i] <- x
-    //         | _ -> ()
-    //         i <- i + 1            
+    [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
+    member _.GetSystemCollectionsImmutableMap() = 
+        let mutable i = 0
+        for k in keyToLookup do
+            match systemImmutableMap.TryGetValue(k) with
+            | (true, x) -> dummyBufferNoOption.[i] <- x
+            | _ -> ()
+            i <- i + 1            
 
 [<EntryPoint>]
 let main argv =
-    let summary = BenchmarkRunner.Run(typeof<ReadBenchmarks>.Assembly);
-    //printfn "%A" summary
+    let summary = BenchmarkRunner.Run(typeof<ReadBenchmarks>.Assembly)
     0
 

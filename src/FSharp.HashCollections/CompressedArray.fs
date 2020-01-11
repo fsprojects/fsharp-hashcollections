@@ -6,7 +6,7 @@ open System.Runtime.CompilerServices
 
 /// A fixed 32-bit array like structure. Only allocates as many entries as required to store elements with a maximum of 32 elements.
 /// WARNING: There is no bounds checking on the indexes passed into the above for performance.
-type [<IsReadOnly; Struct>] CompressedArray<'t> = { BitMap: uint64; Content: 't array }
+type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint64; Content: 't array }
 
 module internal ArrayHelpers =
 
@@ -35,7 +35,7 @@ open System.Collections.Generic
 
 /// Module for handling fixed compressed bitmap array. 
 /// Many operations in this module aren't checked and if not used properly could lead to data corruption. Use with caution.
-module CompressedArray =
+module internal CompressedArray =
 
     let [<Literal>] MaxSize = 64
     let [<Literal>] LeastSigBitSet = 0b1UL

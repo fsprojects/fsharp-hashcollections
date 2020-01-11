@@ -4,15 +4,22 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>FSharp.HashCollections</PackageId>
+    <Title>FSharp.HashCollections</Title>
+    <PackageDescription>Immutable hash collections</PackageDescription>
+    <PackageVersion>0.0.1-alpha1</PackageVersion>
+    <Authors>mvkra</Authors>
+    <PackageTags>fsharp;collections;hamt</PackageTags>
+    <RepositoryUrl>https://github.com/mvkra/hash-trie-fsharp</RepositoryUrl>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="CompressedArray.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="HamtImpl.fs" />
     <Compile Include="HashMap.fs" />
     <Compile Include="HashSet.fs" />
-    <Compile Include="PersistentHashMap.fsi" />
-    <Compile Include="PersistentHashMap.fs" />
-    <Compile Include="PersistentHashMapModule.fs" />
   </ItemGroup>
 
 </Project>

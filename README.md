@@ -1,96 +1,112 @@
-# hash-map-fsharp
+# FSharp.HashCollections
+
 Persistent hash based map implementation
 
-Made for my own purposes the goal is to allow faster lookup table performance in F#. After testing some the built in F# Map and other collection implementations and not being totally satisfied with either the performance and/or the API compromises exposed I decided to code my own for both fun and profit. This is the end result implemented as a standard HAMT.
+Made for my own purposes the goal is to allow faster lookup table performance in F#. After testing some the built in F# Map and other collection implementations across the .NET ecosystem and not being totally satisfied with either the performance and/or the API compromises exposed I decided to code my own for both fun and profit. This is the end result implemented using a standard HAMT (Hash Mapped Array Trie).
 
 ## Goals
 
 1) More efficient persistent collection type where F#'s Map type isn't fast enough.
 2) Remain idiomatic to F#; and use F# features.
-3) Performance where it does not impede goal 2; even at the cost of cross language compatibility (still achievable with small wrappers consumer side).
+3) Performance where it does not impede goal 2; even at the cost of cross language compatibility if required.
 4) Maintainable to an average F# developer.
-5) Allow a range of key types to be used even if provided by other libraries without sacrificing performance.
+5) Allow a range of key types and equality logic to be used even if provided by consumers without sacrificing performance (e.g. no need for keys to be comparable).
 
-## Design decisions
+## Collection Types Provided
 
-Any of these decisions may change in the future as I gain knowledge, change my mind, etc. Many besides equality checking shouldn't affect the API dramatically; and if they do it should remain easy to port code to the new API as appropriate.
+All collections are persisted/immutable by nature so any Add/Remove operation produces a new collection instance.
 
-1) Writing in F# vs C#
-    - ✅Performance tweaks found in my trial and error experiments (structs, inlining, etc) are easier to unlock and use requiring less code.
-    - ❌F# is required for consumers to realise full performance benefits even if just a simple wrapper project around the typical get and change functions (add, tryFind, remove).
+- HashMap (Similar to F#'s Map in behaviour).
 
-1) Count is a O(1) operation. This requires an extra bit of space per tree and minor overhead during insert and removal but allows other operations on the read side to be faster (e.g isEmpty, count, etc.).
-    - ✅ Lower time complexity for existence and count operations.
-    - ❌ Slightly more work required when inserting and removing elements keeping track of addition or removal success.
+| Operation | Complexity |
+| --- | --- |
+| TryFind | O(log32n) or ~ O(1) |
+| Add | O(log32n) or ~ O(1) |
+| Remove | O(log32n) or ~ O(1) |
+| Count | O(1) |
 
-2) NetCoreApp3.1 only or greater. This allows the use of .NET intrinsics and other performance enhancements.
-    - ✅ Faster implementation
-    - ❌ Only Net Core 3.1 compatible or greater.
+- HashSet (Similar to F#'s Set in behaviour).
 
-3) At this stage I'm using ADT's vs virtual dispatch of methods in the internal implementation.
-    - ✅ IMO Easier to read and more maintainable.
-    - ✅ Freedom to experiment in the future with different node encoding strategies.
-    - ❌ 20% slower performance from my testing for lookup's than virtual dispatch for the Try
+| Operation | Complexity |
+| --- | --- |
+| Contains | O(log32n) or ~ O(1) |
+| Add | O(log32n) or ~ O(1) |
+| Remove | O(log32n) or ~ O(1) |
+| Count | O(1) |
 
-5) Allowing custom equality via inlining. 
-    - ✅ Allows fast equality checking particuarly impacting lookup's for much greater performance. 
-      - F#'s "hash" and "=" functions often resulted in significant performance penalties when used as the default especially for lookup's. Since this is targeted towards F# users I've used F# inlining over equality comparer's as it showed a demostratable impact on lookup performance (tested both).
-      - Equals and HashCode are can be baked into the algorithm for greater performance.
-      - Faster than attaching a IEqualityComparer implementation into the Trie in my trail and error testing.
-    - ✅ Encoding the equality logic in the type system also means that instances of the map with different comparer's won't be accidentaly be used together.
-    - ✅ Types can still use ": equality" by default; instead of IEquatable<_> or defining an IEqualityComparer<_> and still get decent default performance.
-    - ❌ Array keys don't work by default; you need to define your own structural comparer for this.
-    - ❌ Limits the use of this structure to F# only.
+## Equality customisation
 
+All collections allow custom equality to be assigned if required. The equality is encoded as a type on the collection so equality and hashing operations are consistent. Same collection types with different equality comparers can not be used interchangeably by operations provided.  To use:
+
+```
+// Uses the default equality template provided.
+let defaultIntHashMap : HashMap<int, int64, StandardEqualityTemplate<int>> = HashMap.empty
+
+// Uses a custom equality template provided by the type parameter.
+let defaultIntHashMap : HashMap<int, int64, CustomEqualityComparer> = HashMap.emptyWithComparer
+```
+
+Any equality comparer specified in the type signature must:
+
+- Have a parameterless public constructor.
+- Implement IEqualityComparer<> for either the contents (HashSet) or the key (HashMap).
+- (Optional): Be a struct type. This is recommended for performance as it triggers many JIT inlining optimisations (no virtual dispatch).
 
 ## Performance
 
-As of 30/12/2019; more details coming soon.
-
-For 50,000 elements
+### TryFind on HashMap
 
 ```
-Running test [TestSize: 50000, AmountOfGetRetries: 200]
-Trie
-Total time to insert: 51, time per insert op: 0.001020
-Total time to read per get: 0.000016, CallsPerMillisecond: 62397.901434
-F# Map
-Total time to insert: 75, time per insert op: 0.001500
-Total time to read per get: 0.000118, CallsPerMillisecond: 8467.528847
-```
+|                           Method | CollectionSize |        Mean |    Error |   StdDev |
+|--------------------------------- |--------------- |------------:|---------:|---------:|
+|                       GetHashMap |             10 |    11.12 ns | 0.097 ns | 0.091 ns |
+|                     GetFSharpMap |             10 |    41.49 ns | 0.588 ns | 0.550 ns |
+|                GetFSharpXHashMap |             10 |   108.50 ns | 2.135 ns | 1.997 ns |
+| GetSystemCollectionsImmutableMap |             10 |    27.50 ns | 0.244 ns | 0.228 ns |
+|                       GetHashMap |            100 |    13.02 ns | 0.019 ns | 0.018 ns |
+|                     GetFSharpMap |            100 |    71.66 ns | 1.203 ns | 1.126 ns |
+|                GetFSharpXHashMap |            100 |   113.71 ns | 1.624 ns | 1.519 ns |
+| GetSystemCollectionsImmutableMap |            100 |    37.04 ns | 0.247 ns | 0.231 ns |
+|                       GetHashMap |           1000 |    11.51 ns | 0.065 ns | 0.058 ns |
+|                     GetFSharpMap |           1000 |   105.31 ns | 0.914 ns | 0.714 ns |
+|                GetFSharpXHashMap |           1000 |   119.99 ns | 1.328 ns | 1.242 ns |
+| GetSystemCollectionsImmutableMap |           1000 |    55.18 ns | 0.192 ns | 0.180 ns |
+|                       GetHashMap |         100000 |    24.23 ns | 0.193 ns | 0.181 ns |
+|                     GetFSharpMap |         100000 |   195.49 ns | 1.699 ns | 1.590 ns |
+|                GetFSharpXHashMap |         100000 |   151.25 ns | 0.987 ns | 0.924 ns |
+| GetSystemCollectionsImmutableMap |         100000 |   146.26 ns | 0.209 ns | 0.195 ns |
+|                       GetHashMap |         500000 |    72.79 ns | 0.046 ns | 0.041 ns |
+|                     GetFSharpMap |         500000 |   322.10 ns | 3.607 ns | 3.374 ns |
+|                GetFSharpXHashMap |         500000 |   244.35 ns | 1.318 ns | 1.233 ns |
+| GetSystemCollectionsImmutableMap |         500000 |   324.23 ns | 0.531 ns | 0.497 ns |
+|                       GetHashMap |         750000 |   104.68 ns | 0.189 ns | 0.177 ns |
+|                     GetFSharpMap |         750000 |   405.20 ns | 1.588 ns | 1.408 ns |
+|                GetFSharpXHashMap |         750000 |   366.52 ns | 4.730 ns | 4.425 ns |
+| GetSystemCollectionsImmutableMap |         750000 |   427.22 ns | 0.587 ns | 0.549 ns |
+|                       GetHashMap |        1000000 |   111.72 ns | 0.339 ns | 0.283 ns |
+|                     GetFSharpMap |        1000000 |   478.95 ns | 5.776 ns | 5.403 ns |
+|                GetFSharpXHashMap |        1000000 |   340.21 ns | 0.775 ns | 0.725 ns |
+| GetSystemCollectionsImmutableMap |        1000000 |   503.40 ns | 1.028 ns | 0.961 ns |
+|                       GetHashMap |        5000000 |   138.25 ns | 0.268 ns | 0.251 ns |
+|                     GetFSharpMap |        5000000 |   855.74 ns | 3.871 ns | 3.621 ns |
+|                GetFSharpXHashMap |        5000000 |   379.65 ns | 0.733 ns | 0.685 ns |
+| GetSystemCollectionsImmutableMap |        5000000 |   901.71 ns | 1.080 ns | 0.957 ns |
+|                       GetHashMap |       10000000 |   154.81 ns | 1.315 ns | 1.230 ns |
+|                     GetFSharpMap |       10000000 | 1,031.15 ns | 3.435 ns | 3.213 ns |
+|                GetFSharpXHashMap |       10000000 |   420.84 ns | 4.111 ns | 3.845 ns |
+| GetSystemCollectionsImmutableMap |       10000000 | 1,059.00 ns | 7.087 ns | 6.629 ns |```
 
-For 500,000 elements
+## Design decisions that may affect consumers of this library
 
-```
-Running test [TestSize: 500000, AmountOfGetRetries: 200]
-Trie
-Total time to insert: 880, time per insert op: 0.001760
-Total time to read per get: 0.000031, CallsPerMillisecond: 32267.821889
-F# Map
-Total time to insert: 672, time per insert op: 0.001344
-Total time to read per get: 0.000158, CallsPerMillisecond: 6327.621326
-````
+Any of these decisions may change in the future as I gain knowledge, change my mind, etc. It doesn't list all the tweaks, and changes caused by benchmarking just the things that affect consumers. Many besides equality checking shouldn't affect the API dramatically; and if they do it should remain easy to port code to the new API as appropriate.
 
-For 1,000,000 elements
+1) Writing in F# vs C#
+    - Performance tweaks found in my trial and error experiments (structs, inlining, etc) are easier to unlock and use in F# requiring less code. Inlining is used for algorithm sharing across collection types, avoiding struct copying with returned results, etc.
 
-```
-Running test [TestSize: 1000000, AmountOfGetRetries: 200]
-Trie
-Total time to insert: 1716, time per insert op: 0.001716
-Total time to read per get: 0.000033, CallsPerMillisecond: 30217.897329
-F# Map
-Total time to insert: 1221, time per insert op: 0.001221
-Total time to read per get: 0.000173, CallsPerMillisecond: 5774.162392
-```
+2) Count is a O(1) operation. This requires an extra bit of space per tree and minor overhead during insert and removal but allows other operations on the read side to be faster (e.g isEmpty, count, intersect, etc.).
+    - ✅ Lower time complexity for existence and count operations.
+    - ❌ Slightly more work required when inserting and removing elements keeping track of addition or removal success.
 
-For 5,000,000 elements.
-
-```
-Running test [TestSize: 5000000, AmountOfGetRetries: 200]
-Trie
-Total time to insert: 13184, time per insert op: 0.002637
-Total time to read per get: 0.000050, CallsPerMillisecond: 20175.682988
-F# Map
-Total time to insert: 7102, time per insert op: 0.001420
-Total time to read per get: 0.000193, CallsPerMillisecond: 5192.341713
-```
+3) NetCoreApp3.1 only or greater. This allows the use of .NET intrinsics and other performance enhancements.
+    - ✅ Faster implementation.
+    - ❌ Only Net Core 3.1 compatible or greater.

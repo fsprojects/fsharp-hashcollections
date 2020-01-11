@@ -15,7 +15,7 @@ let remove (k: 'tk) (hashMap: HashMap<'tk, 'tv, 'teq>) =
 
 let count (h: HashMap<_, _, _>) = HashTrie.count h.HashTrieRoot
 
-let emptyWithComparer<'tk, 'tv, 'teq when 'teq :> IEqualityComparer<'tk> and 'teq : struct and 'teq : (new : unit -> 'teq)> : HashMap<'tk, 'tv, 'teq> = HashTrie.emptyWithComparer<HashMapEntry<'tk, 'tv>, 'teq> |> HashMap
+let emptyWithComparer<'tk, 'tv, 'teq when 'teq :> IEqualityComparer<'tk> and 'teq : (new : unit -> 'teq)> : HashMap<'tk, 'tv, 'teq> = HashTrie.emptyWithComparer<HashMapEntry<'tk, 'tv>, 'teq> |> HashMap
 
 let empty<'tk, 'tv when 'tk :> System.IEquatable<'tk> and 'tk : equality> : HashMap<'tk, 'tv, StandardEqualityTemplate<'tk>> = HashTrie.emptyWithComparer<HashMapEntry<'tk, 'tv>, StandardEqualityTemplate<'tk>> |> HashMap
 
