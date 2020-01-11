@@ -35,7 +35,7 @@ let inline mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) =
     let mutable hashTrieToTest = HashMap.empty
     
     for action in actions do 
-        let mutable key = Unchecked.defaultof<_>
+        let mutable key = Unchecked.defaultof<'tk>
         match action with
         | Add(k, v) -> 
             mapToTest <- mapToTest |> Map.add k v
