@@ -1,4 +1,4 @@
-namespace HashTrie.FSharp
+namespace FSharp.HashCollections
 
 open System.Runtime.Intrinsics
 open System
@@ -6,7 +6,7 @@ open System.Runtime.CompilerServices
 
 /// A fixed 32-bit array like structure. Only allocates as many entries as required to store elements with a maximum of 32 elements.
 /// WARNING: There is no bounds checking on the indexes passed into the above for performance.
-type [<IsReadOnly; Struct>] CompressedArray<'t> = { BitMap: uint64; Content: 't array }
+type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint64; Content: 't array }
 
 module internal ArrayHelpers =
 
@@ -35,34 +35,36 @@ open System.Collections.Generic
 
 /// Module for handling fixed compressed bitmap array. 
 /// Many operations in this module aren't checked and if not used properly could lead to data corruption. Use with caution.
-module CompressedArray =
+module internal CompressedArray =
 
     let [<Literal>] MaxSize = 64
-    let [<Literal>] LeastSigBitSet : uint64 = 0b1UL
+    let [<Literal>] LeastSigBitSet = 0b1UL
     let [<Literal>] AllNodesSetBitMap = UInt64.MaxValue
+    let [<Literal>] Zero = 0UL
+    let [<Literal>] One = 1UL
 
     /// Has a software fallback if not supported built inside with an IF statement.
     /// TODO: Check if any performance difference.
-    let inline popCount (x: uint64) = System.Numerics.BitOperations.PopCount x
+    let inline popCount x = System.Numerics.BitOperations.PopCount (uint64 x)
 
-    let [<GeneralizableValue>] empty<'t> : CompressedArray<'t> = { BitMap = 0UL; Content = Array.zeroCreate 0 }
+    let [<GeneralizableValue>] empty<'t> : CompressedArray<'t> = { BitMap = Zero; Content = Array.zeroCreate 0 }
 
-    let inline getBitMapForIndex index = LeastSigBitSet <<< (int index)
+    let inline getBitMapForIndex index = LeastSigBitSet <<< index
 
-    let inline boundsCheckIfSet bitMap index = (getBitMapForIndex index &&& bitMap) > 0UL
-    let inline boundsCheckIfSetForBitMapIndex bitMap indexBitMap = (indexBitMap &&& bitMap) > 0UL
+    let inline boundsCheckIfSet bitMap index = (getBitMapForIndex index &&& bitMap) > Zero
+    let inline boundsCheckIfSetForBitMapIndex bitMap indexBitMap = (indexBitMap &&& bitMap) > Zero
 
     let inline getCompressedIndex bitMap index =
-       let bitPos = getBitMapForIndex index // e.g. 00010000
-       (bitMap &&& (bitPos - 1UL)) |> popCount |> int// e.g 00001111 then mask that against bitmap and count
+       let bitPos = getBitMapForIndex index
+       (bitMap &&& (bitPos - One)) |> popCount |> int// e.g 00001111 then mask that against bitmap and count
 
     let inline getCompressedIndexForIndexBitmap bitMap bitMapIndex =
-       (bitMap &&& (bitMapIndex - 1UL)) |> popCount |> int
+       (bitMap &&& (bitMapIndex - One)) |> popCount |> int
 
     let inline set index value ca =
         let bit = getBitMapForIndex index
-        let localIdx = getCompressedIndex ca.BitMap index |> int
-        if (bit &&& ca.BitMap) <> 0UL then
+        let localIdx = getCompressedIndex ca.BitMap index
+        if (bit &&& ca.BitMap) <> Zero then
           // Replace existing entry
           let newContent = copyArray ca.Content
           newContent.[localIdx] <- value
@@ -107,5 +109,5 @@ module CompressedArray =
 
     /// Creates a compressed array of length = 1 with the supplied element in the index specified.
     let inline ofSingleElement index element =
-      let bitMap = 0b1UL <<< int index
+      let bitMap = LeastSigBitSet <<< index
       { BitMap = bitMap; Content = [| element |] }

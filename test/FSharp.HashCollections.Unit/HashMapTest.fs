@@ -1,8 +1,8 @@
-module HashTrie.FSharp.Unit.HashTrieTest
+module FSharp.HashCollections.Unit.HashTrieTest
 
 open Expecto
 open FsCheck
-open HashTrie.FSharp
+open FSharp.HashCollections
 
 // List of actions to generate
 type KvAction<'k, 'v> = 
@@ -12,18 +12,18 @@ type KvAction<'k, 'v> =
 let inline mapAndHashTrieAreTheSameAfterActions (actions: KvAction<'tk, 'tv> list) = 
     
     let mutable mapToTest = Map.empty
-    let mutable hashTrieToTest = HashTrie.empty
+    let mutable hashTrieToTest = HashMap.empty
     
     for action in actions do 
         match action with
         | Add(k, v) -> 
             mapToTest <- mapToTest |> Map.add k v
-            hashTrieToTest <- hashTrieToTest |> HashTrie.add k v
+            hashTrieToTest <- hashTrieToTest |> HashMap.add k v
         | Remove k ->
             mapToTest <- mapToTest |> Map.remove k
-            hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
+            hashTrieToTest <- hashTrieToTest |> HashMap.remove k
         Expect.equal 
-            (hashTrieToTest |> HashTrie.toSeq |> set) 
+            (hashTrieToTest |> HashMap.toSeq |> set) 
             (mapToTest |> Map.toSeq |> Seq.map (fun (x, y) -> struct (x, y)) |> set)
             "Hash Trie and Map don't contain same data"
 
@@ -32,21 +32,21 @@ let toVOption i = match i with | Some(x) -> ValueSome x | None -> ValueNone
 let inline mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) = 
     
     let mutable mapToTest = Map.empty
-    let mutable hashTrieToTest = HashTrie.empty
+    let mutable hashTrieToTest = HashMap.empty
     
     for action in actions do 
-        let mutable key = Unchecked.defaultof<_>
+        let mutable key = Unchecked.defaultof<'tk>
         match action with
         | Add(k, v) -> 
             mapToTest <- mapToTest |> Map.add k v
-            hashTrieToTest <- hashTrieToTest |> HashTrie.add k v
+            hashTrieToTest <- hashTrieToTest |> HashMap.add k v
             key <- k
         | Remove k ->
             mapToTest <- mapToTest |> Map.remove k
-            hashTrieToTest <- hashTrieToTest |> HashTrie.remove k
+            hashTrieToTest <- hashTrieToTest |> HashMap.remove k
             key <- k
         let mapResult = mapToTest |> Map.tryFind key |> toVOption
-        let hashTrieResult = hashTrieToTest |> HashTrie.tryFind key
+        let hashTrieResult = hashTrieToTest |> HashMap.tryFind key
         Expect.equal hashTrieResult mapResult "Key update did not hold"
 
 let buildPropertyTest testName (testFunction: KvAction<int64, int> list -> _) = 
@@ -58,9 +58,9 @@ let inline generateLargeSizeMapTest() =
     "Large map test of more than one depth"
     (fun () -> 
       let testData = Array.init 100000 id
-      let result = testData |> Array.fold (fun s t -> s |> HashTrie.add t t) HashTrie.empty
+      let result = testData |> Array.fold (fun s t -> s |> HashMap.add t t) HashMap.empty
       for i = 0 to testData.Length - 1 do
-        let testLookup = result |> HashTrie.tryFind i
+        let testLookup = result |> HashMap.tryFind i
         Expect.equal testLookup (ValueSome i) "Not equal to what's expected")
 
 let [<Tests>] tests = 
