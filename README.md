@@ -94,7 +94,8 @@ Any equality comparer specified in the type signature must:
 |                       GetHashMap |       10000000 |   154.81 ns | 1.315 ns | 1.230 ns |
 |                     GetFSharpMap |       10000000 | 1,031.15 ns | 3.435 ns | 3.213 ns |
 |                GetFSharpXHashMap |       10000000 |   420.84 ns | 4.111 ns | 3.845 ns |
-| GetSystemCollectionsImmutableMap |       10000000 | 1,059.00 ns | 7.087 ns | 6.629 ns |```
+| GetSystemCollectionsImmutableMap |       10000000 | 1,059.00 ns | 7.087 ns | 6.629 ns |
+```
 
 ## Design decisions that may affect consumers of this library
 
