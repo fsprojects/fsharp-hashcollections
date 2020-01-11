@@ -12,6 +12,7 @@
     <Authors>mvkra</Authors>
     <PackageTags>fsharp;collections;hamt</PackageTags>
     <RepositoryUrl>https://github.com/mvkra/fsharp-hashcollections</RepositoryUrl>
+    <license>MIT</license>
   </PropertyGroup>
 
   <ItemGroup>
