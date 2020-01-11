@@ -9,6 +9,7 @@
     <Compile Include="Types.fs" />
     <Compile Include="HamtImpl.fs" />
     <Compile Include="HashMap.fs" />
+    <Compile Include="HashSet.fs" />
     <Compile Include="PersistentHashMap.fsi" />
     <Compile Include="PersistentHashMap.fs" />
     <Compile Include="PersistentHashMapModule.fs" />

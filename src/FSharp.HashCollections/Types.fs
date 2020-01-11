@@ -22,32 +22,26 @@ type StandardEqualityTemplate<'tk when 'tk :> IEquatable<'tk> and 'tk : equality
         [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
         member __.GetHashCode(o) = o.GetHashCode()
 
-type [<IsReadOnly; Struct>] HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
+type [<IsReadOnly; Struct>] internal HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
 
-type HashTrieNode<'tk> =
+type internal HashTrieNode<'tk> =
     | TrieNodeFull of nodes: HashTrieNode<'tk> array
     | TrieNode of nodes: CompressedArray<HashTrieNode<'tk>>
     | TrieNodeOne of index: int * node: HashTrieNode<'tk>
     | EntryNode of entry: 'tk
     | HashCollisionNode of entries: 'tk list
 
-type [<Struct; IsReadOnly>] HashSet<'tk, 'teq> = {
+type [<Struct; IsReadOnly>] internal HashTrieRoot<'tk, 'teq> = {
     CurrentCount: int32
     RootData: HashTrieNode<'tk>
 }
 
-/// Proxy equality template.
-type HashMapEqualityTemplate<'tk, 'tv, 'teq when 'teq :> IEqualityComparer<'tk> and 'teq : struct and 'teq : (new : unit -> 'teq)> = 
-    struct
-        [<DefaultValue(false)>] val Eq: 'teq
-    end
-    interface IEqualityComparer<HashMapEntry<'tk, 'tv>> with
-        [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
-        member this.Equals(x: HashMapEntry<'tk, 'tv>, y: HashMapEntry<'tk, 'tv>): bool = 
-            this.Eq.Equals(x.Key, y.Key)
-        [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
-        member this.GetHashCode(obj: HashMapEntry<'tk, 'tv>): int = 
-            this.Eq.GetHashCode(obj.Key)
-
 /// Immutable hash map.
-type HashMap<'tk, 'tv, 'teq> = HashSet<HashMapEntry<'tk, 'tv>, 'teq>
+type [<Struct; IsReadOnly>] HashMap<'tk, 'tv, 'teq> = 
+    val internal HashTrieRoot: HashTrieRoot<HashMapEntry<'tk, 'tv>, 'teq>
+    internal new(d) = { HashTrieRoot = d }
+
+/// Immutable hash set.
+type [<Struct; IsReadOnly>] HashSet<'tk, 'teq> = 
+    val internal HashTrieRoot: HashTrieRoot<'tk, 'teq>
+    internal new(d) = { HashTrieRoot = d }
