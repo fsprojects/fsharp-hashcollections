@@ -49,6 +49,25 @@ let inline mapAndHashTrieHaveSameGetValue (actions: KvAction<'tk, 'tv> list) =
         let hashTrieResult = hashTrieToTest |> HashMap.tryFind key
         Expect.equal hashTrieResult mapResult "Key update did not hold"
 
+let inline mapAndHashMapHaveSameCountAtAllTimes (actions: KvAction<'tk, 'tv> list) = 
+    let mutable mapToTest = Map.empty
+    let mutable hashTrieToTest = HashMap.empty
+    
+    for action in actions do 
+        let mutable key = Unchecked.defaultof<'tk>
+        match action with
+        | Add(k, v) -> 
+            mapToTest <- mapToTest |> Map.add k v
+            hashTrieToTest <- hashTrieToTest |> HashMap.add k v
+            key <- k
+        | Remove k ->
+            mapToTest <- mapToTest |> Map.remove k
+            hashTrieToTest <- hashTrieToTest |> HashMap.remove k
+            key <- k
+        let mapResult = mapToTest |> Map.count
+        let hashTrieResult = hashTrieToTest |> HashMap.count
+        Expect.equal hashTrieResult mapResult "Count isn't the same"
+
 let buildPropertyTest testName (testFunction: KvAction<int64, int> list -> _) = 
     let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }    
     testCase testName <| fun () -> Check.One(config, testFunction)
@@ -104,4 +123,8 @@ let [<Tests>] tests =
           buildPropertyTest
             "Map and HashTrie always have the same Get result"
             mapAndHashTrieHaveSameGetValue
+
+          buildPropertyTest
+            "Map and HashTrie always have the same Count result"
+            mapAndHashMapHaveSameCountAtAllTimes
         ]

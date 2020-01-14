@@ -47,6 +47,25 @@ let inline setAndHashSetHaveSameContainsValue (actions: SetAction<'tk> list) =
         let hashTrieResult = hashTrieToTest |> HashSet.contains key
         Expect.equal hashTrieResult mapResult "Key update did not hold"
 
+let inline setAndHashSetHaveSameCountAtAllTimes (actions: SetAction<'tk> list) = 
+    let mutable mapToTest = Set.empty
+    let mutable hashTrieToTest = HashSet.empty
+    
+    for action in actions do 
+        let mutable key = Unchecked.defaultof<'tk>
+        match action with
+        | Add(k) -> 
+            mapToTest <- mapToTest |> Set.add k
+            hashTrieToTest <- hashTrieToTest |> HashSet.add k
+            key <- k
+        | Remove k ->
+            mapToTest <- mapToTest |> Set.remove k
+            hashTrieToTest <- hashTrieToTest |> HashSet.remove k
+            key <- k
+        let mapResult = mapToTest |> Set.count
+        let hashTrieResult = hashTrieToTest |> HashSet.count
+        Expect.equal hashTrieResult mapResult "Count isn't equal"
+
 let buildPropertyTest testName (testFunction: SetAction<int64> list -> _) = 
     let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }    
     testCase testName <| fun () -> Check.One(config, testFunction)
@@ -102,4 +121,8 @@ let [<Tests>] tests =
           buildPropertyTest
             "Set and HashSet always have the same Contains result"
             setAndHashSetHaveSameContainsValue
+
+          buildPropertyTest
+            "Set and HashSet always have the same Count result"
+            setAndHashSetHaveSameCountAtAllTimes
         ]

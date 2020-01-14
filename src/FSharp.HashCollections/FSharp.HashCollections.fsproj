@@ -8,9 +8,9 @@
     <PackageId>FSharp.HashCollections</PackageId>
     <Title>FSharp.HashCollections</Title>
     <PackageDescription>Immutable hash collections</PackageDescription>
-    <PackageVersion>0.0.1-alpha1</PackageVersion>
-    <Authors>mvkra</Authors>
-    <PackageTags>fsharp;collections;hamt</PackageTags>
+    <PackageVersion>0.0.1</PackageVersion>
+    <Authors>mvkara</Authors>
+    <PackageTags>fsharp;collections;hamt;hashmap;hashset</PackageTags>
     <RepositoryUrl>https://github.com/mvkara/fsharp-hashcollections</RepositoryUrl>
     <license>MIT</license>
   </PropertyGroup>
