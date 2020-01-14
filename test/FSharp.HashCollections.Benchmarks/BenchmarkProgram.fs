@@ -5,6 +5,7 @@ open FSharp.HashCollections
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
 open FSharpx.Collections
+open ImTools
 
 module Constants = 
     let [<Literal>] OperationsPerInvokeInt = 100000
@@ -12,6 +13,7 @@ module Constants =
 type ReadBenchmarks() = 
 
     let mutable hashMapData = HashMap.empty
+    let mutable imToolsMap = ImTools.ImHashMap.Empty
     let mutable fsharpMapData = Map.empty
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
@@ -33,6 +35,13 @@ type ReadBenchmarks() =
         hashMapData <- HashMap.empty        
         for i = 0 to this.CollectionSize - 1 do
             hashMapData <- hashMapData |> HashMap.add i i
+        this.SetupKeyToLookup()
+
+    [<GlobalSetup(Target = "GetImToolsHashMap")>]
+    member this.SetupImToolsHashMapData() = 
+        imToolsMap <- ImTools.ImHashMap.Empty
+        for i = 0 to this.CollectionSize - 1 do
+            imToolsMap <- imToolsMap.AddOrUpdate(i, i)
         this.SetupKeyToLookup()
 
     [<GlobalSetup(Target = "GetFSharpMap")>]
@@ -61,6 +70,15 @@ type ReadBenchmarks() =
         let mutable i = 0
         for k in keyToLookup do
             dummyBufferVOption.[i] <- hashMapData |> HashMap.tryFind k
+            i <- i + 1
+
+    [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
+    member _.GetImToolsHashMap() = 
+        let mutable i = 0
+        for k in keyToLookup do
+            match imToolsMap.TryFind(k) with
+            | (true, x) -> dummyBufferNoOption.[i] <- x
+            | _ -> ()
             i <- i + 1
 
     [<Benchmark(OperationsPerInvoke = Constants.OperationsPerInvokeInt)>]
