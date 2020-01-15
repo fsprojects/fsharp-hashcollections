@@ -6,8 +6,8 @@ open System.Collections.Generic
 /// Underlying Hash Trie implementation for other collections.
 module internal HashTrie =
 
-    let [<Literal>] PartitionSize = 6
-    let [<Literal>] PartitionMask = 0b111111
+    let [<Literal>] PartitionSize = 4
+    let [<Literal>] PartitionMask = 0b1111
     let [<Literal>] MaxShiftValue = 32 // Partition Size amount of 1 bits
 
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask |> int
@@ -28,7 +28,6 @@ module internal HashTrie =
             findInList l
         
         let rec getRec node remainderHash =
-            //printfn "Rec: Hash: %A, Node: %A" remainderHash node
             match node with
             | TrieNodeFull(nodes) ->
                 let index = getIndexNoShift remainderHash
@@ -79,9 +78,9 @@ module internal HashTrie =
                     if existingEntryIndex <> currentEntryIndex
                     then
                         TrieNode(
-                            CompressedArray.empty
-                            |> CompressedArray.set existingEntryIndex (EntryNode existingEntry)
-                            |> CompressedArray.set currentEntryIndex (EntryNode newEntry))
+                            CompressedArray.ofTwoElements 
+                                existingEntryIndex (EntryNode existingEntry)
+                                currentEntryIndex (EntryNode newEntry))
                     else
                         let subNode = createRequiredDepthNodes (shift + PartitionSize)
                         TrieNodeOne(existingEntryIndex, subNode)
@@ -110,7 +109,7 @@ module internal HashTrie =
                     struct (TrieNodeOne(index, newPosNode), isAdded)
                 else
                     let entryNode = EntryNode(knode)
-                    let ca = CompressedArray.empty |> CompressedArray.set nodeIndex nodeAtPos |> CompressedArray.set index entryNode
+                    let ca = CompressedArray.ofTwoElements nodeIndex nodeAtPos index entryNode
                     struct (TrieNode(ca), true)
             | TrieNodeFull(nodes) ->
                 let index = getIndex keyHash shift |> int

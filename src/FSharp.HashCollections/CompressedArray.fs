@@ -6,7 +6,7 @@ open System.Runtime.CompilerServices
 
 /// A fixed 32-bit array like structure. Only allocates as many entries as required to store elements with a maximum of 32 elements.
 /// WARNING: There is no bounds checking on the indexes passed into the above for performance.
-type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint64; Content: 't array }
+type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint16; Content: 't array }
 
 module internal ArrayHelpers =
 
@@ -37,11 +37,11 @@ open System.Collections.Generic
 /// Many operations in this module aren't checked and if not used properly could lead to data corruption. Use with caution.
 module internal CompressedArray =
 
-    let [<Literal>] MaxSize = 64
-    let [<Literal>] LeastSigBitSet = 0b1UL
-    let [<Literal>] AllNodesSetBitMap = UInt64.MaxValue
-    let [<Literal>] Zero = 0UL
-    let [<Literal>] One = 1UL
+    let [<Literal>] MaxSize = 16
+    let [<Literal>] LeastSigBitSet = 0b1us
+    let [<Literal>] AllNodesSetBitMap = UInt16.MaxValue
+    let [<Literal>] Zero = 0us
+    let [<Literal>] One = 1us
 
     /// Has a software fallback if not supported built inside with an IF statement.
     /// TODO: Check if any performance difference.
@@ -111,3 +111,9 @@ module internal CompressedArray =
     let inline ofSingleElement index element =
       let bitMap = LeastSigBitSet <<< index
       { BitMap = bitMap; Content = [| element |] }
+
+    /// Creates a compressed array of two elements.
+    let inline ofTwoElements index1 element1 index2 element2 =
+      let a = if index1 < index2 then [| element1; element2 |] else [| element2; element1 |]
+      let newBitMap = Zero ||| (getBitMapForIndex index1) ||| (getBitMapForIndex index2)
+      { BitMap = newBitMap; Content = a}
