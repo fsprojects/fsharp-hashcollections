@@ -5,10 +5,11 @@ open FSharp.HashCollections
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
 open FSharpx.Collections
+open System.Collections.Generic
 open ImTools
 
 module private AddBenchmarkConstants = 
-    let [<Literal>] OperationsPerInvoke = 20
+    let [<Literal>] OperationsPerInvoke = 50
 open AddBenchmarkConstants
 
 type AddBenchmark() = 
@@ -18,62 +19,102 @@ type AddBenchmark() =
     let mutable fsharpDataAdaptiveMap = FSharp.Data.Adaptive.HashMap.Empty
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
+    let mutable preppedData = Array.zeroCreate 0
+
+    let elementsToAdd = 
+        let a = Array.zeroCreate OperationsPerInvoke
+        let r = Random()
+        for i = 0 to a.Length - 1 do
+            a.[i] <- KeyValuePair<_, _>(r.Next(), r.Next())
+        a
 
     [<Params(1000, 100_000, 500_000, 750_000, 1_000_000, 5_000_000, 10_000_000)>]
     member val public CollectionSize = 0 with get, set
 
-    // [<GlobalSetup(Target = "AddToHashMap")>]
-    // member this.SetupHashMap() = 
-    //     hashMap <- FSharp.HashCollections.HashMap.empty
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         hashMap <- hashMap |> FSharp.HashCollections.HashMap.add i i
+    member this.PrepData() = 
+        if preppedData.Length <> this.CollectionSize
+        then
+            let r = Random()
+            preppedData <- Array.zeroCreate this.CollectionSize
+            
+            let mutable c = 0
+            let mutable s = Set.empty
+            while c < preppedData.Length do
+                let i = r.Next()
+                if s |> Set.contains i
+                then ()
+                else
+                    s <- s |> Set.add i
+                    c <- c + 1
 
-    [<Benchmark>]
-    member this.AddToHashMap() =
-        for i = 0 to this.CollectionSize - 1 do
-            hashMap <- hashMap |> FSharp.HashCollections.HashMap.add i i
+            if s.Count <> this.CollectionSize then failwithf "Bug in startup data generation"
+            use e = (Set.toSeq s).GetEnumerator()
+            for i = 0 to preppedData.Length - 1 do
+                e.MoveNext() |> ignore
+                preppedData.[i] <- KeyValuePair<_, _>(e.Current, e.Current)
 
-    // [<GlobalSetup(Target = "AddToFSharpMap")>]
-    // member this.SetupFSharpMap() = 
-    //     fsharpMap <- Map.empty
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         fsharpMap <- fsharpMap |> Map.add i i
+    [<GlobalSetup(Target = "AddHashMap")>] 
+    member this.SetupAddHashMap() = 
+        this.PrepData()
+        hashMap <- FSharp.HashCollections.HashMap.ofSeq preppedData
+        if hashMap |> HashMap.count <> this.CollectionSize then failwithf "Not properly initialised"
 
-    [<Benchmark>]
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
+    member this.AddHashMap() =
+        let mutable hashMap = hashMap
+        for i in elementsToAdd do hashMap <- hashMap |> FSharp.HashCollections.HashMap.add i.Key i.Value
+
+    [<GlobalSetup(Target = "AddToFSharpMap")>]  
+    member this.SetupAddToFSharpMap() = 
+        this.PrepData()
+        fsharpMap <- preppedData |> Seq.fold (fun s (KeyValue(k, v)) -> s |> Map.add k v) Map.empty
+        if fsharpMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
+
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
     member this.AddToFSharpMap() =
-        for i = 0 to this.CollectionSize - 1 do
-            fsharpMap <- fsharpMap |> Map.add i i
+        let mutable fsharpMap = fsharpMap
+        for i in elementsToAdd do fsharpMap <- fsharpMap |> Map.add i.Key i.Value
 
-    // [<GlobalSetup(Target = "AddToFSharpAdaptiveMap")>]
-    // member this.SetupFSharpAdaptiveMap() = 
-    //     fsharpDataAdaptiveMap <- FSharp.Data.Adaptive.HashMap.Empty
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         fsharpDataAdaptiveMap <- fsharpDataAdaptiveMap |> FSharp.Data.Adaptive.HashMap.add i i
+    [<GlobalSetup(Target = "AddToFSharpAdaptiveMap")>] 
+    member this.SetupAddToFSharpAdaptiveMap() = 
+        this.PrepData()
+        this.OfSeqFSharpAdaptiveMap()
+        if fsharpDataAdaptiveMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
 
-    [<Benchmark>]
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
     member this.AddToFSharpAdaptiveMap() =
-        for i = 0 to this.CollectionSize - 1 do
-            fsharpDataAdaptiveMap <- fsharpDataAdaptiveMap |> FSharp.Data.Adaptive.HashMap.add i i
+        let mutable fsharpDataAdaptiveMap = fsharpDataAdaptiveMap
+        for i in elementsToAdd do fsharpDataAdaptiveMap <- fsharpDataAdaptiveMap |> FSharp.Data.Adaptive.HashMap.add i.Key i.Value
 
-    // [<GlobalSetup(Target = "AddToFSharpXMap")>]
-    // member this.SetupFSharpXMap() = 
-    //     fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.empty
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i i
+    [<GlobalSetup(Target = "AddToFSharpXMap")>] 
+    member this.SetupAddToFSharpXMap() = 
+        this.PrepData()
+        this.OfSeqFSharpXMap()
+        if fsharpXHashMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
 
-    [<Benchmark>]
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
     member this.AddToFSharpXMap() =
-        for i = 0 to this.CollectionSize - 1 do
-            fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i i
+        let mutable fsharpXHashMap = fsharpXHashMap
+        for i in elementsToAdd do fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i.Key i.Value
 
-    // [<GlobalSetup(Target = "AddToSystemCollectionsImmutableMap")>]
-    // member this.SetupSystemCollectionsImmutableMap() = 
-    //     systemImmutableMap <- System.Collections.Immutable.ImmutableDictionary.Empty
-    //     for i = 0 to this.CollectionSize - 1 do
-    //         systemImmutableMap <- systemImmutableMap.Add(i, i)
+    [<GlobalSetup(Target = "AddToSystemCollectionsImmutableMap")>]
+    member this.SetupAddToSystemCollectionsImmutableMap() = 
+        this.PrepData()
+        this.OfSeqSystemCollectionsImmutableMap()
+        if systemImmutableMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
 
-    [<Benchmark>]
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
     member this.AddToSystemCollectionsImmutableMap() =
-        for i = 0 to this.CollectionSize - 1 do
-            systemImmutableMap <- systemImmutableMap.Add(i, i)
-        
+        let mutable systemImmutableMap = systemImmutableMap
+        for i in elementsToAdd do systemImmutableMap <- systemImmutableMap.Add(i.Key, i.Value)
+
+    // OfSeq helpers
+    member this.OfSeqHashMap() = hashMap <- FSharp.HashCollections.HashMap.ofSeq preppedData
+
+    member this.OfSeqFSharpXMap() =
+        fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.ofSeq (preppedData |> Seq.map (fun (KeyValue(kv)) -> kv))
+
+    member this.OfSeqFSharpAdaptiveMap() =
+        fsharpDataAdaptiveMap <- FSharp.Data.Adaptive.HashMap.ofSeq (preppedData |> Seq.map (fun (KeyValue(kv)) -> kv))    
+
+    member this.OfSeqSystemCollectionsImmutableMap() = systemImmutableMap <- System.Collections.Immutable.ImmutableDictionary.CreateRange(preppedData)
