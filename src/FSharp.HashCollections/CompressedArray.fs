@@ -5,7 +5,7 @@ open System
 open System.Runtime.CompilerServices
 
 /// A fixed length array like structure. Only allocates as many entries as required to store elements with a maximum of sizeof(BitMap) elements.
-type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint16; Content: 't array }
+type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint64; Content: 't array }
 
 module internal ArrayHelpers =
 
@@ -35,10 +35,10 @@ open ArrayHelpers
 /// Many operations in this module aren't checked and if not used properly could lead to data corruption. Use with caution.
 module internal CompressedArray =
 
-    let [<Literal>] MaxSize = 16
-    let [<Literal>] AllNodesSetBitMap = UInt16.MaxValue
-    let [<Literal>] Zero = 0us
-    let [<Literal>] One = 1us
+    let [<Literal>] MaxSize = 64
+    let [<Literal>] AllNodesSetBitMap = UInt64.MaxValue
+    let [<Literal>] Zero = 0UL
+    let [<Literal>] One = 1UL
     let [<Literal>] LeastSigBitSet = One
 
     /// Has a software fallback if not supported built inside with an IF statement.
