@@ -19,9 +19,9 @@ All collections are persisted/immutable by nature so any Add/Remove operation pr
 
 | Operation | Complexity |
 | --- | --- |
-| TryFind | O(log32n) or ~ O(1) |
-| Add | O(log32n) or ~ O(1) |
-| Remove | O(log32n) or ~ O(1) |
+| TryFind | O(log32n) |
+| Add | O(log32n) |
+| Remove | O(log32n) |
 | Count | O(1) |
 
 Example Usage:
@@ -34,9 +34,9 @@ let hashMapResult = HashMap.empty |> HashMap.add k v |> HashMay.tryFind k // Res
 
 | Operation | Complexity |
 | --- | --- |
-| Contains | O(log32n) or ~ O(1) |
-| Add | O(log32n) or ~ O(1) |
-| Remove | O(log32n) or ~ O(1) |
+| Contains | O(log32n) |
+| Add | O(log32n) |
+| Remove | O(log32n) |
 | Count | O(1) |
 
 Example Usage:
@@ -135,6 +135,59 @@ AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
 |                GetFSharpXHashMap |       10000000 |   384.30 ns | 0.744 ns | 0.696 ns |   384.38 ns |
 | GetSystemCollectionsImmutableMap |       10000000 | 1,031.06 ns | 0.547 ns | 0.511 ns | 1,031.02 ns |
 |         GetFSharpDataAdaptiveMap |       10000000 |   705.51 ns | 0.449 ns | 0.398 ns |   705.42 ns |
+```
+
+### Add on HashMap
+
+Scenario: Adding 50 elements on top of a pre-defined collection with a collection size as specified, average time of each of the 50 inserts:
+
+```
+// * Summary *
+
+BenchmarkDotNet=v0.12.0, OS=arch 
+AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
+.NET Core SDK=3.1.100
+  [Host]     : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT DEBUG
+  DefaultJob : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
+
+
+|                             Method | CollectionSize |       Mean |    Error |   StdDev |
+|----------------------------------- |--------------- |-----------:|---------:|---------:|
+|                         AddHashMap |           1000 |   274.3 ns |  4.49 ns |  4.20 ns |
+|                     AddToFSharpMap |           1000 |   508.6 ns |  4.53 ns |  4.24 ns |
+|             AddToFSharpAdaptiveMap |           1000 |   198.6 ns |  1.24 ns |  1.16 ns |
+|                    AddToFSharpXMap |           1000 |   480.0 ns |  2.62 ns |  2.45 ns |
+| AddToSystemCollectionsImmutableMap |           1000 |   682.4 ns |  9.43 ns |  8.36 ns |
+|                         AddHashMap |         100000 |   402.1 ns |  7.97 ns |  9.48 ns |
+|                     AddToFSharpMap |         100000 |   832.2 ns | 15.93 ns | 18.35 ns |
+|             AddToFSharpAdaptiveMap |         100000 |   334.8 ns |  4.24 ns |  3.97 ns |
+|                    AddToFSharpXMap |         100000 |   699.2 ns | 12.49 ns | 10.43 ns |
+| AddToSystemCollectionsImmutableMap |         100000 | 1,149.2 ns | 11.48 ns | 10.74 ns |
+|                         AddHashMap |         500000 |   485.1 ns |  5.18 ns |  4.60 ns |
+|                     AddToFSharpMap |         500000 |   938.2 ns |  5.87 ns |  5.49 ns |
+|             AddToFSharpAdaptiveMap |         500000 |   373.1 ns |  3.66 ns |  3.43 ns |
+|                    AddToFSharpXMap |         500000 |   746.4 ns |  3.40 ns |  3.18 ns |
+| AddToSystemCollectionsImmutableMap |         500000 | 1,254.3 ns |  2.30 ns |  2.15 ns |
+|                         AddHashMap |         750000 |   461.4 ns |  3.86 ns |  3.61 ns |
+|                     AddToFSharpMap |         750000 |   974.3 ns |  3.36 ns |  3.14 ns |
+|             AddToFSharpAdaptiveMap |         750000 |   385.2 ns |  0.82 ns |  0.77 ns |
+|                    AddToFSharpXMap |         750000 |   759.4 ns |  2.40 ns |  2.13 ns |
+| AddToSystemCollectionsImmutableMap |         750000 | 1,302.9 ns |  4.51 ns |  3.99 ns |
+|                         AddHashMap |        1000000 |   503.4 ns |  8.52 ns |  7.97 ns |
+|                     AddToFSharpMap |        1000000 |   991.9 ns | 10.22 ns |  9.56 ns |
+|             AddToFSharpAdaptiveMap |        1000000 |   412.3 ns |  8.11 ns | 11.63 ns |
+|                    AddToFSharpXMap |        1000000 |   810.3 ns |  5.40 ns |  5.05 ns |
+| AddToSystemCollectionsImmutableMap |        1000000 | 1,313.9 ns |  3.29 ns |  3.07 ns |
+|                         AddHashMap |        5000000 |   511.3 ns |  2.47 ns |  2.31 ns |
+|                     AddToFSharpMap |        5000000 | 1,096.8 ns |  2.31 ns |  2.16 ns |
+|             AddToFSharpAdaptiveMap |        5000000 |   481.6 ns |  3.11 ns |  2.75 ns |
+|                    AddToFSharpXMap |        5000000 |   815.0 ns |  5.84 ns |  5.46 ns |
+| AddToSystemCollectionsImmutableMap |        5000000 | 1,516.8 ns |  2.19 ns |  2.05 ns |
+|                         AddHashMap |       10000000 |   528.6 ns |  3.53 ns |  3.30 ns |
+|                     AddToFSharpMap |       10000000 | 1,156.6 ns |  2.61 ns |  2.44 ns |
+|             AddToFSharpAdaptiveMap |       10000000 |   503.4 ns |  4.18 ns |  3.91 ns |
+|                    AddToFSharpXMap |       10000000 |   875.8 ns | 12.69 ns | 11.87 ns |
+| AddToSystemCollectionsImmutableMap |       10000000 | 1,611.7 ns |  6.18 ns |  5.78 ns |
 ```
 
 ## Design decisions that may affect consumers of this library

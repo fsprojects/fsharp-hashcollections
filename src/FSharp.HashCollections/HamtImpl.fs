@@ -60,6 +60,25 @@ module internal HashTrie =
         | CompressedArray.MaxSize -> TrieNodeFull(nodes.Content)
         | _ -> TrieNode(nodes)
 
+    let addNodesToResolveConflict existingEntry newEntry existingEntryHash currentKeyHash shift =
+        let rec createRequiredDepthNodes shift =
+            let existingEntryIndex = getIndex existingEntryHash shift
+            let currentEntryIndex = getIndex currentKeyHash shift
+            if shift >= MaxShiftValue
+            then HashCollisionNode([ existingEntry; newEntry] ) // This is a hash collision node. We have reached max depth.
+            else
+                if existingEntryIndex <> currentEntryIndex
+                then
+                    let ca = 
+                        CompressedArray.ofTwoElements 
+                            existingEntryIndex (EntryNode existingEntry)
+                            currentEntryIndex (EntryNode newEntry)
+                    TrieNode(ca)
+                else
+                    let subNode = createRequiredDepthNodes (shift + PartitionSize)
+                    TrieNodeOne(existingEntryIndex, subNode)
+        createRequiredDepthNodes shift
+
     let inline add (keyExtractor: 'tknode -> 'tk) (knode: 'tknode) (hashMap: HashTrieRoot<'tknode, 'teq>) : HashTrieRoot<'tknode, 'teq> =
         let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
         let inline equals x y = eqTemplate.Equals(x, y)
@@ -67,24 +86,6 @@ module internal HashTrie =
 
         let key = keyExtractor knode
         let keyHash = hash key
-
-        let addNodesToResolveConflict existingEntry newEntry existingEntryHash currentKeyHash shift =
-            let rec createRequiredDepthNodes shift =
-                let existingEntryIndex = getIndex existingEntryHash shift
-                let currentEntryIndex = getIndex currentKeyHash shift
-                if shift >= MaxShiftValue
-                then HashCollisionNode([ existingEntry; newEntry] ) // This is a hash collision node. We have reached max depth.
-                else
-                    if existingEntryIndex <> currentEntryIndex
-                    then
-                        TrieNode(
-                            CompressedArray.ofTwoElements 
-                                existingEntryIndex (EntryNode existingEntry)
-                                currentEntryIndex (EntryNode newEntry))
-                    else
-                        let subNode = createRequiredDepthNodes (shift + PartitionSize)
-                        TrieNodeOne(existingEntryIndex, subNode)
-            createRequiredDepthNodes shift
 
         let rec addRec node shift =
             match node with
@@ -149,7 +150,7 @@ module internal HashTrie =
         let struct (newRootData, isAdded) = addRec hashMap.RootData 0
 
         { CurrentCount = if isAdded then hashMap.CurrentCount + 1 else hashMap.CurrentCount
-          RootData = newRootData }
+          RootData = newRootData }  
 
     /// Takes in an empty root and creates a populated structure using the sequence given.
     /// NOTE: This is not thread safe andd violates immutability when passed in - safe to use for new instances.
@@ -163,25 +164,7 @@ module internal HashTrie =
             let key = keyExtractor knode
             let keyHash = hash key
 
-            let addNodesToResolveConflict existingEntry newEntry existingEntryHash currentKeyHash shift =
-                let rec createRequiredDepthNodes shift =
-                    let existingEntryIndex = getIndex existingEntryHash shift
-                    let currentEntryIndex = getIndex currentKeyHash shift
-                    if shift >= MaxShiftValue
-                    then HashCollisionNode([ existingEntry; newEntry] ) // This is a hash collision node. We have reached max depth.
-                    else
-                        if existingEntryIndex <> currentEntryIndex
-                        then
-                            let ca = 
-                                CompressedArray.ofTwoElements 
-                                    existingEntryIndex (EntryNode existingEntry)
-                                    currentEntryIndex (EntryNode newEntry)
-                            TrieNode(ca)
-                        else
-                            let subNode = createRequiredDepthNodes (shift + PartitionSize)
-                            TrieNodeOne(existingEntryIndex, subNode)
-                createRequiredDepthNodes shift
-
+            // Because we are using a high branching factor this almost always hits. This is the slow method which causes issues with ofSeq methods.
             let rec trieNode nodes shift =     
                 let index = getIndex keyHash shift
                 let bit = CompressedArray.getBitMapForIndex index
@@ -206,11 +189,8 @@ module internal HashTrie =
 
             and trieNodeFull node (nodes: _ array) shift =
                 let index = getIndex keyHash shift
-                let nodeAtPos = nodes.[index]
-                let struct (newPosNode, isAdded) = 
-                    if box nodeAtPos |> isNull 
-                    then struct (EntryNode knode, true)
-                    else addRec nodeAtPos (shift + PartitionSize)
+                let nodeAtPos = nodes.[index] // This always returns something at this stage, never null.
+                let struct (newPosNode, isAdded) = addRec nodeAtPos (shift + PartitionSize)
                 nodes.[index] <- newPosNode
                 struct (node, isAdded)
 
