@@ -12,7 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- <Compile Include="Program.fs" /> -->
+    <Compile Include="ReadBenchmark.fs" />
+    <Compile Include="AddBenchmark.fs" />
+    <Compile Include="OfSeqBenchmark.fs" />
     <Compile Include="BenchmarkProgram.fs" />
   </ItemGroup>
 

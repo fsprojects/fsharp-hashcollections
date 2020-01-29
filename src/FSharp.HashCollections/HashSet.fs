@@ -1,8 +1,5 @@
 module FSharp.HashCollections.HashSet
 
-let inline internal keyExtractor hme = hme.Key
-let inline internal valueExtractor hme = hme.Value
-
 let contains (k: 'tk) (hashMap: HashSet<'tk, 'teq>) : bool = 
     HashTrie.tryFind id id k hashMap.HashTrieRoot |> ValueOption.isSome
 
@@ -10,7 +7,7 @@ let add (k: 'tk) (hashMap: HashSet<'tk, 'teq>) =
     HashTrie.add id k hashMap.HashTrieRoot |> HashSet
 
 let remove (k: 'tk) (hashMap: HashSet<'tk, 'teq>) = 
-    HashTrie.remove id k hashMap.HashTrieRoot |> HashSet
+    HashTrie.removeAll id [ k ] hashMap.HashTrieRoot |> HashSet
 
 let count (h: HashSet<_, _>) = HashTrie.count h.HashTrieRoot
 

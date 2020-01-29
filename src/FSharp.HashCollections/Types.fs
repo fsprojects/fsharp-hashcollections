@@ -22,7 +22,7 @@ type StandardEqualityTemplate<'tk when 'tk :> IEquatable<'tk> and 'tk : equality
         [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
         member __.GetHashCode(o) = o.GetHashCode()
 
-type [<IsReadOnly; Struct>] internal HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
+//type [<IsReadOnly; Struct>] internal HashMapEntry<'tk, 'tv> = { Key: 'tk; Value: 'tv }
 
 type internal HashTrieNode<'tk> =
     | TrieNodeFull of nodes: HashTrieNode<'tk> array
@@ -38,7 +38,7 @@ type [<Struct; IsReadOnly>] internal HashTrieRoot<'tk, 'teq> = {
 
 /// Immutable hash map.
 type [<Struct; IsReadOnly>] HashMap<'tk, 'tv, 'teq> = 
-    val internal HashTrieRoot: HashTrieRoot<HashMapEntry<'tk, 'tv>, 'teq>
+    val internal HashTrieRoot: HashTrieRoot<KeyValuePair<'tk, 'tv>, 'teq>
     internal new(d) = { HashTrieRoot = d }
 
 /// Immutable hash set.
