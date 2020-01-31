@@ -4,6 +4,8 @@ Persistent hash based map implementation
 
 Made for my own purposes the goal is to allow faster lookup table performance in F#. After testing some the built in F# Map and other collection implementations across the .NET ecosystem and not being totally satisfied with either the performance and/or the API compromises exposed I decided to code my own for both fun and profit. This is the end result implemented using a standard HAMT (Hash Mapped Array Trie).
 
+[![NuGet Badge](http://img.shields.io/nuget/v/protobuf-net-fsharp.svg?style=flat)](https://www.nuget.org/packages/FSharp.HashCollections)
+
 ## Goals
 
 1) More efficient persistent collection type where F#'s Map type isn't fast enough.
