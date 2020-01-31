@@ -10,7 +10,7 @@
     <PackageDescription>Immutable hash collections</PackageDescription>
     <PackageVersion>0.0.1</PackageVersion>
     <Authors>mvkara</Authors>
-    <PackageTags>fsharp;collections;hamt;hashmap;hashset</PackageTags>
+    <PackageTags>fsharp;collections;hamt;hashmap;hashset;map;set</PackageTags>
     <RepositoryUrl>https://github.com/mvkara/fsharp-hashcollections</RepositoryUrl>
     <license>MIT</license>
   </PropertyGroup>
