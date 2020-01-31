@@ -11,7 +11,7 @@ let add (k: 'tk) (v: 'tv) (hashMap: HashMap<'tk, 'tv, 'teq>) =
     HashTrie.add keyExtractor (KeyValuePair<_, _>(k, v)) hashMap.HashTrieRoot |> HashMap
 
 let remove (k: 'tk) (hashMap: HashMap<'tk, 'tv, 'teq>) = 
-    HashTrie.removeAll keyExtractor [k] hashMap.HashTrieRoot |> HashMap
+    HashTrie.remove keyExtractor k hashMap.HashTrieRoot |> HashMap
 
 let count (h: HashMap<_, _, _>) = HashTrie.count h.HashTrieRoot
 

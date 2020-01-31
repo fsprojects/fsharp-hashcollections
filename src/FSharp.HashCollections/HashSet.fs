@@ -7,7 +7,7 @@ let add (k: 'tk) (hashMap: HashSet<'tk, 'teq>) =
     HashTrie.add id k hashMap.HashTrieRoot |> HashSet
 
 let remove (k: 'tk) (hashMap: HashSet<'tk, 'teq>) = 
-    HashTrie.removeAll id [ k ] hashMap.HashTrieRoot |> HashSet
+    HashTrie.remove id k hashMap.HashTrieRoot |> HashSet
 
 let count (h: HashSet<_, _>) = HashTrie.count h.HashTrieRoot
 

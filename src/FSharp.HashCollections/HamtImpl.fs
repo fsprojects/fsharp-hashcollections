@@ -244,79 +244,73 @@ module internal HashTrie =
         for itemToAdd in knode do state <- folder state itemToAdd
         state
 
-    let inline removeAll keyExtractor (keys: #seq<'tk>) (hashMap: HashTrieRoot< 'tknode, 'teq>) =
+    let inline remove keyExtractor (k: 'tk) (hashMap: HashTrieRoot< 'tknode, 'teq>) =
         let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
         let inline equals (x: 'tk) (y: 'tk) = eqTemplate.Equals(x, y)
         let inline hash (o: 'tk) = eqTemplate.GetHashCode(o)
 
-        let removeInner hashMap k =
-            let keyHash = hash k
-            let rec traverseNodes node nodes shift =
-                let index = getIndex keyHash shift
-                match nodes |> CompressedArray.get index with
-                | ValueSome(subNode) ->
-                    let struct (newSubNodeList, didWeRemove) =
-                        match subNode with
-                        | TrieNode subNodes ->
-                            let (struct (childNodeOpt, didWeRemove)) = traverseNodes subNode subNodes (shift + PartitionSize)
-                            match childNodeOpt with
-                            | ValueSome(childNode) -> struct (nodes |> CompressedArray.set index childNode, didWeRemove)
-                            | ValueNone -> struct (nodes |> CompressedArray.unset index, didWeRemove)
-                        | TrieNodeFull(subNodes) ->
-                            let (struct (childNodeOpt, didWeRemove)) = traverseNodes subNode (CompressedArray.ofArray subNodes) (shift + PartitionSize)
-                            match childNodeOpt with
-                            | ValueSome(childNode) -> struct (nodes |> CompressedArray.set index childNode, didWeRemove)
-                            | ValueNone -> struct (nodes |> CompressedArray.unset index, didWeRemove)
-                        | EntryNode entry ->
-                            if equals (keyExtractor entry) k
-                            then struct (nodes |> CompressedArray.unset index, true)
-                            else struct (nodes, false) // Same hash but different key, don't remove.
-                        | HashCollisionNode collisions ->
-                            // TODO: This could be further optimised but hash collisions should be unlikely.
-                            let newList = collisions |> List.filter (fun x -> equals (keyExtractor x) k |> not)
-                            let didWeRemove = collisions |> List.exists (fun x -> equals (keyExtractor x) k)
-                            match newList with
-                            | [ entry ] -> struct (nodes |> CompressedArray.set index (EntryNode entry), didWeRemove) // Project parent node to hash collision and unset where this node was.
-                            | _ :: _ -> struct (nodes |> CompressedArray.set index (HashCollisionNode(newList)), didWeRemove)
-                            | [] -> failwithf "This should never happen; hash collision nodes should always have more than one entry"
-                        | TrieNodeOne(nodeIndex, node) ->
-                            let nodeAsCArray = CompressedArray.ofSingleElement nodeIndex node
-                            let (struct (childNodeOpt, didWeRemove)) = traverseNodes node nodeAsCArray (shift + PartitionSize)
-                            match childNodeOpt with
-                            | ValueSome(childNode) -> struct (nodes |> CompressedArray.set index childNode, didWeRemove)
-                            | ValueNone -> struct (CompressedArray.empty, didWeRemove)
-                    if newSubNodeList |> CompressedArray.count = 0
-                    then struct (ValueNone, didWeRemove)
-                    else struct (ValueSome (createTrieNode (newSubNodeList)), didWeRemove)
-                | ValueNone -> struct (ValueSome node, false)
-
-            let rootIndex = getIndex keyHash 0
-            // Need to start the chain. This is harder since we need knowledge of two levels at once (current + sublevel)
-            // This is because deletions on a sub-level can mean we create a different node on the current level.
-            let changeAndRemovalStatus =
-                match hashMap.RootData with
-                | TrieNode(nodes) -> traverseNodes hashMap.RootData nodes 0
-                | TrieNodeFull(nodes) -> traverseNodes hashMap.RootData (CompressedArray.ofFullArrayAsTransient nodes) 0
-                | TrieNodeOne(nodeIndex, node) ->
-                    if nodeIndex = rootIndex
-                    then
-                        let subNodesEmulated = CompressedArray.ofSingleElement nodeIndex node
-                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes hashMap.RootData subNodesEmulated 0
+        let keyHash = hash k
+        let rec traverseNodes node nodes shift =
+            let index = getIndex keyHash shift
+            match nodes |> CompressedArray.get index with
+            | ValueSome(subNode) ->
+                let struct (newSubNodeList, didWeRemove) =
+                    match subNode with
+                    | TrieNode subNodes ->
+                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes subNode subNodes (shift + PartitionSize)
                         match childNodeOpt with
-                        | ValueSome(childNode) -> struct (ValueSome (TrieNodeOne(nodeIndex, childNode)), didWeRemove)
-                        | ValueNone -> struct (ValueNone, didWeRemove)
-                    else struct (ValueSome hashMap.RootData, false)
-                | _ -> failwithf "Not expected for other node types to be at root position [RootNode: %A]" hashMap.RootData
+                        | ValueSome(childNode) -> struct (nodes |> CompressedArray.set index childNode, didWeRemove)
+                        | ValueNone -> struct (nodes |> CompressedArray.unset index, didWeRemove)
+                    | TrieNodeFull(subNodes) ->
+                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes subNode (CompressedArray.ofArray subNodes) (shift + PartitionSize)
+                        match childNodeOpt with
+                        | ValueSome(childNode) -> struct (nodes |> CompressedArray.set index childNode, didWeRemove)
+                        | ValueNone -> struct (nodes |> CompressedArray.unset index, didWeRemove)
+                    | EntryNode entry ->
+                        if equals (keyExtractor entry) k
+                        then struct (nodes |> CompressedArray.unset index, true)
+                        else struct (nodes, false) // Same hash but different key, don't remove.
+                    | HashCollisionNode collisions ->
+                        // TODO: This could be further optimised but hash collisions should be unlikely.
+                        let newList = collisions |> List.filter (fun x -> equals (keyExtractor x) k |> not)
+                        let didWeRemove = collisions |> List.exists (fun x -> equals (keyExtractor x) k)
+                        match newList with
+                        | [ entry ] -> struct (nodes |> CompressedArray.set index (EntryNode entry), didWeRemove) // Project parent node to hash collision and unset where this node was.
+                        | _ :: _ -> struct (nodes |> CompressedArray.set index (HashCollisionNode(newList)), didWeRemove)
+                        | [] -> failwithf "This should never happen; hash collision nodes should always have more than one entry"
+                    | TrieNodeOne(nodeIndex, node) ->
+                        let nodeAsCArray = CompressedArray.ofSingleElement nodeIndex node
+                        let (struct (childNodeOpt, didWeRemove)) = traverseNodes node nodeAsCArray (shift + PartitionSize)
+                        match childNodeOpt with
+                        | ValueSome(childNode) -> struct (nodes |> CompressedArray.set index childNode, didWeRemove)
+                        | ValueNone -> struct (CompressedArray.empty, didWeRemove)
+                if newSubNodeList |> CompressedArray.count = 0
+                then struct (ValueNone, didWeRemove)
+                else struct (ValueSome (createTrieNode (newSubNodeList)), didWeRemove)
+            | ValueNone -> struct (ValueSome node, false)
 
-            match changeAndRemovalStatus with
-            | struct (ValueSome newRootNode, true) -> { CurrentCount = hashMap.CurrentCount - 1; RootData = newRootNode; }
-            | struct (ValueNone, true) -> { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty); }
-            | struct (_, false) -> hashMap // If no removal then no change required (unlike Add where replace could occur).
+        let rootIndex = getIndex keyHash 0
+        // Need to start the chain. This is harder since we need knowledge of two levels at once (current + sublevel)
+        // This is because deletions on a sub-level can mean we create a different node on the current level.
+        let changeAndRemovalStatus =
+            match hashMap.RootData with
+            | TrieNode(nodes) -> traverseNodes hashMap.RootData nodes 0
+            | TrieNodeFull(nodes) -> traverseNodes hashMap.RootData (CompressedArray.ofFullArrayAsTransient nodes) 0
+            | TrieNodeOne(nodeIndex, node) ->
+                if nodeIndex = rootIndex
+                then
+                    let subNodesEmulated = CompressedArray.ofSingleElement nodeIndex node
+                    let (struct (childNodeOpt, didWeRemove)) = traverseNodes hashMap.RootData subNodesEmulated 0
+                    match childNodeOpt with
+                    | ValueSome(childNode) -> struct (ValueSome (TrieNodeOne(nodeIndex, childNode)), didWeRemove)
+                    | ValueNone -> struct (ValueNone, didWeRemove)
+                else struct (ValueSome hashMap.RootData, false)
+            | _ -> failwithf "Not expected for other node types to be at root position [RootNode: %A]" hashMap.RootData
 
-        let mutable state = hashMap
-        for key in keys do
-            state <- removeInner hashMap key 
-        state
+        match changeAndRemovalStatus with
+        | struct (ValueSome newRootNode, true) -> { CurrentCount = hashMap.CurrentCount - 1; RootData = newRootNode; }
+        | struct (ValueNone, true) -> { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty); }
+        | struct (_, false) -> hashMap // If no removal then no change required (unlike Add where replace could occur).
 
     let public count hashMap = hashMap.CurrentCount
 
