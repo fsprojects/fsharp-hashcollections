@@ -12,7 +12,7 @@
     <Authors>mvkara</Authors>
     <PackageTags>fsharp;collections;hamt;hashmap;hashset;map;set</PackageTags>
     <RepositoryUrl>https://github.com/mvkara/fsharp-hashcollections</RepositoryUrl>
-    <license>MIT</license>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
