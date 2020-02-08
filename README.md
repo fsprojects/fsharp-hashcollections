@@ -47,14 +47,16 @@ let hashMapResult = HashSet.empty |> HashSet.add k |> HashSet.contains k // Resu
 
 ## Equality customisation
 
-All collections allow custom equality to be assigned if required. The equality is encoded as a type on the collection so equality and hashing operations are consistent. Same collection types with different equality comparers can not be used interchangeably by operations provided.  To use:
+By default any "empty" seeded HashSet/Map uses F# HashIdentity.Structural comparison to determine equality and calculate hashcodes. This is in line with the F# collection types.
+
+In addition all collection types allow custom equality to be assigned if required. The equality is encoded as a type on the collection so equality and hashing operations are consistent. Same collection types with different equality comparers can not be used interchangeably by operations provided.  To use:
 
 ```
 // Uses the default equality template provided.
-let defaultIntHashMap : HashMap<int, int64, StandardEqualityTemplate<int>> = HashMap.empty
+let defaultIntHashMap : HashMap<int, int64> = HashMap.empty
 
 // Uses a custom equality template provided by the type parameter.
-let defaultIntHashMap : HashMap<int, int64, CustomEqualityComparer> = HashMap.emptyWithComparer
+let customEqIntHashMap : HashMap<int, int64, CustomEqualityComparer> = HashMap.emptyWithComparer
 ```
 
 Any equality comparer specified in the type signature must:
@@ -69,6 +71,8 @@ Any equality comparer specified in the type signature must:
 
 Keys are of type int32 where "GetHashMap" represents this library's HashMap collection.
 
+All are using F# HashIdentity.Structural comparison.
+
 ```
 // * Summary *
 
@@ -79,62 +83,62 @@ AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
   DefaultJob : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT
 
 
-|                           Method | CollectionSize |        Mean |    Error |   StdDev |      Median |
-|--------------------------------- |--------------- |------------:|---------:|---------:|------------:|
-|                       GetHashMap |             10 |    11.00 ns | 0.073 ns | 0.069 ns |    10.96 ns |
-|                GetImToolsHashMap |             10 |    29.02 ns | 0.536 ns | 0.501 ns |    29.09 ns |
-|                     GetFSharpMap |             10 |    41.20 ns | 0.801 ns | 0.823 ns |    41.37 ns |
-|                GetFSharpXHashMap |             10 |   101.17 ns | 1.945 ns | 1.819 ns |   101.39 ns |
-| GetSystemCollectionsImmutableMap |             10 |    24.58 ns | 0.071 ns | 0.055 ns |    24.60 ns |
-|         GetFSharpDataAdaptiveMap |             10 |    21.83 ns | 0.020 ns | 0.019 ns |    21.82 ns |
-|                       GetHashMap |            100 |    13.31 ns | 0.019 ns | 0.017 ns |    13.31 ns |
-|                GetImToolsHashMap |            100 |    40.64 ns | 0.458 ns | 0.428 ns |    40.88 ns |
-|                     GetFSharpMap |            100 |    73.72 ns | 1.434 ns | 1.342 ns |    73.72 ns |
-|                GetFSharpXHashMap |            100 |   108.59 ns | 1.023 ns | 0.957 ns |   108.46 ns |
-| GetSystemCollectionsImmutableMap |            100 |    36.85 ns | 0.251 ns | 0.235 ns |    36.93 ns |
-|         GetFSharpDataAdaptiveMap |            100 |    43.33 ns | 0.010 ns | 0.009 ns |    43.33 ns |
-|                       GetHashMap |           1000 |    11.32 ns | 0.038 ns | 0.035 ns |    11.30 ns |
-|                GetImToolsHashMap |           1000 |    66.25 ns | 1.268 ns | 1.604 ns |    65.30 ns |
-|                     GetFSharpMap |           1000 |   108.31 ns | 0.645 ns | 0.539 ns |   108.33 ns |
-|                GetFSharpXHashMap |           1000 |   113.16 ns | 1.001 ns | 0.936 ns |   113.65 ns |
-| GetSystemCollectionsImmutableMap |           1000 |    53.02 ns | 0.099 ns | 0.093 ns |    53.04 ns |
-|         GetFSharpDataAdaptiveMap |           1000 |    65.17 ns | 0.326 ns | 0.305 ns |    65.31 ns |
-|                       GetHashMap |         100000 |    23.24 ns | 0.035 ns | 0.033 ns |    23.24 ns |
-|                GetImToolsHashMap |         100000 |   199.14 ns | 0.453 ns | 0.402 ns |   199.04 ns |
-|                     GetFSharpMap |         100000 |   198.27 ns | 1.502 ns | 1.405 ns |   197.49 ns |
-|                GetFSharpXHashMap |         100000 |   144.64 ns | 1.134 ns | 1.061 ns |   144.78 ns |
-| GetSystemCollectionsImmutableMap |         100000 |   143.96 ns | 0.092 ns | 0.086 ns |   143.93 ns |
-|         GetFSharpDataAdaptiveMap |         100000 |   141.12 ns | 0.051 ns | 0.043 ns |   141.11 ns |
-|                       GetHashMap |         500000 |    69.74 ns | 0.181 ns | 0.160 ns |    69.80 ns |
-|                GetImToolsHashMap |         500000 |   511.80 ns | 1.380 ns | 1.291 ns |   511.30 ns |
-|                     GetFSharpMap |         500000 |   303.07 ns | 3.629 ns | 3.394 ns |   301.08 ns |
-|                GetFSharpXHashMap |         500000 |   229.01 ns | 0.802 ns | 0.711 ns |   229.16 ns |
-| GetSystemCollectionsImmutableMap |         500000 |   319.15 ns | 1.387 ns | 1.298 ns |   318.45 ns |
-|         GetFSharpDataAdaptiveMap |         500000 |   303.75 ns | 0.156 ns | 0.146 ns |   303.77 ns |
-|                       GetHashMap |         750000 |    99.19 ns | 0.189 ns | 0.167 ns |    99.19 ns |
-|                GetImToolsHashMap |         750000 |   617.97 ns | 1.185 ns | 1.109 ns |   618.14 ns |
-|                     GetFSharpMap |         750000 |   405.86 ns | 7.103 ns | 6.644 ns |   404.11 ns |
-|                GetFSharpXHashMap |         750000 |   351.62 ns | 0.796 ns | 0.745 ns |   351.69 ns |
-| GetSystemCollectionsImmutableMap |         750000 |   407.29 ns | 0.302 ns | 0.283 ns |   407.26 ns |
-|         GetFSharpDataAdaptiveMap |         750000 |   348.77 ns | 0.198 ns | 0.175 ns |   348.73 ns |
-|                       GetHashMap |        1000000 |   106.21 ns | 0.156 ns | 0.130 ns |   106.17 ns |
-|                GetImToolsHashMap |        1000000 |   716.39 ns | 0.497 ns | 0.415 ns |   716.42 ns |
-|                     GetFSharpMap |        1000000 |   465.08 ns | 8.363 ns | 7.823 ns |   468.86 ns |
-|                GetFSharpXHashMap |        1000000 |   346.15 ns | 0.614 ns | 0.545 ns |   346.10 ns |
-| GetSystemCollectionsImmutableMap |        1000000 |   472.67 ns | 2.598 ns | 2.430 ns |   471.20 ns |
-|         GetFSharpDataAdaptiveMap |        1000000 |   392.68 ns | 1.090 ns | 0.966 ns |   392.89 ns |
-|                       GetHashMap |        5000000 |   134.10 ns | 0.031 ns | 0.026 ns |   134.10 ns |
-|                GetImToolsHashMap |        5000000 | 1,263.54 ns | 0.581 ns | 0.515 ns | 1,263.49 ns |
-|                     GetFSharpMap |        5000000 |   839.73 ns | 0.659 ns | 0.617 ns |   839.72 ns |
-|                GetFSharpXHashMap |        5000000 |   379.43 ns | 1.143 ns | 1.070 ns |   379.46 ns |
-| GetSystemCollectionsImmutableMap |        5000000 |   880.08 ns | 0.462 ns | 0.409 ns |   880.12 ns |
-|         GetFSharpDataAdaptiveMap |        5000000 |   610.11 ns | 0.837 ns | 0.783 ns |   609.90 ns |
-|                       GetHashMap |       10000000 |   149.55 ns | 0.029 ns | 0.026 ns |   149.54 ns |
-|                GetImToolsHashMap |       10000000 | 1,538.42 ns | 0.990 ns | 0.877 ns | 1,538.37 ns |
-|                     GetFSharpMap |       10000000 | 1,024.58 ns | 1.056 ns | 0.988 ns | 1,024.54 ns |
-|                GetFSharpXHashMap |       10000000 |   384.30 ns | 0.744 ns | 0.696 ns |   384.38 ns |
-| GetSystemCollectionsImmutableMap |       10000000 | 1,031.06 ns | 0.547 ns | 0.511 ns | 1,031.02 ns |
-|         GetFSharpDataAdaptiveMap |       10000000 |   705.51 ns | 0.449 ns | 0.398 ns |   705.42 ns |
+|                           Method | CollectionSize |        Mean |    Error |   StdDev |
+|--------------------------------- |--------------- |------------:|---------:|---------:|
+|                       GetHashMap |             10 |    11.07 ns | 0.071 ns | 0.063 ns |
+|                GetImToolsHashMap |             10 |    28.52 ns | 0.203 ns | 0.190 ns |
+|                     GetFSharpMap |             10 |    39.55 ns | 0.540 ns | 0.505 ns |
+|                GetFSharpXHashMap |             10 |   103.17 ns | 1.195 ns | 1.118 ns |
+| GetSystemCollectionsImmutableMap |             10 |    24.38 ns | 0.318 ns | 0.298 ns |
+|         GetFSharpDataAdaptiveMap |             10 |    21.88 ns | 0.088 ns | 0.082 ns |
+|                       GetHashMap |            100 |    15.80 ns | 0.027 ns | 0.025 ns |
+|                GetImToolsHashMap |            100 |    42.50 ns | 0.831 ns | 0.816 ns |
+|                     GetFSharpMap |            100 |    70.69 ns | 1.385 ns | 1.595 ns |
+|                GetFSharpXHashMap |            100 |   114.97 ns | 1.520 ns | 1.422 ns |
+| GetSystemCollectionsImmutableMap |            100 |    36.47 ns | 0.349 ns | 0.327 ns |
+|         GetFSharpDataAdaptiveMap |            100 |    43.15 ns | 0.098 ns | 0.082 ns |
+|                       GetHashMap |           1000 |    12.83 ns | 0.017 ns | 0.014 ns |
+|                GetImToolsHashMap |           1000 |    63.37 ns | 0.473 ns | 0.442 ns |
+|                     GetFSharpMap |           1000 |   107.45 ns | 0.750 ns | 0.702 ns |
+|                GetFSharpXHashMap |           1000 |   121.31 ns | 2.338 ns | 2.187 ns |
+| GetSystemCollectionsImmutableMap |           1000 |    55.16 ns | 0.103 ns | 0.097 ns |
+|         GetFSharpDataAdaptiveMap |           1000 |    66.20 ns | 0.463 ns | 0.433 ns |
+|                       GetHashMap |         100000 |    26.30 ns | 0.011 ns | 0.008 ns |
+|                GetImToolsHashMap |         100000 |   197.11 ns | 0.222 ns | 0.196 ns |
+|                     GetFSharpMap |         100000 |   192.56 ns | 2.011 ns | 1.680 ns |
+|                GetFSharpXHashMap |         100000 |   144.00 ns | 0.673 ns | 0.630 ns |
+| GetSystemCollectionsImmutableMap |         100000 |   141.04 ns | 0.067 ns | 0.062 ns |
+|         GetFSharpDataAdaptiveMap |         100000 |   141.15 ns | 0.867 ns | 0.811 ns |
+|                       GetHashMap |         500000 |    71.60 ns | 0.108 ns | 0.090 ns |
+|                GetImToolsHashMap |         500000 |   502.08 ns | 1.257 ns | 1.114 ns |
+|                     GetFSharpMap |         500000 |   305.92 ns | 3.317 ns | 3.103 ns |
+|                GetFSharpXHashMap |         500000 |   235.47 ns | 1.090 ns | 0.966 ns |
+| GetSystemCollectionsImmutableMap |         500000 |   314.52 ns | 0.540 ns | 0.505 ns |
+|         GetFSharpDataAdaptiveMap |         500000 |   301.50 ns | 1.213 ns | 1.135 ns |
+|                       GetHashMap |         750000 |   100.81 ns | 0.036 ns | 0.032 ns |
+|                GetImToolsHashMap |         750000 |   629.57 ns | 0.300 ns | 0.266 ns |
+|                     GetFSharpMap |         750000 |   391.61 ns | 7.643 ns | 7.149 ns |
+|                GetFSharpXHashMap |         750000 |   356.89 ns | 0.542 ns | 0.507 ns |
+| GetSystemCollectionsImmutableMap |         750000 |   391.42 ns | 0.764 ns | 0.715 ns |
+|         GetFSharpDataAdaptiveMap |         750000 |   354.98 ns | 0.241 ns | 0.225 ns |
+|                       GetHashMap |        1000000 |   113.54 ns | 0.356 ns | 0.333 ns |
+|                GetImToolsHashMap |        1000000 |   692.17 ns | 1.626 ns | 1.521 ns |
+|                     GetFSharpMap |        1000000 |   469.54 ns | 2.890 ns | 2.703 ns |
+|                GetFSharpXHashMap |        1000000 |   349.94 ns | 1.032 ns | 0.965 ns |
+| GetSystemCollectionsImmutableMap |        1000000 |   484.46 ns | 0.480 ns | 0.425 ns |
+|         GetFSharpDataAdaptiveMap |        1000000 |   387.18 ns | 0.320 ns | 0.284 ns |
+|                       GetHashMap |        5000000 |   142.23 ns | 0.050 ns | 0.047 ns |
+|                GetImToolsHashMap |        5000000 | 1,282.78 ns | 0.596 ns | 0.558 ns |
+|                     GetFSharpMap |        5000000 |   851.10 ns | 1.426 ns | 1.334 ns |
+|                GetFSharpXHashMap |        5000000 |   375.16 ns | 0.812 ns | 0.719 ns |
+| GetSystemCollectionsImmutableMap |        5000000 |   850.68 ns | 0.405 ns | 0.359 ns |
+|         GetFSharpDataAdaptiveMap |        5000000 |   608.75 ns | 0.250 ns | 0.233 ns |
+|                       GetHashMap |       10000000 |   158.64 ns | 0.110 ns | 0.097 ns |
+|                GetImToolsHashMap |       10000000 | 1,565.47 ns | 1.311 ns | 1.227 ns |
+|                     GetFSharpMap |       10000000 | 1,041.04 ns | 1.536 ns | 1.436 ns |
+|                GetFSharpXHashMap |       10000000 |   406.87 ns | 0.664 ns | 0.621 ns |
+| GetSystemCollectionsImmutableMap |       10000000 | 1,016.19 ns | 2.372 ns | 2.218 ns |
+|         GetFSharpDataAdaptiveMap |       10000000 |   702.30 ns | 2.080 ns | 1.946 ns |
 ```
 
 ### Add on HashMap
