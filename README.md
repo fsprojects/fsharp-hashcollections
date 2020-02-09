@@ -67,7 +67,7 @@ Any equality comparer specified in the type signature must:
 - Implement IEqualityComparer<> for either the contents (HashSet) or the key (HashMap).
 - (Optional): Be a struct type. This is recommended for performance as it produces more optimised equality checking code at runtime.
 
-An example with the type "Int" for the custom equality comparer:
+An example with the type "Int" for the custom equality comparer (which in testing exhibits slightly faster perf than the default):
 
 ```
 type IntEqualityTemplate = 
