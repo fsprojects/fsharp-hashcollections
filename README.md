@@ -67,6 +67,20 @@ Any equality comparer specified in the type signature must:
 - Implement IEqualityComparer<> for either the contents (HashSet) or the key (HashMap).
 - (Optional): Be a struct type. This is recommended for performance as it produces more optimised equality checking code at runtime.
 
+An example with the type "Int" for the custom equality comparer:
+
+```
+type IntEqualityTemplate = 
+    struct end
+    interface System.Collections.Generic.IEqualityComparer<int> with
+        member __.Equals(x: int, y: int): bool = x = y
+        member __.GetHashCode(obj: int): int = hash obj // Or just obj
+
+module Usage =
+    // Type is HashMap<int, int64, IntEqualityTemplate>
+    let empty = HashMap.emptyWithComparer<_, int64, IntEqualityTemplate>
+```
+
 ## Performance
 
 ### TryFind on HashMap
