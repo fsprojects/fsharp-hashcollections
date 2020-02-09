@@ -13,9 +13,14 @@ module internal HashTrie =
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask
     let inline getIndex keyHash shift = getIndexNoShift (keyHash >>> shift)
 
-    let inline tryFind (keyExtractor: 'tknode -> 'tk) (valueExtractor: 'tknode -> 'tv) (k: 'tk) (hashMap: HashTrieRoot<'tknode, 'teq>) : 'tv voption =
-        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
+    let inline tryFind 
+        (keyExtractor: 'tknode -> 'tk) (valueExtractor: 'tknode -> 'tv) 
+        (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
+        (k: 'tk) 
+        (hashMap: HashTrieRoot<'tknode>) : 'tv voption =
         
+        let keyHash = eqTemplate.GetHashCode(k)
+
         let inline tryFindValueInList (l : _ list) =
             let rec findInList currentList =
                 match currentList with
@@ -51,8 +56,6 @@ module internal HashTrie =
                 if eqTemplate.Equals(extractedKey, k) then ValueSome (valueExtractor entry) else ValueNone
             | HashCollisionNode entries -> tryFindValueInList entries
 
-        let keyHash = eqTemplate.GetHashCode(k)
-
         getRec hashMap.RootData keyHash
 
     let inline createTrieNode (nodes: CompressedArray<_>) =
@@ -79,8 +82,12 @@ module internal HashTrie =
                     TrieNodeOne(existingEntryIndex, subNode)
         createRequiredDepthNodes shift
 
-    let inline add (keyExtractor: 'tknode -> 'tk) (knode: 'tknode) (hashMap: HashTrieRoot<'tknode, 'teq>) : HashTrieRoot<'tknode, 'teq> =
-        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
+    let inline add 
+        (keyExtractor: 'tknode -> 'tk) 
+        (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
+        (knode: 'tknode) 
+        (hashMap: HashTrieRoot<'tknode>) : HashTrieRoot<'tknode> =
+
         let inline equals x y = eqTemplate.Equals(x, y)
         let inline hash o = eqTemplate.GetHashCode(o)
 
@@ -154,8 +161,11 @@ module internal HashTrie =
 
     /// Takes in an empty root and creates a populated structure using the sequence given.
     /// NOTE: This is not thread safe andd violates immutability when passed in - safe to use for new instances.
-    let inline ofSeq (keyExtractor: 'tknode -> 'tk) (knode: #seq<'tknode>) (hashMap: HashTrieRoot<'tknode, 'teq>) : HashTrieRoot<'tknode, 'teq> =
-        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
+    let inline ofSeq 
+        (keyExtractor: 'tknode -> 'tk) 
+        (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
+        (knode: #seq<'tknode>) 
+        (hashMap: HashTrieRoot<'tknode>) : HashTrieRoot<'tknode> =
         let inline equals x y = eqTemplate.Equals(x, y)
         let inline hash o = eqTemplate.GetHashCode(o)
 
@@ -244,8 +254,12 @@ module internal HashTrie =
         for itemToAdd in knode do state <- folder state itemToAdd
         state
 
-    let inline remove keyExtractor (k: 'tk) (hashMap: HashTrieRoot< 'tknode, 'teq>) =
-        let eqTemplate = EqualityTemplateLookup.eqComparer<'tk, 'teq>
+    let inline remove 
+        keyExtractor
+        (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
+        (k: 'tk) 
+        (hashMap: HashTrieRoot< 'tknode>) =
+
         let inline equals (x: 'tk) (y: 'tk) = eqTemplate.Equals(x, y)
         let inline hash (o: 'tk) = eqTemplate.GetHashCode(o)
 
@@ -314,7 +328,7 @@ module internal HashTrie =
 
     let public count hashMap = hashMap.CurrentCount
 
-    let public toSeq (hashMap: HashTrieRoot<_, _>) =
+    let public toSeq (hashMap: HashTrieRoot<_>) =
         let rec yieldNodes node = seq {
             match node with
             | TrieNode(nodes) -> for node in nodes.Content do yield! yieldNodes node
@@ -329,9 +343,5 @@ module internal HashTrie =
     let isEmpty hashMap = hashMap.CurrentCount > 0
 
     [<GeneralizableValue>] 
-    let emptyWithComparer< 'tk, 'eq when 'eq : (new : unit -> 'eq)> : HashTrieRoot< ^tk, 'eq> =
+    let empty< 'tk, 'eq when 'eq : (new : unit -> 'eq)> : HashTrieRoot< ^tk> =
         { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
-
-    [<GeneralizableValue>] 
-    let public empty<'tk when 'tk :> IEquatable<'tk> and 'tk : equality> : HashTrieRoot< 'tk, StandardEqualityTemplate<'tk>> =
-        emptyWithComparer<'tk, StandardEqualityTemplate<'tk>>
