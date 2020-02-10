@@ -15,7 +15,7 @@ let emptyWithComparer<'tk, 'teq when 'teq :> System.Collections.Generic.IEqualit
     let eqTemplate = new 'teq()
     HashSet<_, _>(HashTrie.empty, eqTemplate)
 
-let empty<'tk when 'tk :> System.IEquatable<'tk> and 'tk : equality> : HashSet<'tk> = 
+let empty<'tk when 'tk : equality> : HashSet<'tk> = 
     HashSet<'tk>(HashTrie.empty, HashIdentity.Structural)
 
 let toSeq (h: HashSet<'tk, _>) : 'tk seq = h.HashTrieRoot |> HashTrie.toSeq
