@@ -25,7 +25,8 @@ Made for my own purposes the goal is to allow faster lookup table performance in
 
 - Large collections at acceptable performance (e.g. 500,000+ elements).
 - Immutability of large/deep object graphs without the associated performance cost of changing data deep in the hierarchy. 
-  - Instead of using the record copy syntax to change elements deep in records flatten out of object and use HashMaps instead joining by key. Often useful to store a large hierarchy of state and update it in an atomic fashion.
+  - A common pattern when changing data deep in nested records. Instead of using the record copy syntax to change these flatten out of object and use HashMaps instead joining by key. Often useful to store a large hierarchy of state and update it in an atomic fashion.
+- Where the key type of the Map would otherwise not work with standard F# collections since it does not implement IComparable.
 
 ## Collection Types Provided
 
