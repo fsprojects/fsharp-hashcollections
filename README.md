@@ -8,10 +8,24 @@ Made for my own purposes the goal is to allow faster lookup table performance in
 
 ## Goals
 
-1) More efficient persistent collection type where F#'s Map type isn't fast enough.
+1) More efficient persistent collection type where F#'s Map type isn't fast enough. 
+  - At time of writing this was the fastest immutable collections library in the .NET ecosystem I could find (including BCL classes). See benchmarks for details.
+  - Tailor the algorithms used to the .NET ecosystem to achieve better performance.
 2) Allow a range of key types and equality logic to be used even if provided by consumers without sacrificing performance (e.g. no need for keys to be comparable).
+  - Custom equality comparers can be provided, unlike the standard F# Map/Set data types.
 3) Provide an idiomatic API to F#. The library ideally should allow C# usage/interop if required.
+  - HashMap and HashSet static classes are usable from C# as wrappers. Performance optimisations (e.g. inlining) are applied at compile time where possible.
 4) Maintainable to an average F# developer.
+  - For example minimising inheritance/object hierarchies and casting (unlike some other impl's I've seen), performant whilst still idiomatic code, etc.
+  - Use F# strengths to increase performance further (e.g. inlining + DU's to avoid method calls and copying overhead affecting struct key performance).
+
+**TLDR; Benefits of immutable collections while minimising the cost (e.g. performance, maintainable code, idiomatic code, etc).**
+
+## Use Cases
+
+- Large collections at acceptable performance (e.g. 500,000+ elements).
+- Immutability of large/deep object graphs without the associated performance cost of changing data deep in the hierarchy. 
+  - Instead of using the record copy syntax to change elements deep in records flatten out of object and use HashMaps instead joining by key. Often useful to store a large hierarchy of state and update it in an atomic fashion.
 
 ## Collection Types Provided
 
