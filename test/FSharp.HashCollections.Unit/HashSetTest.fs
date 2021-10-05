@@ -3,39 +3,40 @@ module FSharp.HashCollections.HashSetTest
 open Expecto
 open FsCheck
 open FSharp.HashCollections
+open System
 
 // List of actions to generate
-type SetAction<'k> = 
-    | Add of k: 'k 
+type SetAction<'k> =
+    | Add of k: 'k
     | Remove of k: 'k
 
-let inline setAndHashSetAreTheSameAfterActions (actions: SetAction<'tk> list) = 
-    
+let inline setAndHashSetAreTheSameAfterActions (actions: SetAction<'tk> list) =
+
     let mutable mapToTest = Set.empty
     let mutable hashTrieToTest = HashSet.empty
-    
-    for action in actions do 
+
+    for action in actions do
         match action with
-        | Add(k) -> 
+        | Add(k) ->
             mapToTest <- mapToTest |> Set.add k
             hashTrieToTest <- hashTrieToTest |> HashSet.add k
         | Remove k ->
             mapToTest <- mapToTest |> Set.remove k
             hashTrieToTest <- hashTrieToTest |> HashSet.remove k
-        Expect.equal 
-            (hashTrieToTest |> HashSet.toSeq |> set) 
+        Expect.equal
+            (hashTrieToTest |> HashSet.toSeq |> set)
             (mapToTest |> Set.toSeq |> set)
             "Hash Trie and Map don't contain same data"
 
-let inline setAndHashSetHaveSameContainsValue (actions: SetAction<'tk> list) = 
-    
+let inline setAndHashSetHaveSameContainsValue (actions: SetAction<'tk> list) =
+
     let mutable mapToTest = Set.empty
     let mutable hashTrieToTest = HashSet.empty
-    
-    for action in actions do 
+
+    for action in actions do
         let mutable key = Unchecked.defaultof<'tk>
         match action with
-        | Add(k) -> 
+        | Add(k) ->
             mapToTest <- mapToTest |> Set.add k
             hashTrieToTest <- hashTrieToTest |> HashSet.add k
             key <- k
@@ -47,14 +48,14 @@ let inline setAndHashSetHaveSameContainsValue (actions: SetAction<'tk> list) =
         let hashTrieResult = hashTrieToTest |> HashSet.contains key
         Expect.equal hashTrieResult mapResult "Key update did not hold"
 
-let inline setAndHashSetHaveSameCountAtAllTimes (actions: SetAction<'tk> list) = 
+let inline setAndHashSetHaveSameCountAtAllTimes (actions: SetAction<'tk> list) =
     let mutable mapToTest = Set.empty
     let mutable hashTrieToTest = HashSet.empty
-    
-    for action in actions do 
+
+    for action in actions do
         let mutable key = Unchecked.defaultof<'tk>
         match action with
-        | Add(k) -> 
+        | Add(k) ->
             mapToTest <- mapToTest |> Set.add k
             hashTrieToTest <- hashTrieToTest |> HashSet.add k
             key <- k
@@ -66,36 +67,47 @@ let inline setAndHashSetHaveSameCountAtAllTimes (actions: SetAction<'tk> list) =
         let hashTrieResult = hashTrieToTest |> HashSet.count
         Expect.equal hashTrieResult mapResult "Count isn't equal"
 
-let buildPropertyTest testName (testFunction: SetAction<int64> list -> _) = 
-    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }    
+let buildPropertyTest testName (testFunction: SetAction<int64> list -> _) =
+    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }
+    testCase testName <| fun () -> Check.One(config, testFunction)
+
+let buildGenericPropertyTest testName (testFunction: _ -> _) =
+    let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }
     testCase testName <| fun () -> Check.One(config, testFunction)
 
 let inline generateLargeSizeMapTest() =
   testCase
     "Large map test of more than one depth"
-    (fun () -> 
+    (fun () ->
       let testData = Array.init 100000 id
       let result = testData |> Array.fold (fun s t -> s |> HashMap.add t t) HashMap.empty
       for i = 0 to testData.Length - 1 do
         let testLookup = result |> HashMap.tryFind i
         Expect.equal testLookup (ValueSome i) "Not equal to what's expected")
 
-let [<Tests>] tests = 
-    testList 
+let intersectionEquilvalentToReference (hsOne: list<Guid>) (hsTwo: list<Guid>) =
+  let referenceSet = System.Collections.Generic.HashSet(hsOne)
+  referenceSet.IntersectWith(hsTwo)
+  let referenceSetResults = referenceSet |> Seq.sort |> Seq.toArray
+  let setUnderTest = HashSet.ofSeq hsOne |> HashSet.intersect (HashSet.ofSeq hsTwo) |> HashSet.toSeq |> Seq.sort |> Seq.toArray
+  referenceSetResults = setUnderTest
+
+let [<Tests>] tests =
+    testList
         "Set Property Tests"
-        [ 
+        [
           testCase
             "Adding 3 items"
             (fun () -> setAndHashSetAreTheSameAfterActions [ Add 32u; Add 1u; Add 0u ])
 
           testCase
             "Adding another close approximate 3 items with a hash collision from 0 and -1 keys"
-            (fun () -> setAndHashSetAreTheSameAfterActions [ Add 1L; Add -1L; Add 0L ]) 
+            (fun () -> setAndHashSetAreTheSameAfterActions [ Add 1L; Add -1L; Add 0L ])
 
           testCase
             "Adding another close approximate 3 items with a hash collision from 0 and -1 keys and then removing one of them"
-            (fun () -> setAndHashSetAreTheSameAfterActions [ Add 1L; Add -1L; Add 0L; Remove 0L ]) 
-          
+            (fun () -> setAndHashSetAreTheSameAfterActions [ Add 1L; Add -1L; Add 0L; Remove 0L ])
+
           testCase
             "Set contains keys of the same hash (Hash = 0 for both 0 and -1"
             (fun () -> setAndHashSetAreTheSameAfterActions [ Add 0L; Add -1L ] )
@@ -125,4 +137,8 @@ let [<Tests>] tests =
           buildPropertyTest
             "Set and HashSet always have the same Count result"
             setAndHashSetHaveSameCountAtAllTimes
+
+          buildGenericPropertyTest
+            "Set and HashSet always have the same intersection result"
+            intersectionEquilvalentToReference
         ]
