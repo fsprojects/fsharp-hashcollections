@@ -13,25 +13,25 @@ module internal HashTrie =
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask
     let inline getIndex keyHash shift = getIndexNoShift (keyHash >>> shift)
 
-    let inline tryFind 
-        (keyExtractor: 'tknode -> 'tk) (valueExtractor: 'tknode -> 'tv) 
+    let inline tryFind
+        (keyExtractor: 'tknode -> 'tk) (valueExtractor: 'tknode -> 'tv)
         (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
-        (k: 'tk) 
+        (k: 'tk)
         (hashMap: HashTrieRoot<'tknode>) : 'tv voption =
-        
+
         let keyHash = eqTemplate.GetHashCode(k)
 
         let inline tryFindValueInList (l : _ list) =
             let rec findInList currentList =
                 match currentList with
-                | entry :: tail -> 
+                | entry :: tail ->
                     let extractedKey = keyExtractor entry
-                    if eqTemplate.Equals(extractedKey, k) 
-                    then ValueSome (valueExtractor entry) 
+                    if eqTemplate.Equals(extractedKey, k)
+                    then ValueSome (valueExtractor entry)
                     else findInList tail
                 | [] -> ValueNone
             findInList l
-        
+
         let rec getRec node remainderHash =
             match node with
             | TrieNodeFull(nodes) ->
@@ -44,14 +44,14 @@ module internal HashTrie =
                     getRec
                         (nodes.Content.[CompressedArray.getCompressedIndexForIndexBitmap nodes.BitMap bitPos])
                         (remainderHash >>> PartitionSize)
-                else 
+                else
                     ValueNone
             | TrieNodeOne(nodeIndex, node) ->
                 let index = getIndexNoShift remainderHash
                 if nodeIndex = index
                 then getRec node (remainderHash >>> PartitionSize)
                 else ValueNone
-            | EntryNode entry -> 
+            | EntryNode entry ->
                 let extractedKey = keyExtractor entry
                 if eqTemplate.Equals(extractedKey, k) then ValueSome (valueExtractor entry) else ValueNone
             | HashCollisionNode entries -> tryFindValueInList entries
@@ -72,8 +72,8 @@ module internal HashTrie =
             else
                 if existingEntryIndex <> currentEntryIndex
                 then
-                    let ca = 
-                        CompressedArray.ofTwoElements 
+                    let ca =
+                        CompressedArray.ofTwoElements
                             existingEntryIndex (EntryNode existingEntry)
                             currentEntryIndex (EntryNode newEntry)
                     TrieNode(ca)
@@ -82,10 +82,10 @@ module internal HashTrie =
                     TrieNodeOne(existingEntryIndex, subNode)
         createRequiredDepthNodes shift
 
-    let inline add 
-        (keyExtractor: 'tknode -> 'tk) 
+    let inline add
+        (keyExtractor: 'tknode -> 'tk)
         (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
-        (knode: 'tknode) 
+        (knode: 'tknode)
         (hashMap: HashTrieRoot<'tknode>) : HashTrieRoot<'tknode> =
 
         let inline equals x y = eqTemplate.Equals(x, y)
@@ -109,7 +109,7 @@ module internal HashTrie =
                     then
                         let uncompressedArray = ArrayHelpers.copyArrayInsertInMiddle index (EntryNode knode) nodes.Content
                         struct (TrieNodeFull uncompressedArray, true)
-                    else 
+                    else
                         // Add new entry
                         let newBitMap = nodes.BitMap ||| bit
                         let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap nodes.BitMap bit
@@ -140,42 +140,42 @@ module internal HashTrie =
                 else struct (addNodesToResolveConflict entry knode (hash extractedKey) keyHash shift, true) // Create one or more levels required.
             | HashCollisionNode entries ->
                 if shift < MaxShiftValue then failwithf "Not expected to exist"
-                let rec replaceElementIfExists previouslySeen tailList = 
+                let rec replaceElementIfExists previouslySeen tailList =
                     match tailList with
-                    | entryNode :: tail -> 
+                    | entryNode :: tail ->
                         let extractedKey = keyExtractor entryNode
-                        if equals extractedKey key 
+                        if equals extractedKey key
                         then (List.append (knode :: previouslySeen) tail, true)
                         else replaceElementIfExists (entryNode :: previouslySeen) tail
                     | [] -> ([], false)
 
                 let (newList, replaced) = replaceElementIfExists [] entries
-                if replaced 
-                then struct (HashCollisionNode(newList), false) 
+                if replaced
+                then struct (HashCollisionNode(newList), false)
                 else struct (HashCollisionNode(knode :: entries), true)
-               
+
         let struct (newRootData, isAdded) = addRec hashMap.RootData 0
 
         { CurrentCount = if isAdded then hashMap.CurrentCount + 1 else hashMap.CurrentCount
-          RootData = newRootData }  
+          RootData = newRootData }
 
     /// Takes in an empty root and creates a populated structure using the sequence given.
     /// NOTE: This is not thread safe andd violates immutability when passed in - safe to use for new instances.
-    let inline ofSeq 
-        (keyExtractor: 'tknode -> 'tk) 
+    let inline ofSeq
+        (keyExtractor: 'tknode -> 'tk)
         (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
-        (knode: #seq<'tknode>) 
+        (knode: #seq<'tknode>)
         (hashMap: HashTrieRoot<'tknode>) : HashTrieRoot<'tknode> =
         let inline equals x y = eqTemplate.Equals(x, y)
         let inline hash o = eqTemplate.GetHashCode(o)
 
-        let folder hashMap knode = 
+        let folder hashMap knode =
 
             let key = keyExtractor knode
             let keyHash = hash key
 
             // Because we are using a high branching factor this almost always hits. This is the slow method which causes issues with ofSeq methods.
-            let rec trieNode nodes shift =     
+            let rec trieNode nodes shift =
                 let index = getIndex keyHash shift
                 let bit = CompressedArray.getBitMapForIndex index
                 if (bit &&& nodes.BitMap) <> CompressedArray.Zero then
@@ -189,13 +189,13 @@ module internal HashTrie =
                     then
                         let uncompressedArray = ArrayHelpers.copyArrayInsertInMiddle index (EntryNode knode) nodes.Content
                         struct (TrieNodeFull uncompressedArray, true)
-                    else 
+                    else
                         // Add new entry
                         let newBitMap = nodes.BitMap ||| bit
                         let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap nodes.BitMap bit
                         let newContent = ArrayHelpers.copyArrayInsertInMiddle compressedIndex (EntryNode knode) nodes.Content
                         let newCa =  { BitMap = newBitMap; Content = newContent }
-                        struct (TrieNode newCa, true)       
+                        struct (TrieNode newCa, true)
 
             and trieNodeFull node (nodes: _ array) shift =
                 let index = getIndex keyHash shift
@@ -204,13 +204,13 @@ module internal HashTrie =
                 nodes.[index] <- newPosNode
                 struct (node, isAdded)
 
-            and entryNode entry shift = 
+            and entryNode entry shift =
                 let extractedKey = keyExtractor entry
                 if equals extractedKey key
                 then struct (EntryNode knode, false) // Replacement
-                else struct (addNodesToResolveConflict entry knode (hash extractedKey) keyHash shift, true) 
+                else struct (addNodesToResolveConflict entry knode (hash extractedKey) keyHash shift, true)
 
-            and trieNodeOne nodeIndex nodeAtPos shift = 
+            and trieNodeOne nodeIndex nodeAtPos shift =
                 let index = getIndex keyHash shift
                 if nodeIndex.Equals(index)
                 then
@@ -221,20 +221,20 @@ module internal HashTrie =
                     let ca = CompressedArray.ofTwoElements nodeIndex nodeAtPos index entryNode
                     struct (TrieNode(ca), true)
 
-            and hashCollisionNode entries shift = 
+            and hashCollisionNode entries shift =
                 if shift < MaxShiftValue then failwithf "Not expected to exist"
-                let rec replaceElementIfExists previouslySeen tailList = 
+                let rec replaceElementIfExists previouslySeen tailList =
                     match tailList with
-                    | entryNode :: tail -> 
+                    | entryNode :: tail ->
                         let extractedKey = keyExtractor entryNode
-                        if equals extractedKey key 
+                        if equals extractedKey key
                         then (List.append (knode :: previouslySeen) tail, true)
                         else replaceElementIfExists (entryNode :: previouslySeen) tail
                     | [] -> ([], false)
 
                 let (newList, replaced) = replaceElementIfExists [] entries
-                if replaced 
-                then struct (HashCollisionNode(newList), false) 
+                if replaced
+                then struct (HashCollisionNode(newList), false)
                 else struct (HashCollisionNode(knode :: entries), true)
 
             and addRec node shift =
@@ -254,10 +254,10 @@ module internal HashTrie =
         for itemToAdd in knode do state <- folder state itemToAdd
         state
 
-    let inline remove 
+    let inline remove
         keyExtractor
         (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
-        (k: 'tk) 
+        (k: 'tk)
         (hashMap: HashTrieRoot< 'tknode>) =
 
         let inline equals (x: 'tk) (y: 'tk) = eqTemplate.Equals(x, y)
@@ -340,8 +340,11 @@ module internal HashTrie =
 
         yieldNodes hashMap.RootData
 
-    let isEmpty hashMap = hashMap.CurrentCount > 0
+    let isEmpty hashMap = hashMap.CurrentCount = 0
 
-    [<GeneralizableValue>] 
+    [<GeneralizableValue>]
     let empty< 'tk, 'eq when 'eq : (new : unit -> 'eq)> : HashTrieRoot< ^tk> =
         { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
+
+    let inline equals (eqTemplate: 'teq when 'teq :> IEqualityComparer<_>) equalKeyExtractor (h1: HashTrieRoot<'n>) (h2: HashTrieRoot<'n>) =
+        h1.CurrentCount = h2.CurrentCount && Seq.forall (fun (x, y) -> eqTemplate.Equals(equalKeyExtractor x, equalKeyExtractor y)) (Seq.zip (toSeq h1) (toSeq h2))
