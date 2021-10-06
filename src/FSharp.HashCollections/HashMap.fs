@@ -26,7 +26,6 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashMap<'tk, 'tv, 'teq
     override this.GetHashCode() =
         let inline combineHash x y = (x <<< 1) + y + 631
         let mutable res = 0
-        let vComparer = HashIdentity.LimitedStructural
         for x in HashTrie.toSeq this.HashTrieRoot do
             res <- combineHash res (this.EqualityComparer.GetHashCode(keyExtractor x))
             // NOTE: This Unchecked.hash could result in perf penalities since it isn't statically determined I believe (inlined to caller site).

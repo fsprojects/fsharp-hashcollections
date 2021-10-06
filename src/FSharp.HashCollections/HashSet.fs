@@ -1,4 +1,4 @@
-namespace rec FSharp.HashCollections
+namespace FSharp.HashCollections
 
 open System
 open System.Collections
