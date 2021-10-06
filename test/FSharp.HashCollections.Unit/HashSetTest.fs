@@ -4,11 +4,22 @@ open Expecto
 open FsCheck
 open FSharp.HashCollections
 open System
+open System.Collections.Generic
 
 // List of actions to generate
 type SetAction<'k> =
     | Add of k: 'k
     | Remove of k: 'k
+
+let generateHashSetFromActions (actions: SetAction<'tk> list) =
+    let mutable hashTrieToTest = HashSet.empty
+
+    for action in actions do
+        match action with
+        | Add(k) -> hashTrieToTest <- hashTrieToTest |> HashSet.add k
+        | Remove k -> hashTrieToTest <- hashTrieToTest |> HashSet.remove k
+
+    hashTrieToTest
 
 let inline setAndHashSetAreTheSameAfterActions (actions: SetAction<'tk> list) =
 
@@ -77,13 +88,22 @@ let buildGenericPropertyTest testName (testFunction: _ -> _) =
 
 let inline generateLargeSizeMapTest() =
   testCase
-    "Large map test of more than one depth"
+    "Large set test of more than one depth"
     (fun () ->
       let testData = Array.init 100000 id
-      let result = testData |> Array.fold (fun s t -> s |> HashMap.add t t) HashMap.empty
+      let result = testData |> Array.fold (fun s t -> s |> HashSet.add t) HashSet.empty
       for i = 0 to testData.Length - 1 do
-        let testLookup = result |> HashMap.tryFind i
-        Expect.equal testLookup (ValueSome i) "Not equal to what's expected")
+        let testLookup = result |> HashSet.contains i
+        Expect.isTrue testLookup "Data not in set as expected")
+
+let generateLargeSizeMapOfSeqTest() =
+  testCase
+    "Large set test of more than one depth can be converted to sequence"
+    (fun () ->
+      let testData = Array.init 100000 id
+      let resultSet = testData |> Array.fold (fun s t -> s |> HashSet.add t) HashSet.empty
+      let resultSeq = resultSet |> HashSet.toSeq |> Seq.toArray |> Array.sort
+      Expect.equal resultSeq testData "Array data not the same")
 
 let intersectionEquilvalentToReference (hsOne: list<Guid>) (hsTwo: list<Guid>) =
   let referenceSet = System.Collections.Generic.HashSet(hsOne)
@@ -91,6 +111,12 @@ let intersectionEquilvalentToReference (hsOne: list<Guid>) (hsTwo: list<Guid>) =
   let referenceSetResults = referenceSet |> Seq.sort |> Seq.toArray
   let setUnderTest = HashSet.ofSeq hsOne |> HashSet.intersect (HashSet.ofSeq hsTwo) |> HashSet.toSeq |> Seq.sort |> Seq.toArray
   referenceSetResults = setUnderTest
+
+let assertEqualsTheSame actions =
+  let hashSet = generateHashSetFromActions actions
+  let freshSet = hashSet |> HashSet.toSeq |> HashSet.ofSeq
+  Expect.equal (hashSet.GetHashCode()) (freshSet.GetHashCode()) "Hash codes not equal"
+  Expect.equal hashSet freshSet "Set equality not working"
 
 let [<Tests>] tests =
     testList
@@ -124,7 +150,13 @@ let [<Tests>] tests =
             "Add and remove same key"
             (fun () -> setAndHashSetAreTheSameAfterActions [ Add 1L; Remove 1L] )
 
+          testCase
+            "Empty Set returns IsEmpty"
+            (fun () -> Expect.isTrue (HashSet.isEmpty (HashSet.empty |> HashSet.add 1 |> HashSet.remove 1)) "HashSet not empty")
+
           generateLargeSizeMapTest()
+
+          generateLargeSizeMapOfSeqTest()
 
           buildPropertyTest
             "Set and HashSet behave the same on Add and Remove"
@@ -137,6 +169,10 @@ let [<Tests>] tests =
           buildPropertyTest
             "Set and HashSet always have the same Count result"
             setAndHashSetHaveSameCountAtAllTimes
+
+          buildPropertyTest
+            "Equals from actions and fresh set the same"
+            assertEqualsTheSame
 
           buildGenericPropertyTest
             "Set and HashSet always have the same intersection result"

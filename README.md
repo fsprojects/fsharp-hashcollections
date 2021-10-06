@@ -8,7 +8,7 @@ Made for my own purposes the goal is to allow faster lookup table performance in
 
 ## Goals
 
-1) More efficient persistent collection type where F#'s Map type isn't fast enough. 
+1) More efficient persistent collection type where F#'s Map type isn't fast enough.
     - At time of writing this was the fastest immutable collections library in the .NET ecosystem I could find (including BCL classes). See [Performance Benchmarks](#performance-benchmarks) for details.
     - Tailor the algorithms used to the .NET ecosystem to achieve better performance.
 2) Allow a range of key types and equality logic to be used even if provided by consumers without sacrificing performance (e.g. no need for keys to be comparable).
@@ -24,7 +24,7 @@ Made for my own purposes the goal is to allow faster lookup table performance in
 ## Use Cases
 
 - Large collections at acceptable performance (e.g. 500,000+ elements).
-- Immutability of large/deep object graphs without the associated performance cost of changing data deep in the hierarchy. 
+- Immutability of large/deep object graphs without the associated performance cost of changing data deep in the hierarchy.
   - A common pattern when changing data deep in nested records. Instead of using the record copy syntax to change these flatten out of object and use HashMaps instead joining by key. Often useful to store a large hierarchy of state and update it in an atomic fashion.
 - Where the key type of the Map would otherwise not work with standard F# collections since it does not implement IComparable.
 
@@ -40,6 +40,7 @@ All collections are persisted/immutable by nature so any Add/Remove operation pr
 | Add | O(log32n) |
 | Remove | O(log32n) |
 | Count | O(1) |
+| Equals | O(n) |
 
 Example Usage:
 ```
@@ -55,6 +56,7 @@ let hashMapResult = HashMap.empty |> HashMap.add k v |> HashMay.tryFind k // Res
 | Add | O(log32n) |
 | Remove | O(log32n) |
 | Count | O(1) |
+| Equals | O(n) |
 
 Example Usage:
 ```
@@ -85,7 +87,7 @@ Any equality comparer specified in the type signature must:
 An example with the type "Int" for the custom equality comparer (which in testing exhibits slightly faster perf than the default):
 
 ```
-type IntEqualityTemplate = 
+type IntEqualityTemplate =
     struct end
     interface System.Collections.Generic.IEqualityComparer<int> with
         member __.Equals(x: int, y: int): bool = x = y
@@ -107,7 +109,7 @@ All are using F# HashIdentity.Structural comparison.
 ```
 // * Summary *
 
-BenchmarkDotNet=v0.12.0, OS=arch 
+BenchmarkDotNet=v0.12.0, OS=arch
 AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
 .NET Core SDK=3.1.100
   [Host]     : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT DEBUG
@@ -179,7 +181,7 @@ Scenario: Adding 50 elements on top of a pre-defined collection with a collectio
 ```
 // * Summary *
 
-BenchmarkDotNet=v0.12.0, OS=arch 
+BenchmarkDotNet=v0.12.0, OS=arch
 AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
 .NET Core SDK=3.1.100
   [Host]     : .NET Core 3.1.0 (CoreCLR 4.700.19.56402, CoreFX 4.700.19.56404), X64 RyuJIT DEBUG
