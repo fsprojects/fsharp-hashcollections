@@ -1,7 +1,7 @@
 import scala.collection.immutable.HashMap;
 
 object Benchmarker {
-    def runTest(testSize: Int) = {
+    def runTest(testSize: Int, toPrint: Boolean) : (Long, Long) = {
         val a = Array.range(0, testSize);
 
         val writeStartTime = System.nanoTime();
@@ -19,20 +19,53 @@ object Benchmarker {
 
         val endTime = System.nanoTime();
 
-        var timeIntervalGet = (endTime - startTime) / 1000000; // To milliseconds
-        var timeIntervalWrite = (endWriteTime - writeStartTime) / 1000000; // To milliseconds
+        val timeIntervalGet = (endTime - startTime) / 1000000; // To milliseconds
+        val timeIntervalWrite = (endWriteTime - writeStartTime) / 1000000; // To milliseconds
 
-        println(s"Scala Result [TestSize: $testSize, GetTime: $timeIntervalGet, FromSeqTime: $timeIntervalWrite]");
+        if (toPrint) {
+            println(s"| $testSize | $timeIntervalGet | $timeIntervalWrite |");
+        }
+
+        return (timeIntervalGet, timeIntervalWrite);
     }
 }
 
 object Program extends App {
-    Benchmarker.runTest(100);
-    Benchmarker.runTest(1000);
-    Benchmarker.runTest(10000);
-    Benchmarker.runTest(100000);
-    Benchmarker.runTest(500000);
-    Benchmarker.runTest(1000000);
-    Benchmarker.runTest(5000000);
-    Benchmarker.runTest(10000000);
+    val testSizes = List(
+        100,
+        1000,
+        10000,
+        100000,
+        500000,
+        1000000,
+        5000000,
+        10000000,
+        50000000
+    )
+
+    var headingString = testSizes.foldLeft("| Lang | Operation | TestSize | ") {
+        (acc, e) => acc + e.toString + " | "
+    };
+
+    println(headingString);
+
+    Benchmarker.runTest(100, false); // Warmup
+
+    val testResults = testSizes.map(testSize => Benchmarker.runTest(testSize, false));
+
+    val testResultGetTime = testResults.foldLeft ("| Scala | TryFind | ") {
+        (acc, times) => 
+            val (getTime, _) = times;
+            acc + getTime.toString + " | ";
+    };
+
+    println(testResultGetTime);
+
+    val testResultOfSeqTime = testResults.foldLeft ("| Scala | OfSeq | ") {
+        (acc, times) => 
+            val (_, ofSeqTime) = times;
+            acc + ofSeqTime.toString + " | ";
+    };
+
+    println(testResultOfSeqTime);
 }

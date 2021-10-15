@@ -6,7 +6,7 @@ open System.Diagnostics
 open System.Collections.Generic
 
 // Define a function to construct a message to print
-let runTest testSize =
+let runTest testSize toPrint =
     let sourceData = Array.init testSize id
 
     let populateSw = Stopwatch.StartNew()
@@ -21,16 +21,35 @@ let runTest testSize =
 
     sw.Stop()
 
-    printfn $"FSharp Result [TestSize: {testSize}, GetTime: {sw.ElapsedMilliseconds}, FromSeqTime: {populateSw.ElapsedMilliseconds}]"
+    if toPrint
+    then printfn $"| {testSize} | {sw.ElapsedMilliseconds} | {populateSw.ElapsedMilliseconds} |"
+
+    (sw.ElapsedMilliseconds, populateSw.ElapsedMilliseconds)
 
 [<EntryPoint>]
 let main argv =
-    runTest 100
-    runTest 1000
-    runTest 10000
-    runTest 100000
-    runTest 500000
-    runTest 1000000
-    runTest 5000000
-    runTest 10000000
+    let testSizes = [
+        100
+        1000
+        10000
+        100000
+        500000
+        1000000
+        5000000
+        10000000
+        50000000
+    ]
+
+    runTest 100 false |> ignore // Warmup
+    
+    let testHeader = String.Join(" | ", testSizes)
+    printfn $"| Lang | Operation | TestSize | {testHeader} |"
+    
+    let testResults = [ 
+        for testSize in testSizes do 
+            yield runTest testSize false ]
+
+    printfn "| F# | TryFind | %s |" (String.Join(" | ", (testResults |> Seq.map fst)))
+    printfn "| F# | OfSeq | %s |" (String.Join(" | ", (testResults |> Seq.map snd)))
+    
     0

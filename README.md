@@ -232,35 +232,18 @@ AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
 
 This section is simply a guide to give a ballpark comparison figure on performance with implementations from other languages that have standard HAMT implementations for my own technical selection evaluation.
 
-Conclusion: The "Get" method where performance is significantly better as the collection scales up (at 10,000,000 FSharp collection is 7x faster, and Scala is 1.4x faster at building the initial hashmap). Note that most of the optimisation work I have done is around the "Get" method given my use case (lots of reads, fewer but still significant write load with large collections 500,000+ items).
+**TL;DR**: The "Get" method where performance is significantly better as the collection scales up. For example at 10,000,000 FSharp collection is approx 3.59 faster, and 1.73x faster at building the initial hashmap. 
 
-** FSharp - This Library **
+| Lang | Operation | TestSize | 100 | 1000 | 10000 | 100000 | 500000 | 1000000 | 5000000 | 10000000 | 50000000 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| F# | TryFind | 0 | 0 | 0 | 5 | 37 | 94 | 495 | 1142 | 9346 |
+| Scala | TryFind | 0 | 0 | 3 | 17 | 111 | 256 | 1863 | 4111 | 32318 | 
+| F# | OfSeq | 0 | 0 | 3 | 30 | 146 | 219 | 1321 | 3080 | 19160 |
+| Scala | OfSeq | 0 | 0 | 5 | 49 | 163 | 387 | 2516 | 5347 | 43827 | 
 
-```
-Dotnet version: 5.0.400 (FSharp)
-FSharp Result [TestSize: 100, GetTime: 1, FromSeqTime: 10]
-FSharp Result [TestSize: 1000, GetTime: 0, FromSeqTime: 0]
-FSharp Result [TestSize: 10000, GetTime: 0, FromSeqTime: 3]
-FSharp Result [TestSize: 100000, GetTime: 3, FromSeqTime: 46]
-FSharp Result [TestSize: 500000, GetTime: 21, FromSeqTime: 237]
-FSharp Result [TestSize: 1000000, GetTime: 41, FromSeqTime: 474]
-FSharp Result [TestSize: 5000000, GetTime: 257, FromSeqTime: 3441]
-FSharp Result [TestSize: 10000000, GetTime: 719, FromSeqTime: 9557]
-```
+Platforms tested: Dotnet version: 5.0.301, Scala code runner version 2.13.6-20210529-211702.
 
-** Scala - Immutable HashMap **
-```
-Scala code runner version 3.0.2 -- Copyright 2002-2021, LAMP/EPFL
-Scala Result [TestSize: 100, GetTime: 1, FromSeqTime: 80]
-Scala Result [TestSize: 1000, GetTime: 1, FromSeqTime: 3]
-Scala Result [TestSize: 10000, GetTime: 2, FromSeqTime: 5]
-Scala Result [TestSize: 100000, GetTime: 16, FromSeqTime: 48]
-Scala Result [TestSize: 500000, GetTime: 115, FromSeqTime: 170]
-Scala Result [TestSize: 1000000, GetTime: 301, FromSeqTime: 428]
-Scala Result [TestSize: 5000000, GetTime: 2478, FromSeqTime: 2989]
-Scala Result [TestSize: 10000000, GetTime: 5537, FromSeqTime: 6470]
-```
-
+Note that most of the optimisation work I have done is around the "Get" method given my use case (lots of reads, fewer but still significant write load with large collections 500,000+ items).
 
 ## Design decisions that may affect consumers of this library
 
