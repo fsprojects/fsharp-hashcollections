@@ -13,6 +13,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "HashMap.Benchmarks", "test\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.HashCollections.Unit", "test\FSharp.HashCollections.Unit\FSharp.HashCollections.Unit.fsproj", "{BD1D802A-5C2C-4788-B03C-89C94291BF28}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpTest", "test\PlatformComparison\FSharpTest\FSharpTest.fsproj", "{4AE298CA-2AD1-4458-A842-551D90DCAFF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,18 @@ Global
 		{BD1D802A-5C2C-4788-B03C-89C94291BF28}.Release|x64.Build.0 = Release|Any CPU
 		{BD1D802A-5C2C-4788-B03C-89C94291BF28}.Release|x86.ActiveCfg = Release|Any CPU
 		{BD1D802A-5C2C-4788-B03C-89C94291BF28}.Release|x86.Build.0 = Release|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Debug|x64.Build.0 = Debug|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Release|x64.ActiveCfg = Release|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Release|x64.Build.0 = Release|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4AE298CA-2AD1-4458-A842-551D90DCAFF0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B8CD14E2-5DC9-4A58-8271-E21F8DB6DCAD} = {583DE1CB-1CFA-4EEE-8FB7-D4A9A7ED0055}

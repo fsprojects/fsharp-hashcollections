@@ -18,6 +18,7 @@ Made for my own purposes the goal is to allow faster lookup table performance in
 4) Maintainable to an average F# developer.
     - For example minimising inheritance/object hierarchies and casting (unlike some other impl's I've seen), performant whilst still idiomatic code, etc.
     - Use F# strengths to increase performance further (e.g. inlining + DU's to avoid method calls and copying overhead affecting struct key performance).
+5) Performance at least at the same scale as other languages of the same class/abstraction level (e.g JVM, etc).
 
 **TLDR; Benefits of immutable collections while minimising the cost (e.g. performance, maintainable code, idiomatic code, etc).**
 
@@ -226,6 +227,40 @@ AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
 |                    AddToFSharpXMap |       10000000 |   875.8 ns | 12.69 ns | 11.87 ns |
 | AddToSystemCollectionsImmutableMap |       10000000 | 1,611.7 ns |  6.18 ns |  5.78 ns |
 ```
+
+## An outside .NET ecosystem comparison.
+
+This section is simply a guide to give a ballpark comparison figure on performance with implementations from other languages that have standard HAMT implementations for my own technical selection evaluation.
+
+Conclusion: The "Get" method where performance is significantly better as the collection scales up (at 10,000,000 FSharp collection is 7x faster, and Scala is 1.4x faster at building the initial hashmap). Note that most of the optimisation work I have done is around the "Get" method given my use case (lots of reads, fewer but still significant write load with large collections 500,000+ items).
+
+** FSharp - This Library **
+
+```
+Dotnet version: 5.0.400 (FSharp)
+FSharp Result [TestSize: 100, GetTime: 1, FromSeqTime: 10]
+FSharp Result [TestSize: 1000, GetTime: 0, FromSeqTime: 0]
+FSharp Result [TestSize: 10000, GetTime: 0, FromSeqTime: 3]
+FSharp Result [TestSize: 100000, GetTime: 3, FromSeqTime: 46]
+FSharp Result [TestSize: 500000, GetTime: 21, FromSeqTime: 237]
+FSharp Result [TestSize: 1000000, GetTime: 41, FromSeqTime: 474]
+FSharp Result [TestSize: 5000000, GetTime: 257, FromSeqTime: 3441]
+FSharp Result [TestSize: 10000000, GetTime: 719, FromSeqTime: 9557]
+```
+
+** Scala - Immutable HashMap **
+```
+Scala code runner version 3.0.2 -- Copyright 2002-2021, LAMP/EPFL
+Scala Result [TestSize: 100, GetTime: 1, FromSeqTime: 80]
+Scala Result [TestSize: 1000, GetTime: 1, FromSeqTime: 3]
+Scala Result [TestSize: 10000, GetTime: 2, FromSeqTime: 5]
+Scala Result [TestSize: 100000, GetTime: 16, FromSeqTime: 48]
+Scala Result [TestSize: 500000, GetTime: 115, FromSeqTime: 170]
+Scala Result [TestSize: 1000000, GetTime: 301, FromSeqTime: 428]
+Scala Result [TestSize: 5000000, GetTime: 2478, FromSeqTime: 2989]
+Scala Result [TestSize: 10000000, GetTime: 5537, FromSeqTime: 6470]
+```
+
 
 ## Design decisions that may affect consumers of this library
 
