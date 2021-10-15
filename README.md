@@ -234,6 +234,9 @@ This section is simply a guide to give a ballpark comparison figure on performan
 
 **TL;DR**: The "Get" method where performance is significantly better as the collection scales up. For example at 10,000,000 FSharp collection is approx 3.59 faster, and 1.73x faster at building the initial hashmap. 
 
+- TryFind: Measures fetching every key inside a collection of a given size (total milliseconds).
+- OfSeq: Measures building a HashMap of the given collection size (total milliseconds).
+
 | Lang | Operation | 100 | 1000 | 10000 | 100000 | 500000 | 1000000 | 5000000 | 10000000 | 50000000 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | F# | TryFind | 0 | 0 | 0 | 5 | 37 | 94 | 495 | 1142 | 9346 |
