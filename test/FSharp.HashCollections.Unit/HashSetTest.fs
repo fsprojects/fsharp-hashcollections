@@ -21,6 +21,16 @@ let generateHashSetFromActions (actions: SetAction<'tk> list) =
 
     hashTrieToTest
 
+let generateSetFromActions (actions: SetAction<'tk> list) =
+    let mutable s = Set.empty
+
+    for action in actions do
+        match action with
+        | Add(k) -> s <- s |> Set.add k
+        | Remove k -> s <- s |> Set.remove k
+
+    s
+
 let inline setAndHashSetAreTheSameAfterActions (actions: SetAction<'tk> list) =
 
     let mutable mapToTest = Set.empty
@@ -112,6 +122,17 @@ let intersectionEquilvalentToReference (hsOne: list<Guid>) (hsTwo: list<Guid>) =
   let setUnderTest = HashSet.ofSeq hsOne |> HashSet.intersect (HashSet.ofSeq hsTwo) |> HashSet.toSeq |> Seq.sort |> Seq.toArray
   referenceSetResults = setUnderTest
 
+let intersectionSupersetWithSubsetEqualToSubset (actions: SetAction<'tk> list) =
+  let subSet = generateSetFromActions actions
+  let fullSet = generateSetFromActions (actions |> List.filter (fun x -> match x with | Add _ -> true | _ -> false))
+
+  let hashSubSet = generateHashSetFromActions actions
+  let hashFullSet = generateHashSetFromActions (actions |> List.filter (fun x -> match x with | Add _ -> true | _ -> false))
+
+  let resultSeq x = x |> Seq.toArray |> Array.sort
+
+  Expect.equal (Set.intersect subSet fullSet |> resultSeq) (HashSet.intersect hashSubSet hashFullSet |> resultSeq) "Intersect not expected"
+
 let assertEqualsTheSame actions =
   let hashSet = generateHashSetFromActions actions
   let freshSet = hashSet |> HashSet.toSeq |> HashSet.ofSeq
@@ -177,4 +198,8 @@ let [<Tests>] tests =
           buildGenericPropertyTest
             "Set and HashSet always have the same intersection result"
             intersectionEquilvalentToReference
+
+          buildPropertyTest
+            "Set and HashSet intersect removes all elements not removed in superset"
+            intersectionSupersetWithSubsetEqualToSubset
         ]
