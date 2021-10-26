@@ -15,6 +15,7 @@ type OfSeqBenchmark() =
     let mutable fsharpDataAdaptiveMap = FSharp.Data.Adaptive.HashMap.Empty
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
+    let mutable fsharpXChampMap = FSharpx.Collections.Experimental.ChampHashMap<int, int>()
     let mutable preppedData = Array.zeroCreate 0
 
 
@@ -59,3 +60,6 @@ type OfSeqBenchmark() =
 
     [<Benchmark>]
     member this.OfSeqSystemCollectionsImmutableMap() = systemImmutableMap <- System.Collections.Immutable.ImmutableDictionary.CreateRange(preppedData)
+
+    [<Benchmark>]
+    member this.OfSeqFSharpxChampMap() = fsharpXChampMap <- preppedData |>  FSharpx.Collections.Experimental.ChampHashMap.ofSeq (fun x -> x.Key) (fun x -> x.Value)

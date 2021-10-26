@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>FSharp.HashCollections.Benchmarks.ReadBenchmarks-20211026-104405</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=arch 
+AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=5.0.301
+  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT DEBUG
+  DefaultJob : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>                    Method</th><th>CollectionSize</th><th> Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>GetHashMap</td><td>10</td><td>11.27 ns</td><td>0.059 ns</td><td>0.052 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>10</td><td>30.78 ns</td><td>0.573 ns</td><td>0.508 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>10</td><td>38.90 ns</td><td>0.535 ns</td><td>0.474 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>10</td><td>99.11 ns</td><td>1.295 ns</td><td>1.211 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>10</td><td>22.65 ns</td><td>0.201 ns</td><td>0.178 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>10</td><td>21.06 ns</td><td>0.187 ns</td><td>0.175 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>10</td><td>75.58 ns</td><td>1.474 ns</td><td>1.514 ns</td>
+</tr><tr><td>GetHashMap</td><td>100</td><td>15.27 ns</td><td>0.106 ns</td><td>0.099 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>100</td><td>44.76 ns</td><td>0.770 ns</td><td>0.824 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>100</td><td>70.82 ns</td><td>0.638 ns</td><td>0.565 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>100</td><td>110.33 ns</td><td>1.877 ns</td><td>1.664 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>100</td><td>34.41 ns</td><td>0.377 ns</td><td>0.353 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>100</td><td>42.18 ns</td><td>0.533 ns</td><td>0.499 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>100</td><td>95.72 ns</td><td>1.423 ns</td><td>1.261 ns</td>
+</tr><tr><td>GetHashMap</td><td>1000</td><td>12.27 ns</td><td>0.086 ns</td><td>0.081 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>1000</td><td>66.92 ns</td><td>0.676 ns</td><td>0.565 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>1000</td><td>110.07 ns</td><td>2.190 ns</td><td>2.689 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>1000</td><td>119.27 ns</td><td>0.937 ns</td><td>0.877 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>1000</td><td>51.20 ns</td><td>0.512 ns</td><td>0.479 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>1000</td><td>65.18 ns</td><td>0.827 ns</td><td>0.773 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>1000</td><td>96.31 ns</td><td>1.018 ns</td><td>0.902 ns</td>
+</tr><tr><td>GetHashMap</td><td>100000</td><td>27.10 ns</td><td>0.261 ns</td><td>0.244 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>100000</td><td>192.91 ns</td><td>1.385 ns</td><td>1.295 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>100000</td><td>202.18 ns</td><td>3.977 ns</td><td>3.720 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>100000</td><td>142.92 ns</td><td>1.867 ns</td><td>1.655 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>100000</td><td>143.54 ns</td><td>1.211 ns</td><td>1.133 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>100000</td><td>138.09 ns</td><td>1.176 ns</td><td>1.100 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>100000</td><td>161.99 ns</td><td>2.703 ns</td><td>2.529 ns</td>
+</tr><tr><td>GetHashMap</td><td>500000</td><td>75.27 ns</td><td>0.464 ns</td><td>0.434 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>500000</td><td>503.84 ns</td><td>4.429 ns</td><td>3.926 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>500000</td><td>319.49 ns</td><td>6.054 ns</td><td>5.663 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>500000</td><td>237.83 ns</td><td>2.523 ns</td><td>2.360 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>500000</td><td>320.95 ns</td><td>3.004 ns</td><td>2.810 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>500000</td><td>303.34 ns</td><td>2.013 ns</td><td>1.883 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>500000</td><td>169.03 ns</td><td>1.864 ns</td><td>1.744 ns</td>
+</tr><tr><td>GetHashMap</td><td>750000</td><td>108.07 ns</td><td>0.666 ns</td><td>0.623 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>750000</td><td>608.60 ns</td><td>3.202 ns</td><td>2.838 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>750000</td><td>406.83 ns</td><td>4.744 ns</td><td>4.437 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>750000</td><td>351.69 ns</td><td>1.921 ns</td><td>1.797 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>750000</td><td>409.93 ns</td><td>2.075 ns</td><td>1.941 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>750000</td><td>351.97 ns</td><td>1.888 ns</td><td>1.766 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>750000</td><td>173.13 ns</td><td>2.644 ns</td><td>2.473 ns</td>
+</tr><tr><td>GetHashMap</td><td>1000000</td><td>114.22 ns</td><td>0.264 ns</td><td>0.247 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>1000000</td><td>678.73 ns</td><td>5.430 ns</td><td>5.080 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>1000000</td><td>472.68 ns</td><td>3.494 ns</td><td>3.097 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>1000000</td><td>340.27 ns</td><td>1.778 ns</td><td>1.663 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>1000000</td><td>468.81 ns</td><td>4.030 ns</td><td>3.770 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>1000000</td><td>392.71 ns</td><td>2.035 ns</td><td>1.903 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>1000000</td><td>178.21 ns</td><td>2.594 ns</td><td>2.426 ns</td>
+</tr><tr><td>GetHashMap</td><td>5000000</td><td>146.63 ns</td><td>0.552 ns</td><td>0.516 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>5000000</td><td>1,095.06 ns</td><td>4.782 ns</td><td>4.473 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>5000000</td><td>803.83 ns</td><td>4.079 ns</td><td>3.816 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>5000000</td><td>374.48 ns</td><td>2.256 ns</td><td>2.110 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>5000000</td><td>775.52 ns</td><td>5.161 ns</td><td>4.828 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>5000000</td><td>556.44 ns</td><td>2.809 ns</td><td>2.628 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>5000000</td><td>357.66 ns</td><td>2.265 ns</td><td>2.119 ns</td>
+</tr><tr><td>GetHashMap</td><td>10000000</td><td>163.68 ns</td><td>1.010 ns</td><td>0.944 ns</td>
+</tr><tr><td>GetImToolsHashMap</td><td>10000000</td><td>1,317.78 ns</td><td>6.694 ns</td><td>5.934 ns</td>
+</tr><tr><td>GetFSharpMap</td><td>10000000</td><td>935.86 ns</td><td>4.086 ns</td><td>3.822 ns</td>
+</tr><tr><td>GetFSharpXHashMap</td><td>10000000</td><td>401.53 ns</td><td>2.404 ns</td><td>2.248 ns</td>
+</tr><tr><td>GetSystemCollectionsImmutableMap</td><td>10000000</td><td>909.51 ns</td><td>2.906 ns</td><td>2.576 ns</td>
+</tr><tr><td>GetFSharpDataAdaptiveMap</td><td>10000000</td><td>655.68 ns</td><td>2.443 ns</td><td>2.040 ns</td>
+</tr><tr><td>GetFSharpxChampMap</td><td>10000000</td><td>358.91 ns</td><td>1.482 ns</td><td>1.314 ns</td>
+</tr></tbody></table>
+</body>
+</html>

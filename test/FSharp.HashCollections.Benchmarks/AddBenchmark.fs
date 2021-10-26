@@ -19,6 +19,7 @@ type AddBenchmark() =
     let mutable fsharpDataAdaptiveMap = FSharp.Data.Adaptive.HashMap.Empty
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
+    let mutable fsharpXChampMap = FSharpx.Collections.Experimental.ChampHashMap<int, int>()
     let mutable preppedData = Array.zeroCreate 0
 
     let elementsToAdd = 
@@ -108,6 +109,17 @@ type AddBenchmark() =
         let mutable systemImmutableMap = systemImmutableMap
         for i in elementsToAdd do systemImmutableMap <- systemImmutableMap.Add(i.Key, i.Value)
 
+    [<GlobalSetup(Target = "AddToFsharpxChampMap")>]
+    member this.SetupAddToFsharpxChampMap() = 
+        this.PrepData()
+        this.OfSeqSystemCollectionsImmutableMap()
+        if systemImmutableMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
+
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
+    member this.AddToFsharpxChampMap() =
+        let mutable fsharpXChampMap = fsharpXChampMap
+        for i in elementsToAdd do fsharpXChampMap <- FSharpx.Collections.Experimental.ChampHashMap.add fsharpXChampMap i.Key i.Value
+
     // OfSeq helpers
     member this.OfSeqHashMap() = hashMap <- FSharp.HashCollections.HashMap.ofSeq preppedData
 
@@ -118,3 +130,5 @@ type AddBenchmark() =
         fsharpDataAdaptiveMap <- FSharp.Data.Adaptive.HashMap.ofSeq (preppedData |> Seq.map (fun (KeyValue(kv)) -> kv))    
 
     member this.OfSeqSystemCollectionsImmutableMap() = systemImmutableMap <- System.Collections.Immutable.ImmutableDictionary.CreateRange(preppedData)
+
+    member this.OfSeqFsharpxChampMap() = fsharpXChampMap <- preppedData |> FSharpx.Collections.Experimental.ChampHashMap.ofSeq (fun x -> x.Key) (fun x -> x.Value)
