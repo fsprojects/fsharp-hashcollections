@@ -1,0 +1,47 @@
+``` ini
+
+BenchmarkDotNet=v0.13.1, OS=arch 
+AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=5.0.301
+  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT DEBUG
+  DefaultJob : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
+
+
+```
+|                             Method | CollectionSize |            Mean |         Error |        StdDev |
+|----------------------------------- |--------------- |----------------:|--------------:|--------------:|
+|                       **OfSeqHashMap** |           **1000** |       **110.17 μs** |      **1.038 μs** |      **0.971 μs** |
+|                    OfSeqFSharpXMap |           1000 |       330.68 μs |      1.873 μs |      1.752 μs |
+|             OfSeqFSharpAdaptiveMap |           1000 |        89.84 μs |      0.679 μs |      0.636 μs |
+| OfSeqSystemCollectionsImmutableMap |           1000 |       256.79 μs |      4.808 μs |      4.722 μs |
+|               OfSeqFSharpxChampMap |           1000 |       286.88 μs |      2.472 μs |      2.313 μs |
+|                       **OfSeqHashMap** |         **100000** |    **13,449.39 μs** |    **151.712 μs** |    **141.911 μs** |
+|                    OfSeqFSharpXMap |         100000 |    37,750.52 μs |    574.083 μs |    536.997 μs |
+|             OfSeqFSharpAdaptiveMap |         100000 |    10,982.73 μs |    120.187 μs |    112.423 μs |
+| OfSeqSystemCollectionsImmutableMap |         100000 |    39,097.60 μs |    524.268 μs |    490.401 μs |
+|               OfSeqFSharpxChampMap |         100000 |    37,379.44 μs |    361.439 μs |    338.090 μs |
+|                       **OfSeqHashMap** |         **500000** |    **96,185.59 μs** |    **529.517 μs** |    **442.170 μs** |
+|                    OfSeqFSharpXMap |         500000 |   291,985.04 μs |  4,210.226 μs |  3,938.248 μs |
+|             OfSeqFSharpAdaptiveMap |         500000 |    60,188.35 μs |    729.702 μs |    682.564 μs |
+| OfSeqSystemCollectionsImmutableMap |         500000 |   216,527.30 μs |  2,839.435 μs |  2,656.009 μs |
+|               OfSeqFSharpxChampMap |         500000 |   195,841.18 μs |  1,429.687 μs |  1,267.380 μs |
+|                       **OfSeqHashMap** |         **750000** |   **156,793.76 μs** |  **1,340.004 μs** |  **1,253.441 μs** |
+|                    OfSeqFSharpXMap |         750000 |   424,483.55 μs |  4,242.442 μs |  3,760.815 μs |
+|             OfSeqFSharpAdaptiveMap |         750000 |    88,950.26 μs |    985.962 μs |    922.270 μs |
+| OfSeqSystemCollectionsImmutableMap |         750000 |   332,289.77 μs |  5,000.057 μs |  4,677.057 μs |
+|               OfSeqFSharpxChampMap |         750000 |   331,999.09 μs |  1,807.221 μs |  1,509.112 μs |
+|                       **OfSeqHashMap** |        **1000000** |   **218,414.38 μs** |  **1,928.154 μs** |  **1,803.596 μs** |
+|                    OfSeqFSharpXMap |        1000000 |   560,848.87 μs |  4,607.935 μs |  4,084.814 μs |
+|             OfSeqFSharpAdaptiveMap |        1000000 |   118,026.31 μs |    704.415 μs |    624.445 μs |
+| OfSeqSystemCollectionsImmutableMap |        1000000 |   446,268.12 μs |  6,774.194 μs |  6,336.586 μs |
+|               OfSeqFSharpxChampMap |        1000000 |   483,023.41 μs |  5,186.810 μs |  4,851.745 μs |
+|                       **OfSeqHashMap** |        **5000000** | **1,412,598.17 μs** | **21,065.035 μs** | **19,704.246 μs** |
+|                    OfSeqFSharpXMap |        5000000 | 3,259,079.75 μs | 21,505.015 μs | 19,063.636 μs |
+|             OfSeqFSharpAdaptiveMap |        5000000 |   633,888.01 μs |  7,738.250 μs |  7,238.364 μs |
+| OfSeqSystemCollectionsImmutableMap |        5000000 | 2,471,130.55 μs | 22,772.691 μs | 21,301.589 μs |
+|               OfSeqFSharpxChampMap |        5000000 | 2,926,849.53 μs | 25,341.168 μs | 23,704.144 μs |
+|                       **OfSeqHashMap** |       **10000000** | **3,299,878.09 μs** | **18,616.826 μs** | **17,414.191 μs** |
+|                    OfSeqFSharpXMap |       10000000 | 8,251,430.10 μs | 53,425.476 μs | 47,360.293 μs |
+|             OfSeqFSharpAdaptiveMap |       10000000 | 1,355,405.41 μs |  8,122.114 μs |  7,200.042 μs |
+| OfSeqSystemCollectionsImmutableMap |       10000000 | 5,228,771.15 μs | 52,710.431 μs | 49,305.370 μs |
+|               OfSeqFSharpxChampMap |       10000000 | 6,699,184.76 μs | 39,367.783 μs | 34,898.515 μs |

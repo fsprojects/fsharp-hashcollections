@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>FSharp.HashCollections.Benchmarks.OfSeqBenchmark-20211026-101553</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=arch 
+AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=5.0.301
+  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT DEBUG
+  DefaultJob : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>                      Method</th><th>CollectionSize</th><th>     Mean</th><th>  Error</th><th> StdDev</th>
+</tr>
+</thead><tbody><tr><td>OfSeqHashMap</td><td>1000</td><td>110.17 &mu;s</td><td>1.038 &mu;s</td><td>0.971 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>1000</td><td>330.68 &mu;s</td><td>1.873 &mu;s</td><td>1.752 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>1000</td><td>89.84 &mu;s</td><td>0.679 &mu;s</td><td>0.636 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>1000</td><td>256.79 &mu;s</td><td>4.808 &mu;s</td><td>4.722 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>1000</td><td>286.88 &mu;s</td><td>2.472 &mu;s</td><td>2.313 &mu;s</td>
+</tr><tr><td>OfSeqHashMap</td><td>100000</td><td>13,449.39 &mu;s</td><td>151.712 &mu;s</td><td>141.911 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>100000</td><td>37,750.52 &mu;s</td><td>574.083 &mu;s</td><td>536.997 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>100000</td><td>10,982.73 &mu;s</td><td>120.187 &mu;s</td><td>112.423 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>100000</td><td>39,097.60 &mu;s</td><td>524.268 &mu;s</td><td>490.401 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>100000</td><td>37,379.44 &mu;s</td><td>361.439 &mu;s</td><td>338.090 &mu;s</td>
+</tr><tr><td>OfSeqHashMap</td><td>500000</td><td>96,185.59 &mu;s</td><td>529.517 &mu;s</td><td>442.170 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>500000</td><td>291,985.04 &mu;s</td><td>4,210.226 &mu;s</td><td>3,938.248 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>500000</td><td>60,188.35 &mu;s</td><td>729.702 &mu;s</td><td>682.564 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>500000</td><td>216,527.30 &mu;s</td><td>2,839.435 &mu;s</td><td>2,656.009 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>500000</td><td>195,841.18 &mu;s</td><td>1,429.687 &mu;s</td><td>1,267.380 &mu;s</td>
+</tr><tr><td>OfSeqHashMap</td><td>750000</td><td>156,793.76 &mu;s</td><td>1,340.004 &mu;s</td><td>1,253.441 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>750000</td><td>424,483.55 &mu;s</td><td>4,242.442 &mu;s</td><td>3,760.815 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>750000</td><td>88,950.26 &mu;s</td><td>985.962 &mu;s</td><td>922.270 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>750000</td><td>332,289.77 &mu;s</td><td>5,000.057 &mu;s</td><td>4,677.057 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>750000</td><td>331,999.09 &mu;s</td><td>1,807.221 &mu;s</td><td>1,509.112 &mu;s</td>
+</tr><tr><td>OfSeqHashMap</td><td>1000000</td><td>218,414.38 &mu;s</td><td>1,928.154 &mu;s</td><td>1,803.596 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>1000000</td><td>560,848.87 &mu;s</td><td>4,607.935 &mu;s</td><td>4,084.814 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>1000000</td><td>118,026.31 &mu;s</td><td>704.415 &mu;s</td><td>624.445 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>1000000</td><td>446,268.12 &mu;s</td><td>6,774.194 &mu;s</td><td>6,336.586 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>1000000</td><td>483,023.41 &mu;s</td><td>5,186.810 &mu;s</td><td>4,851.745 &mu;s</td>
+</tr><tr><td>OfSeqHashMap</td><td>5000000</td><td>1,412,598.17 &mu;s</td><td>21,065.035 &mu;s</td><td>19,704.246 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>5000000</td><td>3,259,079.75 &mu;s</td><td>21,505.015 &mu;s</td><td>19,063.636 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>5000000</td><td>633,888.01 &mu;s</td><td>7,738.250 &mu;s</td><td>7,238.364 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>5000000</td><td>2,471,130.55 &mu;s</td><td>22,772.691 &mu;s</td><td>21,301.589 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>5000000</td><td>2,926,849.53 &mu;s</td><td>25,341.168 &mu;s</td><td>23,704.144 &mu;s</td>
+</tr><tr><td>OfSeqHashMap</td><td>10000000</td><td>3,299,878.09 &mu;s</td><td>18,616.826 &mu;s</td><td>17,414.191 &mu;s</td>
+</tr><tr><td>OfSeqFSharpXMap</td><td>10000000</td><td>8,251,430.10 &mu;s</td><td>53,425.476 &mu;s</td><td>47,360.293 &mu;s</td>
+</tr><tr><td>OfSeqFSharpAdaptiveMap</td><td>10000000</td><td>1,355,405.41 &mu;s</td><td>8,122.114 &mu;s</td><td>7,200.042 &mu;s</td>
+</tr><tr><td>OfSeqSystemCollectionsImmutableMap</td><td>10000000</td><td>5,228,771.15 &mu;s</td><td>52,710.431 &mu;s</td><td>49,305.370 &mu;s</td>
+</tr><tr><td>OfSeqFSharpxChampMap</td><td>10000000</td><td>6,699,184.76 &mu;s</td><td>39,367.783 &mu;s</td><td>34,898.515 &mu;s</td>
+</tr></tbody></table>
+</body>
+</html>
