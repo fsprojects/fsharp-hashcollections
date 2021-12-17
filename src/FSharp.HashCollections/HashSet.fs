@@ -1,10 +1,10 @@
-namespace FSharp.HashCollections
+namespace rec FSharp.HashCollections
 
 open System
 open System.Collections
 open System.Collections.Generic
 open System.Runtime.CompilerServices
-
+open System.Text
 
 [<AutoOpen>]
 module internal HashSetInternalSettings =
@@ -17,7 +17,29 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashSet<'tk, 'teq when
     val internal EqualityComparer: 'teq
     internal new(d, eq) = { HashTrieRoot = d; EqualityComparer = eq }
 
-    member this.Equals(other: HashSet<_, _>) = HashTrie.equals this.EqualityComparer keyExtractor this.HashTrieRoot other.HashTrieRoot
+    // Taken from https://github.com/dotnet/fsharp/blob/main/src/fsharp/FSharp.Core/set.fs#L788-L806 for consistency with idiomatic set. (MIT License - see https://github.com/dotnet/fsharp/blob/main/License.txt)
+    override this.ToString() =
+        match List.ofSeq (Seq.truncate 4 this) with
+        | [] -> "set []"
+        | [h1] ->
+            let txt1 = HelperFunctions.anyToStringShowingNull h1
+            StringBuilder().Append("hashSet [").Append(txt1).Append("]").ToString()
+        | [h1; h2] ->
+            let txt1 = HelperFunctions.anyToStringShowingNull h1
+            let txt2 = HelperFunctions.anyToStringShowingNull h2
+            StringBuilder().Append("hashSet [").Append(txt1).Append("; ").Append(txt2).Append("]").ToString()
+        | [h1; h2; h3] ->
+            let txt1 = HelperFunctions.anyToStringShowingNull h1
+            let txt2 = HelperFunctions.anyToStringShowingNull h2
+            let txt3 = HelperFunctions.anyToStringShowingNull h3
+            StringBuilder().Append("hashSet [").Append(txt1).Append("; ").Append(txt2).Append("; ").Append(txt3).Append("]").ToString()
+        | h1 :: h2 :: h3 :: _ ->
+            let txt1 = HelperFunctions.anyToStringShowingNull h1
+            let txt2 = HelperFunctions.anyToStringShowingNull h2
+            let txt3 = HelperFunctions.anyToStringShowingNull h3
+            StringBuilder().Append("hashSet [").Append(txt1).Append("; ").Append(txt2).Append("; ").Append(txt3).Append("; ... ]").ToString()
+
+    member this.Equals(other: HashSet<_, _>) = HashTrie.equals this.EqualityComparer keyExtractor (fun _ _ -> true) this.HashTrieRoot other.HashTrieRoot
     override this.Equals(other: obj) =
         match other with
         | :? HashSet<'tk, 'teq> as otherTyped -> this.Equals(otherTyped)
@@ -37,6 +59,7 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashSet<'tk, 'teq when
         member this.GetEnumerator() = this.GetEnumerator()
     interface IEnumerable with
         member this.GetEnumerator() = this.GetEnumerator() :> IEnumerator
+
 
 /// Immutable hash map with default structural comparison.
 type HashSet<'tk> = HashSet<'tk, IEqualityComparer<'tk>>
@@ -95,3 +118,7 @@ module HashSet =
     let ofSeq (s: #seq<'k>) : HashSet<'k> =
         let eqComparer = HashIdentity.Structural
         HashSet<_>(HashTrie.ofSeq keyExtractor eqComparer s empty.HashTrieRoot, eqComparer)
+
+[<AutoOpen>]
+module AlwaysOpenHashSet =
+    let hashSet s = HashSet.ofSeq s

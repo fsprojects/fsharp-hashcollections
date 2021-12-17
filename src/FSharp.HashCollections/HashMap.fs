@@ -1,4 +1,4 @@
-namespace FSharp.HashCollections
+namespace rec FSharp.HashCollections
 
 open System.Collections
 open System.Collections.Generic
@@ -16,7 +16,16 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashMap<'tk, 'tv, 'teq
     val internal EqualityComparer: 'teq
     internal new(d, eq) = { HashTrieRoot = d; EqualityComparer = eq }
 
-    member this.Equals(other: HashMap<'tk, 'tv, 'teq>): bool = HashTrie.equals this.EqualityComparer keyExtractor this.HashTrieRoot other.HashTrieRoot
+    // Taken from https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/map.fs#L631-L636 to keep to standard. (MIT License - https://github.com/fsharp/fsharp/blob/master/License.txt)
+    override this.ToString() =
+        match List.ofSeq (Seq.truncate 4 this) with
+        | [] -> "hashMap []"
+        | [KeyValue h1] -> System.Text.StringBuilder().Append("hashMap [").Append(HelperFunctions.anyToStringShowingNull h1).Append("]").ToString()
+        | [KeyValue h1;KeyValue h2] -> System.Text.StringBuilder().Append("hashMap [").Append(HelperFunctions.anyToStringShowingNull h1).Append("; ").Append(HelperFunctions.anyToStringShowingNull h2).Append("]").ToString()
+        | [KeyValue h1;KeyValue h2;KeyValue h3] -> System.Text.StringBuilder().Append("hashMap [").Append(HelperFunctions.anyToStringShowingNull h1).Append("; ").Append(HelperFunctions.anyToStringShowingNull h2).Append("; ").Append(HelperFunctions.anyToStringShowingNull h3).Append("]").ToString()
+        | KeyValue h1 :: KeyValue h2 :: KeyValue h3 :: _ -> System.Text.StringBuilder().Append("hashMap [").Append(HelperFunctions.anyToStringShowingNull h1).Append("; ").Append(HelperFunctions.anyToStringShowingNull h2).Append("; ").Append(HelperFunctions.anyToStringShowingNull h3).Append("; ... ]").ToString()
+
+    member this.Equals(other: HashMap<'tk, 'tv, 'teq>): bool = HashTrie.equals this.EqualityComparer keyExtractor (fun x y -> Unchecked.equals x.Value y.Value) this.HashTrieRoot other.HashTrieRoot
     override this.Equals(other: obj) =
         match other with
         | :? HashMap<'tk, 'tv, 'teq> as otherTyped -> this.Equals(otherTyped)
@@ -29,7 +38,7 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashMap<'tk, 'tv, 'teq
         for x in HashTrie.toSeq this.HashTrieRoot do
             res <- combineHash res (this.EqualityComparer.GetHashCode(keyExtractor x))
             // NOTE: This Unchecked.hash could result in perf penalities since it isn't statically determined I believe (inlined to caller site).
-            // The key isn't affected by this issue since the equality comparper is pre-calc'ed for this.
+            // The key isn't affected by this issue since the equality comparer is pre-calc'ed for this.
             res <- combineHash res (Unchecked.hash x.Value)
         abs res
 
@@ -38,6 +47,19 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashMap<'tk, 'tv, 'teq
         member this.GetEnumerator() = this.GetEnumerator()
     interface IEnumerable with
         member this.GetEnumerator() = this.GetEnumerator() :> IEnumerator
+
+    member this.Item key = match this |> HashMap.tryFind key with | ValueSome(v) -> v | ValueNone -> raise (KeyNotFoundException())
+
+    interface IReadOnlyDictionary<'tk, 'tv> with
+        member this.Item with get(key) = this.Item key
+        member this.Keys = HashMap.keys this
+        member this.TryGetValue(key, value:byref<'tv>) =
+            match this |> HashMap.tryFind key with
+            | ValueSome(v) -> value <- v; true
+            | ValueNone -> false
+        member this.Values = HashMap.values this
+        member this.ContainsKey key = this |> HashMap.containsKey key
+        member this.Count = HashTrie.count this.HashTrieRoot
 
 /// Immutable hash map with default structural comparison.
 type HashMap<'tk, 'tv> = HashMap<'tk, 'tv, IEqualityComparer<'tk>>
@@ -78,3 +100,13 @@ module HashMap =
         HashMap<_, _>(
             HashTrie.ofSeq keyExtractor eqComparer s empty.HashTrieRoot,
             eqComparer)
+
+    let containsKey k hm = hm |> tryFind k |> ValueOption.isSome
+
+    let keys (hm: HashMap<_, _, _>) = seq { for kvp in hm do yield kvp.Key }
+
+    let values (hm: HashMap<_, _, _>) = seq { for kvp in hm do yield kvp.Value }
+
+[<AutoOpen>]
+module AlwaysOpenHashMap =
+    let hashMap (s: #seq<'k * 'v>) = s |> Seq.map KeyValuePair.Create |> HashMap.ofSeq

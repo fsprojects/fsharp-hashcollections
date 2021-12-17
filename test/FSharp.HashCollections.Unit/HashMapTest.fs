@@ -109,7 +109,7 @@ let assertEqualsTheSame actions =
 
 let [<Tests>] tests =
     testList
-        "Hash Trie Property Tests"
+        "Hash Map Property Tests"
         [
           testCase
             "Adding 3 k-v pairs"
@@ -142,6 +142,35 @@ let [<Tests>] tests =
           testCase
             "Empty Map returns IsEmpty"
             (fun () -> Expect.isTrue (HashMap.isEmpty (HashMap.empty |> HashMap.add 1 1 |> HashMap.remove 1)) "HashSet not empty")
+
+          testCase
+            "Not equal map by values returns not equal"
+            (fun () -> Expect.notEqual (HashMap.empty |> HashMap.add 1 1 |> HashMap.add 2 1) (HashMap.empty |> HashMap.add 1 2 |> HashMap.add 2 2) "Equal Hash maps when shouldn't be.")
+
+          testCase
+            "Equal map by values returns equal"
+            (fun () -> Expect.equal (HashMap.empty |> HashMap.add 1 1 |> HashMap.add 2 2) (HashMap.empty |> HashMap.add 1 1 |> HashMap.add 2 2) "Not Equal Hash maps when should be.")
+
+          testCase
+            "Nested map by values returns equal"
+            (fun () ->
+              let buildHashMap() = hashMap [ (1, hashMap [ (2, 3) ]); (4, hashMap [ (5, 6) ]) ]
+              Expect.equal (buildHashMap()) (buildHashMap()) "Not equal when should be")
+
+          testCase
+            "Nested map not equal by values returns not equal"
+            (fun () ->
+              let buildHashMap v = hashMap [ (1, hashMap [ (2, v) ]); (4, hashMap [ (5, 6) ]) ]
+              Expect.notEqual (buildHashMap 5) (buildHashMap 7) "Not equal when should be")
+
+          testCase
+            "ToString output is expected"
+            (fun () ->
+              let testHashMap = hashMap [ (1, hashMap [ (3, 4)]); (5, hashMap [(6, 7)] ) ]
+              Expect.equal
+                (testHashMap.ToString())
+                "hashMap [(1, hashMap [(3, 4)]); (5, hashMap [(6, 7)])]"
+                "toString not valid" )
 
           generateLargeSizeMapOfSeqTest()
 

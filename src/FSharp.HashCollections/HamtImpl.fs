@@ -346,5 +346,5 @@ module internal HashTrie =
     let empty< 'tk, 'eq when 'eq : (new : unit -> 'eq)> : HashTrieRoot< ^tk> =
         { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
 
-    let inline equals (eqTemplate: 'teq when 'teq :> IEqualityComparer<_>) equalKeyExtractor (h1: HashTrieRoot<'n>) (h2: HashTrieRoot<'n>) =
-        h1.CurrentCount = h2.CurrentCount && Seq.forall (fun (x, y) -> eqTemplate.Equals(equalKeyExtractor x, equalKeyExtractor y)) (Seq.zip (toSeq h1) (toSeq h2))
+    let inline equals (eqTemplate: 'teq when 'teq :> IEqualityComparer<_>) equalKeyExtractor ([<InlineIfLambda>] extraCheck) (h1: HashTrieRoot<'n>) (h2: HashTrieRoot<'n>) =
+        h1.CurrentCount = h2.CurrentCount && Seq.forall (fun (x, y) -> eqTemplate.Equals(equalKeyExtractor x, equalKeyExtractor y) && extraCheck x y) (Seq.zip (toSeq h1) (toSeq h2))
