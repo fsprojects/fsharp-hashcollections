@@ -175,6 +175,35 @@ let [<Tests>] tests =
             "Empty Set returns IsEmpty"
             (fun () -> Expect.isTrue (HashSet.isEmpty (HashSet.empty |> HashSet.add 1 |> HashSet.remove 1)) "HashSet not empty")
 
+          testCase
+            "Not equal set by values returns not equal"
+            (fun () -> Expect.notEqual (HashSet.empty |> HashSet.add 1 |> HashSet.add 2) (HashSet.empty |> HashSet.add 3 |> HashSet.add 2) "Equal Hash Sets when shouldn't be.")
+
+          testCase
+            "Equal set by values returns equal"
+            (fun () -> Expect.equal (HashSet.empty |> HashSet.add 1 |> HashSet.add 2) (HashSet.empty |> HashSet.add 1 |> HashSet.add 2) "Not equal hash sets when should be.")
+
+          testCase
+            "Nested set by values returns equal"
+            (fun () ->
+              let buildHashSet() = hashSet [ (1, hashSet [ (2, 3) ]); (2, hashSet [ (5, 6) ]) ]
+              Expect.equal (buildHashSet()) (buildHashSet()) "Not equal when should be")
+
+          testCase
+            "Nested set by different nested value returns not equal"
+            (fun () ->
+              let buildHashSet v = hashSet [ (1, hashSet [ (2, v) ]); (2, hashSet [ (5, 6) ]) ]
+              Expect.notEqual (buildHashSet 5) (buildHashSet 7) "equal when should not be")
+
+          testCase
+            "ToString output is expected"
+            (fun () ->
+              let testHashSet = hashSet [ hashSet [1; 2]; hashSet [3; 4] ]
+              Expect.equal
+                (testHashSet.ToString())
+                "hashSet [hashSet [1; 2]; hashSet [3; 4]]"
+                "toString not valid" )
+
           generateLargeSizeMapTest()
 
           generateLargeSizeMapOfSeqTest()
