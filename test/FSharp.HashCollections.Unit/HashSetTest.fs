@@ -181,13 +181,20 @@ let [<Tests>] tests =
 
           testCase
             "Equal set by values returns equal"
-            (fun () -> Expect.equal (HashSet.empty |> HashSet.add 1 |> HashSet.add 2) (HashSet.empty |> HashSet.add 1 |> HashSet.add 2) "Not equal hash sets when should be.")
+            (fun () -> Expect.equal (HashSet.empty |> HashSet.add 1 |> HashSet.add 2) (HashSet.empty |> HashSet.add 2 |> HashSet.add 1) "Not equal hash sets when should be.")
 
           testCase
             "Nested set by values returns equal"
             (fun () ->
               let buildHashSet() = hashSet [ (1, hashSet [ (2, 3) ]); (2, hashSet [ (5, 6) ]) ]
               Expect.equal (buildHashSet()) (buildHashSet()) "Not equal when should be")
+
+          testCase
+            "HashSet should be equal despite hash collisions being inserted in different order"
+            (fun () -> 
+              let set1 = HashSet.empty |> HashSet.add 1UL |> HashSet.add 0x200000003UL
+              let set2 = HashSet.empty |> HashSet.add 0x200000003UL |> HashSet.add 1UL
+              Expect.equal set1 set2 "Sets not equal when they should be")
 
           testCase
             "Nested set by different nested value returns not equal"

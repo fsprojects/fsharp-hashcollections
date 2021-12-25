@@ -39,11 +39,10 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashSet<'tk, 'teq when
             let txt3 = HelperFunctions.anyToStringShowingNull h3
             StringBuilder().Append("hashSet [").Append(txt1).Append("; ").Append(txt2).Append("; ").Append(txt3).Append("; ... ]").ToString()
 
-    member this.Equals(other: HashSet<_, _>) = HashTrie.equals this.EqualityComparer keyExtractor (fun _ _ -> true) this.HashTrieRoot other.HashTrieRoot
-    override this.Equals(other: obj) =
-        match other with
-        | :? HashSet<'tk, 'teq> as otherTyped -> this.Equals(otherTyped)
-        | _ -> false
+    member this.Equals(other: HashSet<_, _>) = HashTrie.equals this.EqualityComparer keyExtractor (fun _ _ -> true) this.EqualityComparer.GetHashCode this.HashTrieRoot other.HashTrieRoot
+
+    override this.Equals(other: obj) = match other with | :? HashSet<'tk, 'teq> as otherTyped -> this.Equals(otherTyped) | _ -> false
+
     interface IEquatable<HashSet<'tk, 'teq>> with member this.Equals(other: HashSet<_, _>) = this.Equals(other)
 
     override this.GetHashCode() =
@@ -66,14 +65,14 @@ type HashSet<'tk> = HashSet<'tk, IEqualityComparer<'tk>>
 
 module HashSet =
 
-    let contains (k: 'tk) (hashMap: HashSet<'tk, 'teq>) : bool =
-        HashTrie.tryFind keyExtractor valueExtractor hashMap.EqualityComparer k hashMap.HashTrieRoot |> ValueOption.isSome
+    let contains (k: 'tk) (hashSet: HashSet<'tk, 'teq>) : bool =
+        HashTrie.tryFind keyExtractor valueExtractor hashSet.EqualityComparer k hashSet.HashTrieRoot |> ValueOption.isSome
 
-    let add (k: 'tk) (hashMap: HashSet<'tk, 'teq>) =
-        HashSet<_, _>(HashTrie.add keyExtractor hashMap.EqualityComparer k hashMap.HashTrieRoot, hashMap.EqualityComparer)
+    let add (k: 'tk) (hashSet: HashSet<'tk, 'teq>) =
+        HashSet<_, _>(HashTrie.add keyExtractor hashSet.EqualityComparer k hashSet.HashTrieRoot, hashSet.EqualityComparer)
 
-    let remove (k: 'tk) (hashMap: HashSet<'tk, 'teq>) =
-        HashSet<_, _>(HashTrie.remove keyExtractor hashMap.EqualityComparer k hashMap.HashTrieRoot, hashMap.EqualityComparer)
+    let remove (k: 'tk) (hashSet: HashSet<'tk, 'teq>) =
+        HashSet<_, _>(HashTrie.remove keyExtractor hashSet.EqualityComparer k hashSet.HashTrieRoot, hashSet.EqualityComparer)
 
     let count (h: HashSet<_, _>) = HashTrie.count h.HashTrieRoot
 

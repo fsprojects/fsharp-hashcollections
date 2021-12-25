@@ -158,6 +158,20 @@ let [<Tests>] tests =
               Expect.equal (buildHashMap()) (buildHashMap()) "Not equal when should be")
 
           testCase
+            "HashMap should be equal despite hash collisions being inserted in different order"
+            (fun () -> 
+              let set1 = HashMap.empty |> HashMap.add 1UL 8 |> HashMap.add 0x200000003UL 9
+              let set2 = HashMap.empty |> HashMap.add 0x200000003UL 9 |> HashMap.add 1UL 8
+              Expect.equal set1 set2 "Sets not equal when they should be")
+
+          testCase
+            "HashMap should be not be equal despite having keys with a hash collision due to different values"
+            (fun () -> 
+              let set1 = HashMap.empty |> HashMap.add 1UL 9 |> HashMap.add 0x200000003UL 8
+              let set2 = HashMap.empty |> HashMap.add 0x200000003UL 9 |> HashMap.add 1UL 8
+              Expect.notEqual set1 set2 "Sets equal when they should not be")
+
+          testCase
             "Nested map not equal by values returns not equal"
             (fun () ->
               let buildHashMap v = hashMap [ (1, hashMap [ (2, v) ]); (4, hashMap [ (5, 6) ]) ]
