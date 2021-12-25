@@ -2,6 +2,7 @@ namespace FSharp.HashCollections
 
 open System
 open System.Collections.Generic
+open System.Linq
 
 /// Underlying Hash Trie implementation for other collections.
 module internal HashTrie =
@@ -346,5 +347,57 @@ module internal HashTrie =
     let empty< 'tk, 'eq when 'eq : (new : unit -> 'eq)> : HashTrieRoot< ^tk> =
         { CurrentCount = 0; RootData = TrieNode(CompressedArray.empty) }
 
-    let inline equals (eqTemplate: 'teq when 'teq :> IEqualityComparer<_>) equalKeyExtractor ([<InlineIfLambda>] extraCheck) (h1: HashTrieRoot<'n>) (h2: HashTrieRoot<'n>) =
-        h1.CurrentCount = h2.CurrentCount && Seq.forall (fun (x, y) -> eqTemplate.Equals(equalKeyExtractor x, equalKeyExtractor y) && extraCheck x y) (Seq.zip (toSeq h1) (toSeq h2))
+    [<Struct>]
+    type private ItemToCheckForEquality<'t> =
+        | SingleItem of singleItem: 't
+        | ListOfItems of listOfItems: 't list
+
+    /// Given the right key and extra check function (for value checking above key) we can determine whether the given HashTrie is equal
+    /// for the specialised implementation above (HashMap or HashSet). This is a O(n) implementation except for HashCollectionNodes.
+    let inline equals 
+        (eqTemplate: 'teq when 'teq :> IEqualityComparer<_>) 
+        equalKeyExtractor 
+        ([<InlineIfLambda>] extraCheck) 
+        ([<InlineIfLambda>] hashFunction)
+        (h1: HashTrieRoot<'n>) 
+        (h2: HashTrieRoot<'n>) =
+        
+        // Used only for HashCollision checks.
+        let customEqComparer = {
+            new IEqualityComparer<_> with
+                override _.Equals(x, y) = eqTemplate.Equals(equalKeyExtractor x, equalKeyExtractor y) && extraCheck x y
+                override _.GetHashCode(obj: _) = hashFunction obj
+        }    
+
+        // Custom recursive that allows us to be O(n) for the equality check mostly, with the exception of the hash check.
+        let rec equalsSpecificSeq node = seq {
+            match node with
+            | TrieNode(nodes) -> for node in nodes.Content do yield! equalsSpecificSeq node
+            | TrieNodeFull(nodes) -> for node in nodes do yield! equalsSpecificSeq node
+            | TrieNodeOne(_, subNode) -> yield! equalsSpecificSeq subNode
+            | EntryNode entry -> yield SingleItem entry
+            | HashCollisionNode entries -> yield ListOfItems entries
+        }
+
+        let inline recurse (enumerable1: seq<_>) (enumerable2: seq<_>) = 
+            
+            use enum1 = enumerable1.GetEnumerator()
+            use enum2 = enumerable2.GetEnumerator()
+
+            let rec recurseRec() =
+                let enum1V = enum1.MoveNext()
+                let _ = enum2.MoveNext()
+                if enum1V // Then not at end of list.
+                then
+                    let currentIsEqual = 
+                        match enum1.Current, enum2.Current with
+                        | (SingleItem x, SingleItem y) -> customEqComparer.Equals(x, y)
+                        | (ListOfItems x, ListOfItems y) -> System.Linq.Enumerable.Except(x, y, customEqComparer) |> Seq.isEmpty
+                        | _ -> false
+                    if currentIsEqual then recurseRec() else false
+                else true
+
+            recurseRec()
+
+
+        h1.CurrentCount = h2.CurrentCount && recurse (equalsSpecificSeq h1.RootData) (equalsSpecificSeq h2.RootData)

@@ -8,7 +8,7 @@
     <PackageId>FSharp.HashCollections</PackageId>
     <Title>FSharp.HashCollections</Title>
     <PackageDescription>Immutable hash collections</PackageDescription>
-    <PackageVersion>0.3.0</PackageVersion>
+    <PackageVersion>0.3.1</PackageVersion>
     <Authors>mvkara</Authors>
     <PackageTags>fsharp;collections;hamt;hashmap;hashset;map;set</PackageTags>
     <RepositoryUrl>https://github.com/mvkara/fsharp-hashcollections</RepositoryUrl>

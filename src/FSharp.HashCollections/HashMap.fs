@@ -25,11 +25,21 @@ type [<Struct; IsReadOnly; CustomEquality; NoComparison>] HashMap<'tk, 'tv, 'teq
         | [KeyValue h1;KeyValue h2;KeyValue h3] -> System.Text.StringBuilder().Append("hashMap [").Append(HelperFunctions.anyToStringShowingNull h1).Append("; ").Append(HelperFunctions.anyToStringShowingNull h2).Append("; ").Append(HelperFunctions.anyToStringShowingNull h3).Append("]").ToString()
         | KeyValue h1 :: KeyValue h2 :: KeyValue h3 :: _ -> System.Text.StringBuilder().Append("hashMap [").Append(HelperFunctions.anyToStringShowingNull h1).Append("; ").Append(HelperFunctions.anyToStringShowingNull h2).Append("; ").Append(HelperFunctions.anyToStringShowingNull h3).Append("; ... ]").ToString()
 
-    member this.Equals(other: HashMap<'tk, 'tv, 'teq>): bool = HashTrie.equals this.EqualityComparer keyExtractor (fun x y -> Unchecked.equals x.Value y.Value) this.HashTrieRoot other.HashTrieRoot
+    member this.Equals(other: HashMap<'tk, 'tv, 'teq>): bool = 
+        let eqComparer = this.EqualityComparer
+        HashTrie.equals 
+            this.EqualityComparer 
+            keyExtractor 
+            (fun x y -> Unchecked.equals x.Value y.Value)
+            (fun o -> HashCode.Combine(eqComparer.GetHashCode(keyExtractor o), Unchecked.hash (valueExtractor o)))
+            this.HashTrieRoot 
+            other.HashTrieRoot
+
     override this.Equals(other: obj) =
         match other with
         | :? HashMap<'tk, 'tv, 'teq> as otherTyped -> this.Equals(otherTyped)
         | _ -> false
+        
     interface IEquatable<HashMap<'tk, 'tv, 'teq>> with  member this.Equals(other) = this.Equals(other)
 
     override this.GetHashCode() =
