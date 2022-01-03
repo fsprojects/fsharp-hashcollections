@@ -2,3 +2,4 @@
 **/obj
 .ionide
 .vscode
+.fake

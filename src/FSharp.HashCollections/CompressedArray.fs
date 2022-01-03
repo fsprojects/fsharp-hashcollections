@@ -4,19 +4,20 @@ open System.Runtime.Intrinsics
 open System
 open System.Runtime.CompilerServices
 
+type BitMaskType = uint64
+
 /// A fixed length array like structure. Only allocates as many entries as required to store elements with a maximum of sizeof(BitMap) elements.
-type [<IsReadOnly; Struct>] internal CompressedArray<'t> = { BitMap: uint64; Content: 't array }
+type [<Struct>] internal CompressedArray<'t> = { BitMap: BitMaskType; Content: 't array }
 
 module internal ArrayHelpers =
 
-  let inline arrayCreate<'t> length = Array.zeroCreate<'t> length
+  let inline arrayCreate<'t> length =
+    Array.zeroCreate<'t> length
 
-  let copyArray (sourceArray: 't[]) : 't[] =
-      let result = arrayCreate sourceArray.Length
-      System.Array.Copy (sourceArray, result, sourceArray.Length)
-      result
+  let inline copyArray (sourceArray: 't[]) : 't[] =
+      sourceArray.AsSpan().ToArray()
 
-  let copyArrayInsertInMiddle (insertPos : int) (itemToInsert: 't) (sourceArray: 't[]) : 't[] =
+  let inline copyArrayInsertInMiddle (insertPos : int) (itemToInsert: 't) (sourceArray: 't[]) : 't[] =
     let result = arrayCreate (sourceArray.Length + 1)
     System.Array.Copy (sourceArray, result, insertPos)
     System.Array.Copy (sourceArray, insertPos, result, insertPos + 1, sourceArray.Length - insertPos)
@@ -35,14 +36,14 @@ open ArrayHelpers
 /// Many operations in this module aren't checked and if not used properly could lead to data corruption. Use with caution.
 module internal CompressedArray =
 
-    let [<Literal>] MaxSize = 64
-    let [<Literal>] AllNodesSetBitMap = UInt64.MaxValue
-    let [<Literal>] Zero = 0UL
-    let [<Literal>] One = 1UL
+    let [<Literal>] MaxSize = 32
+    let [<Literal>] AllNodesSetBitMap = BitMaskType.MaxValue
+    let [<Literal>] Zero : BitMaskType = 0UL
+    let [<Literal>] One : BitMaskType = 1UL
     let [<Literal>] LeastSigBitSet = One
 
     /// Has a software fallback if not supported built inside with an IF statement.
-    let inline popCount x = System.Numerics.BitOperations.PopCount (uint64 x)
+    let inline popCount (x: BitMaskType) = System.Numerics.BitOperations.PopCount x
 
     let [<GeneralizableValue>] empty<'t> : CompressedArray<'t> = { BitMap = Zero; Content = Array.zeroCreate 0 }
 
@@ -79,6 +80,11 @@ module internal CompressedArray =
           let newBitMap = ca.BitMap ||| bit
           let newContent = copyArrayInsertInMiddle compressedIndex value ca.Content
           { BitMap = newBitMap; Content = newContent }    
+
+    /// Unsafe. Allows element in position to be replaced. Element must of previously been set.
+    let inline replaceAtIndexNoCheck index value ca =
+        let compressedIndex = getCompressedIndex ca.BitMap index
+        replaceNoCheck compressedIndex value ca
 
     // NOTE: This function when non-inlined after testing can cause performance regressions due to struct copying.
     let inline get index ca =

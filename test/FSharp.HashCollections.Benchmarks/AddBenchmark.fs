@@ -112,8 +112,8 @@ type AddBenchmark() =
     [<GlobalSetup(Target = "AddToFsharpxChampMap")>]
     member this.SetupAddToFsharpxChampMap() = 
         this.PrepData()
-        this.OfSeqSystemCollectionsImmutableMap()
-        if systemImmutableMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
+        this.OfSeqFsharpxChampMap()
+        if fsharpXChampMap.Count <> this.CollectionSize then failwithf "Not properly initialised"
 
     [<Benchmark(OperationsPerInvoke = OperationsPerInvoke)>]
     member this.AddToFsharpxChampMap() =

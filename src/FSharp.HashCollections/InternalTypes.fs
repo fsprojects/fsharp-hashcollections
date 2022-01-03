@@ -5,10 +5,7 @@ open System.Runtime.CompilerServices
 open System
 
 type internal HashTrieNode<'tk> =
-    | TrieNodeFull of nodes: HashTrieNode<'tk> array
-    | TrieNode of nodes: CompressedArray<HashTrieNode<'tk>>
-    | TrieNodeOne of index: int * node: HashTrieNode<'tk>
-    | EntryNode of entry: 'tk
+    | TrieNode of nodes: CompressedArray<HashTrieNode<'tk>> * entries: CompressedArray<'tk>
     | HashCollisionNode of entries: 'tk list
 
 type [<Struct>] internal HashTrieRoot<'tnode> = {
