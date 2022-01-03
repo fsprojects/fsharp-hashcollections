@@ -7,8 +7,8 @@ open System.Linq
 /// Underlying Hash Trie implementation for other collections.
 module internal HashTrie =
 
-    let [<Literal>] PartitionSize = 6
-    let [<Literal>] PartitionMask = 0b111111
+    let [<Literal>] PartitionSize = 5
+    let [<Literal>] PartitionMask = 0b11111
     let [<Literal>] MaxShiftValue = 32 // Partition Size amount of 1 bits
 
     let inline getIndexNoShift shiftedHash = shiftedHash &&& PartitionMask

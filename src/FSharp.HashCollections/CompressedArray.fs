@@ -4,7 +4,7 @@ open System.Runtime.Intrinsics
 open System
 open System.Runtime.CompilerServices
 
-type BitMaskType = uint64
+type BitMaskType = uint32
 
 /// A fixed length array like structure. Only allocates as many entries as required to store elements with a maximum of sizeof(BitMap) elements.
 type [<Struct>] internal CompressedArray<'t> = { BitMap: BitMaskType; Content: 't array }
@@ -38,8 +38,8 @@ module internal CompressedArray =
 
     let [<Literal>] MaxSize = 32
     let [<Literal>] AllNodesSetBitMap = BitMaskType.MaxValue
-    let [<Literal>] Zero : BitMaskType = 0UL
-    let [<Literal>] One : BitMaskType = 1UL
+    let [<Literal>] Zero : BitMaskType = 0u
+    let [<Literal>] One : BitMaskType = 1u
     let [<Literal>] LeastSigBitSet = One
 
     /// Has a software fallback if not supported built inside with an IF statement.
