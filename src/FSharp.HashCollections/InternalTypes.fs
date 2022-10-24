@@ -4,13 +4,18 @@ open System.Collections.Generic
 open System.Runtime.CompilerServices
 open System
 
-type internal HashTrieNode<'tk> =
-    | TrieNode of nodes: CompressedArray<HashTrieNode<'tk>> * entries: CompressedArray<'tk>
+type internal TrieNodeContent<'tk> = 
+    { Nodes: CompressedArray<HashTrieNode<'tk>>
+      Entries: CompressedArray<'tk> }
+    static member inline Empty = { Nodes = CompressedArray.empty; Entries = CompressedArray.empty }
+
+and [<Struct>] internal HashTrieNode<'tk> =
+    | TrieNode of TrieNodeContent<'tk>
     | HashCollisionNode of entries: 'tk list
 
 type [<Struct>] internal HashTrieRoot<'tnode> = {
     CurrentCount: int32
-    RootData: HashTrieNode<'tnode>
+    RootData: TrieNodeContent<'tnode>
 }
 
 module internal HelperFunctions =

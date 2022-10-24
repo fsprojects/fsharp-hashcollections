@@ -45,25 +45,19 @@ module internal CompressedArray =
     /// Has a software fallback if not supported built inside with an IF statement.
     let inline popCount (x: BitMaskType) = System.Numerics.BitOperations.PopCount x
 
-    let [<GeneralizableValue>] empty<'t> : CompressedArray<'t> = { BitMap = Zero; Content = Array.zeroCreate 0 }
+    let [<GeneralizableValue>] empty<'t> : CompressedArray<'t> = { BitMap = Zero; Content = Array.Empty() }
 
     let inline getBitMapForIndex index = LeastSigBitSet <<< index
 
-    let inline boundsCheckIfSet bitMap index = (getBitMapForIndex index &&& bitMap) > Zero
-    let inline boundsCheckIfSetForBitMapIndex bitMap indexBitMap = (indexBitMap &&& bitMap) > Zero
-
-    let inline getCompressedIndex bitMap index =
-       let bitPos = getBitMapForIndex index
-       (bitMap &&& (bitPos - One)) |> popCount
+    let inline boundsCheckIfSetForBitMapIndex bitMap indexBitMap = (indexBitMap &&& bitMap) = indexBitMap
+    
+    let inline boundsCheckIfSet bitMap index = boundsCheckIfSetForBitMapIndex bitMap (getBitMapForIndex index)
 
     let inline getCompressedIndexForIndexBitmap bitMap bitMapIndex =
        (bitMap &&& (bitMapIndex - One)) |> popCount
-
-    let inline getCompressedIndexChecked bitMap index =
-       let bitPos = getBitMapForIndex index
-       if (bitPos &&& bitMap) <> Zero
-       then (bitMap &&& (bitPos - One)) |> popCount |> ValueSome
-       else ValueNone
+    
+    let inline getCompressedIndex bitMap index =
+       getCompressedIndexForIndexBitmap bitMap (getBitMapForIndex index)
 
     let inline replaceNoCheck compressedIndex value ca = 
       let newContent = copyArray ca.Content
@@ -90,8 +84,8 @@ module internal CompressedArray =
     let inline get index ca =
         let bitPos = getBitMapForIndex index
         if boundsCheckIfSetForBitMapIndex ca.BitMap bitPos // This checks if the bit was set in the first place.
-        then ValueSome ca.Content.[getCompressedIndexForIndexBitmap ca.BitMap bitPos]
-        else ValueNone
+        then (true, ca.Content.[getCompressedIndexForIndexBitmap ca.BitMap bitPos])
+        else (false, Unchecked.defaultof<_>)
 
     /// Get the amount of set positions in the compressed array.
     let count ca = ca.Content.Length
