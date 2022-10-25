@@ -53,48 +53,6 @@ module internal HashTrie =
 
         getRec hashMap.RootData keyHash
 
-    // let inline tryFind2
-    //     ([<InlineIfLambda>] keyExtractor: 'tknode -> 'tk)
-    //     ([<InlineIfLambda>] valueExtractor: 'tknode -> 'tv)
-    //     (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
-    //     (k: 'tk)
-    //     (hashMap: HashTrieRoot<'tknode>) : 'tv voption =
-
-    //     let keyHash = eqTemplate.GetHashCode(k)
-
-    //     let tryFindValueInList (l : _ list) =
-    //         let rec findInList currentList =
-    //             match currentList with
-    //             | entry :: tail ->
-    //                 let extractedKey = keyExtractor entry
-    //                 if eqTemplate.Equals(extractedKey, k)
-    //                 then ValueSome (valueExtractor entry)
-    //                 else findInList tail
-    //             | [] -> ValueNone
-    //         findInList l
-
-    //     let rec getRec node remainderHash =
-    //         match node with
-    //         | TrieNode(nodes, values) ->
-    //             let bitPos = CompressedArray.getBitMapForIndex (getIndexNoShift remainderHash)
-    //             if CompressedArray.boundsCheckIfSetForBitMapIndex nodes.BitMap bitPos // This checks if the bit was set in the first place.
-    //             then
-    //                 getRec
-    //                     (nodes.Content.[CompressedArray.getCompressedIndexForIndexBitmap nodes.BitMap bitPos])
-    //                     (remainderHash >>> PartitionSize)
-    //             elif CompressedArray.boundsCheckIfSetForBitMapIndex values.BitMap bitPos 
-    //             then
-    //                 let node = values.Content.[CompressedArray.getCompressedIndexForIndexBitmap values.BitMap bitPos]
-    //                 let nodeKey = keyExtractor node
-    //                 if eqTemplate.Equals(nodeKey, k)
-    //                 then valueExtractor node |> ValueSome
-    //                 else ValueNone
-    //             else
-    //                 ValueNone
-    //         | HashCollisionNode entries -> tryFindValueInList entries
-
-    //     getRec hashMap.RootData keyHash
-
     let inline buildTrieNode(nodes, entries) = TrieNode({Nodes = nodes; Entries = entries}) 
 
     let addNodesToResolveConflict oldNodeMap oldValuesMap existingEntry newEntry existingEntryHash currentKeyHash shift =
@@ -119,7 +77,7 @@ module internal HashTrie =
         createRequiredDepthNodes true shift
 
     let inline add
-        (keyExtractor: 'tknode -> 'tk)
+        ([<InlineIfLambda>] keyExtractor: 'tknode -> 'tk)
         (eqTemplate: 'teq when 'teq :> IEqualityComparer<'tk>)
         (knode: 'tknode)
         (hashMap: HashTrieRoot<'tknode>) : HashTrieRoot<'tknode> =
@@ -132,29 +90,7 @@ module internal HashTrie =
 
         let rec addRec node shift =
             match node with
-            | TrieNode({Nodes = nodes; Entries = values }) ->
-                let index = getIndex keyHash shift
-                let bit = CompressedArray.getBitMapForIndex index
-                if (bit &&& nodes.BitMap) <> CompressedArray.Zero then // Case where node is already present, just recursively update it and replace.
-                    let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap nodes.BitMap bit
-                    let nodeAtPos = nodes.Content.[compressedIndex]
-                    // Part that isn't tail recursive.
-                    let struct (newPosNode, isAdded) = addRec nodeAtPos (shift + PartitionSize)
-                    struct (buildTrieNode (nodes |> CompressedArray.replaceNoCheck compressedIndex newPosNode, values), isAdded)
-                elif (bit &&& values.BitMap) <> CompressedArray.Zero then // Where there is a value with that current one.
-                    let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap values.BitMap bit
-                    let valueAtPos = values.Content.[compressedIndex]
-                    let extractedKey = keyExtractor valueAtPos
-                    if equals extractedKey key
-                    then struct (buildTrieNode(nodes, CompressedArray.replaceNoCheck compressedIndex knode values), false) // Replace existing value
-                    else struct (addNodesToResolveConflict nodes values valueAtPos knode (hash extractedKey) keyHash shift, true) // Move value to node list and create nodes as appropriate.
-                else
-                    // Add new entry
-                    let newBitMap = values.BitMap ||| bit
-                    let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap values.BitMap bit
-                    let newContent = ArrayHelpers.copyArrayInsertInMiddle compressedIndex knode values.Content
-                    let newCa = { BitMap = newBitMap; Content = newContent }
-                    struct (buildTrieNode(nodes, newCa), true)
+            | TrieNode(nodeContent) -> handleNodeContent nodeContent shift
             | HashCollisionNode entries ->
                 if shift < MaxShiftValue then failwithf "Not expected to exist"
                 let rec replaceElementIfExists previouslySeen tailList =
@@ -170,8 +106,31 @@ module internal HashTrie =
                 if replaced
                 then struct (HashCollisionNode(newList), false)
                 else struct (HashCollisionNode(knode :: entries), true)
+        and handleNodeContent ({ Nodes = nodes; Entries = values }: TrieNodeContent<_>) shift = 
+            let index = getIndex keyHash shift
+            let bit = CompressedArray.getBitMapForIndex index
+            if CompressedArray.boundsCheckIfSetForBitMapIndex nodes.BitMap bit then // Case where node is already present, just recursively update it and replace.
+                let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap nodes.BitMap bit
+                let nodeAtPos = nodes.Content.[compressedIndex]
+                // Part that isn't tail recursive.
+                let struct (newPosNode, isAdded) = addRec nodeAtPos (shift + PartitionSize)
+                struct (buildTrieNode (nodes |> CompressedArray.replaceNoCheck compressedIndex newPosNode, values), isAdded)
+            elif CompressedArray.boundsCheckIfSetForBitMapIndex values.BitMap bit then // Where there is a value with that current one.
+                let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap values.BitMap bit
+                let valueAtPos = values.Content.[compressedIndex]
+                let extractedKey = keyExtractor valueAtPos
+                if equals extractedKey key
+                then struct (buildTrieNode(nodes, CompressedArray.replaceNoCheck compressedIndex knode values), false) // Replace existing value
+                else struct (addNodesToResolveConflict nodes values valueAtPos knode (hash extractedKey) keyHash shift, true) // Move value to node list and create nodes as appropriate.
+            else
+                // Add new entry
+                let newBitMap = values.BitMap ||| bit
+                let compressedIndex = CompressedArray.getCompressedIndexForIndexBitmap values.BitMap bit
+                let newContent = ArrayHelpers.copyArrayInsertInMiddle compressedIndex knode values.Content
+                let newCa = { BitMap = newBitMap; Content = newContent }
+                struct (buildTrieNode(nodes, newCa), true)
 
-        let struct ((TrieNode(c)), isAdded) = addRec (TrieNode hashMap.RootData) 0
+        let struct ((TrieNode(c)), isAdded) = handleNodeContent hashMap.RootData 0
 
         { CurrentCount = if isAdded then hashMap.CurrentCount + 1 else hashMap.CurrentCount
           RootData = c }

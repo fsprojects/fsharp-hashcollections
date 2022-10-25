@@ -9,7 +9,7 @@ open System.Collections.Generic
 open ImTools
 
 type OfSeqBenchmark() = 
-
+    
     let mutable hashMap = FSharp.HashCollections.HashMap.empty
     let mutable fsharpMap = Map.empty
     let mutable fsharpDataAdaptiveMap = FSharp.Data.Adaptive.HashMap.Empty
@@ -17,7 +17,6 @@ type OfSeqBenchmark() =
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
     let mutable fsharpXChampMap = FSharpx.Collections.Experimental.ChampHashMap<int, int>()
     let mutable preppedData = Array.zeroCreate 0
-
 
     [<Params(1000, 100_000, 500_000, 750_000, 1_000_000, 5_000_000, 10_000_000)>]
     member val public CollectionSize = 0 with get, set
@@ -63,3 +62,6 @@ type OfSeqBenchmark() =
 
     [<Benchmark>]
     member this.OfSeqFSharpxChampMap() = fsharpXChampMap <- preppedData |>  FSharpx.Collections.Experimental.ChampHashMap.ofSeq (fun x -> x.Key) (fun x -> x.Value)
+
+    [<Benchmark>]
+    member this.OfSeqLangExtMap() = LanguageExt.HashMap.Empty.AddRange(preppedData)
