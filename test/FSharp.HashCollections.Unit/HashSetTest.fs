@@ -115,6 +115,30 @@ let generateLargeSizeMapOfSeqTest() =
       let resultSeq = resultSet |> HashSet.toSeq |> Seq.toArray |> Array.sort
       Expect.equal resultSeq testData "Array data not the same")
 
+let largeSetAddAllThenRemoveAllIsEmpty() =
+  testCase
+    "Large set test then remove all results in empty"
+    (fun () ->
+      let testDataSize = 5000000
+      let testData = Array.init testDataSize id
+      let mutable resultSet = testData |> Array.fold (fun s t -> s |> HashSet.add t) HashSet.empty
+      let resultSeq = resultSet |> HashSet.toSeq |> Seq.toArray |> Array.sort
+
+      Expect.equal resultSeq testData "Array data not the same"
+      Expect.equal testDataSize (HashSet.count resultSet) "Set not empty"
+      Expect.isTrue (resultSet |> HashSet.contains (testDataSize / 2)) "Value not found"
+      Expect.isTrue (resultSet |> HashSet.contains 1) "Value not found (1)"
+      Expect.isTrue (resultSet |> HashSet.contains (testDataSize - 1))  "Value not found (Last Value)"
+
+      for k in testData do resultSet <- resultSet |> HashSet.remove k
+
+      Expect.equal 0 (HashSet.count resultSet) "Set not empty"
+      Expect.isFalse (resultSet |> HashSet.contains (testDataSize / 2)) "Value still found"
+      Expect.isFalse (resultSet |> HashSet.contains 1) "Value still found (1)"
+      Expect.isFalse (resultSet |> HashSet.contains (5000000 - 1)) "Value still found (Last Value)"
+      Expect.equal resultSet HashSet.empty "HashSet should be empty"
+    )
+
 let intersectionEquilvalentToReference (hsOne: list<Guid>) (hsTwo: list<Guid>) =
   let referenceSet = System.Collections.Generic.HashSet(hsOne)
   referenceSet.IntersectWith(hsTwo)
@@ -214,6 +238,8 @@ let [<Tests>] tests =
           generateLargeSizeMapTest()
 
           generateLargeSizeMapOfSeqTest()
+
+          largeSetAddAllThenRemoveAllIsEmpty()
 
           buildPropertyTest
             "Set and HashSet behave the same on Add and Remove"

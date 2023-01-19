@@ -78,6 +78,30 @@ let inline mapAndHashMapHaveSameCountAtAllTimes (actions: KvAction<'tk, 'tv> lis
         let hashTrieResult = hashTrieToTest |> HashMap.count
         Expect.equal hashTrieResult mapResult "Count isn't the same"
 
+let largeMapAddAllThenRemoveAllIsEmpty() =
+  testCase
+    "Large map test then remove all results in empty"
+    (fun () ->
+      let testDataSize = 5000000
+      let testData = Array.init testDataSize id
+      let mutable resultMap = testData |> Array.fold (fun s t -> s |> HashMap.add t t) HashMap.empty
+      let resultSeq = resultMap |> HashMap.toSeq |> Seq.map (fun struct (k, v) -> k) |> Seq.toArray |> Array.sort
+
+      Expect.equal resultSeq testData "Array data not the same"
+      Expect.equal testDataSize (HashMap.count resultMap) "Map not empty"
+      Expect.equal (resultMap |> HashMap.tryFind (testDataSize / 2)) (ValueSome (testDataSize / 2)) "Value not found"
+      Expect.equal (resultMap |> HashMap.tryFind 1) (ValueSome 1) "Value not found (1)"
+      Expect.equal (resultMap |> HashMap.tryFind (testDataSize - 1)) (ValueSome (testDataSize - 1)) "Value not found (Last Value)"
+
+      for k in testData do resultMap <- resultMap |> HashMap.remove k
+
+      Expect.equal 0 (HashMap.count resultMap) "Map not empty"
+      Expect.equal (resultMap |> HashMap.tryFind (testDataSize / 2)) ValueNone "Value still found"
+      Expect.equal (resultMap |> HashMap.tryFind 1) ValueNone "Value still found (1)"
+      Expect.equal (resultMap |> HashMap.tryFind (5000000 - 1)) ValueNone "Value still found (Last Value)"
+      Expect.equal resultMap HashMap.empty "HashMap should be empty"
+      )
+
 let buildPropertyTest testName (testFunction: KvAction<int64, int> list -> _) =
     let config = { Config.QuickThrowOnFailure with StartSize = 0; EndSize = 100000; MaxTest = 100 }
     testCase testName <| fun () -> Check.One(config, testFunction)
@@ -189,6 +213,8 @@ let [<Tests>] tests =
           generateLargeSizeMapOfSeqTest()
 
           generateLargeSizeMapTest()
+
+          largeMapAddAllThenRemoveAllIsEmpty()
 
           buildPropertyTest
             "Map and HashTrie behave the same on Add and Remove"

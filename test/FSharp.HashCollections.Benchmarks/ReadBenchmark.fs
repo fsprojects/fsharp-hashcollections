@@ -1,15 +1,13 @@
 namespace FSharp.HashCollections.Benchmarks
 
-open System
-open FSharp.HashCollections
 open BenchmarkDotNet.Attributes
-open BenchmarkDotNet.Running
-open FSharpx.Collections
-open ImTools
 
 module private ReadBenchmarkConstants =
     let [<Literal>] OperationsPerInvokeInt = 100000
 open ReadBenchmarkConstants
+
+open FSharp.HashCollections
+open FSharpx.Collections.Experimental
 
 type ReadBenchmarks() =
 
@@ -19,13 +17,14 @@ type ReadBenchmarks() =
     let mutable fsharpXHashMap = FSharpx.Collections.PersistentHashMap.empty
     let mutable systemImmutableMap = System.Collections.Immutable.ImmutableDictionary.Empty
     let mutable fsharpDataAdaptiveMap = FSharp.Data.Adaptive.HashMap.Empty
-    let mutable fsharpXChampMap = FSharpx.Collections.Experimental.ChampHashMap<int32, int32>()
+    let mutable fsharpXChampMap: FSharpx.Collections.Experimental.ChampHashMap<_, _> = FSharpx.Collections.Experimental.ChampHashMap<int32, int32>()
+    let mutable languageExtMap = LanguageExt.HashMap.Empty
 
     let mutable keyToLookup = Array.zeroCreate OperationsPerInvokeInt
     let mutable dummyBufferVOption = Array.zeroCreate OperationsPerInvokeInt
     let mutable dummyBufferOption = Array.zeroCreate OperationsPerInvokeInt
     let mutable dummyBufferNoOption = Array.zeroCreate OperationsPerInvokeInt
-    let randomGen = Random()
+    let randomGen = System.Random()
 
     [<Params(10, 100, 1000, 100_000, 500_000, 750_000, 1_000_000, 5_000_000, 10_000_000)>]
     member val public CollectionSize = 0 with get, set
@@ -36,7 +35,7 @@ type ReadBenchmarks() =
 
     [<GlobalSetup(Target = "GetHashMap")>]
     member this.SetupHashMapData() =
-        hashMapData <- HashMap.empty
+        hashMapData <- FSharp.HashCollections.HashMap.empty
         for i = 0 to this.CollectionSize - 1 do
             hashMapData <- hashMapData |> HashMap.add i i
         this.SetupKeyToLookup()
@@ -59,7 +58,7 @@ type ReadBenchmarks() =
     member this.SetupFSharpXMapData() =
         fsharpXHashMap <- FSharpx.Collections.PersistentHashMap.empty
         for i = 0 to this.CollectionSize - 1 do
-            fsharpXHashMap <- fsharpXHashMap |> FSharpx.Collections.PersistentHashMap.add i i
+            fsharpXHashMap <- fsharpXHashMap.Add(i, i)
         this.SetupKeyToLookup()
 
     [<GlobalSetup(Target = "GetSystemCollectionsImmutableMap")>]
@@ -80,14 +79,21 @@ type ReadBenchmarks() =
     member this.SetupFSharpXChampMap() =
         fsharpXChampMap <- FSharpx.Collections.Experimental.ChampHashMap<int, int>()
         for i = 0 to this.CollectionSize - 1 do
-            fsharpXChampMap <- FSharpx.Collections.Experimental.ChampHashMap.add fsharpXChampMap i i
+            fsharpXChampMap <- ChampHashMap.add fsharpXChampMap i i
+        this.SetupKeyToLookup()
+
+    [<GlobalSetup(Target = "GetLangExtMap")>]
+    member this.SetupLangExtMap() =
+        languageExtMap <- LanguageExt.HashMap.Empty
+        for i = 0 to this.CollectionSize - 1 do
+            languageExtMap <- languageExtMap.Add(i, i)
         this.SetupKeyToLookup()
 
     [<Benchmark(OperationsPerInvoke = OperationsPerInvokeInt)>]
     member _.GetHashMap() =
         let mutable i = 0
         for k in keyToLookup do
-            dummyBufferVOption.[i] <- hashMapData |> HashMap.tryFind k
+            dummyBufferVOption.[i] <- hashMapData |> FSharp.HashCollections.HashMap.tryFind k
             i <- i + 1
 
     [<Benchmark(OperationsPerInvoke = OperationsPerInvokeInt)>]
@@ -134,4 +140,11 @@ type ReadBenchmarks() =
         let mutable i = 0
         for k in keyToLookup do
             dummyBufferOption.[i] <- FSharpx.Collections.Experimental.ChampHashMap.tryGetValue fsharpXChampMap k 
+            i <- i + 1
+
+    [<Benchmark(OperationsPerInvoke = OperationsPerInvokeInt)>]
+    member _.GetLangExtMap() =
+        let mutable i = 0
+        for k in keyToLookup do
+            dummyBufferNoOption.[i] <- languageExtMap.[k]
             i <- i + 1
