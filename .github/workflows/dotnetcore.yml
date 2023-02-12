@@ -14,4 +14,4 @@ jobs:
       with:
         dotnet-version: 6.0.403
     - name: Build Nuget package
-      run: dotnet pack ./src/FSharp.HashCollections --configuration Release -o ./output
+      run: dotnet tool restore && dotnet pack ./src/FSharp.HashCollections --configuration Release -o ./output
