@@ -1,20 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
-
   <PropertyGroup>
     <PackageId>FSharp.HashCollections</PackageId>
     <Title>FSharp.HashCollections</Title>
     <PackageDescription>Immutable hash collections</PackageDescription>
-    <PackageVersion>0.3.3</PackageVersion>
+    <PackageVersion>0.3.4</PackageVersion>
     <Authors>mvkara</Authors>
     <PackageTags>fsharp;collections;hamt;hashmap;hashset;map;set</PackageTags>
     <RepositoryUrl>https://github.com/mvkara/fsharp-hashcollections</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="CompressedArray.fs" />
     <Compile Include="InternalTypes.fs" />
@@ -22,5 +20,5 @@
     <Compile Include="HashMap.fs" />
     <Compile Include="HashSet.fs" />
   </ItemGroup>
-
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

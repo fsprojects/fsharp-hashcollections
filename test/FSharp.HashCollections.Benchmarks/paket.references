@@ -1,0 +1,8 @@
+BenchmarkDotNet
+FSharp.Data.Adaptive
+FSharpX.Collections
+FSharpx.Collections.Experimental
+ImTools.dll
+LanguageExt.FSharp
+System.Collections.Immutable
+FSharp.Core

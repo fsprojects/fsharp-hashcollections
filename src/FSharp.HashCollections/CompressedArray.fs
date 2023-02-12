@@ -1,6 +1,5 @@
 namespace FSharp.HashCollections
 
-open System.Runtime.Intrinsics
 open System
 open System.Runtime.CompilerServices
 

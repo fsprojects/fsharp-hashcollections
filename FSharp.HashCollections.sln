@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{38C559CF-7B80-49F2-82D1-CD72AE22D3C8}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{583DE1CB-1CFA-4EEE-8FB7-D4A9A7ED0055}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.HashCollections", "src\FSharp.HashCollections\FSharp.HashCollections.fsproj", "{B8CD14E2-5DC9-4A58-8271-E21F8DB6DCAD}"
