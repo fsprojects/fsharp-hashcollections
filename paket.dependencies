@@ -1,0 +1,13 @@
+source https://www.nuget.org/api/v2
+
+nuget FSharp.Core >= 6
+nuget BenchmarkDotNet 0.13.1
+nuget Expecto 8.13.1
+nuget Expecto.FsCheck 8.13.1
+nuget FsCheck 2.14.0
+nuget FSharp.Data.Adaptive 0.0.13
+nuget FSharpX.Collections 3.0.1
+nuget FSharpx.Collections.Experimental 3.0.1
+nuget ImTools.dll 1.0.0
+nuget LanguageExt.FSharp 4.2.9
+nuget System.Collections.Immutable ~> 6
