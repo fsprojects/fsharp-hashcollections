@@ -51,9 +51,9 @@ NUGET
       System.Reflection.Emit.Lightweight (>= 4.3) - restriction: >= netstandard2.0
       System.Threading.Tasks.Extensions (>= 4.5.4) - restriction: >= netstandard2.0
       System.ValueTuple (>= 4.5) - restriction: >= netstandard2.0
-    LanguageExt.FSharp (4.2.9)
+    LanguageExt.FSharp (4.4.2)
       FSharp.Core (>= 4.1.12) - restriction: >= netstandard2.0
-      LanguageExt.Core (>= 4.2.9) - restriction: >= netstandard2.0
+      LanguageExt.Core (>= 4.4.2) - restriction: >= netstandard2.0
     Microsoft.Bcl.AsyncInterfaces (7.0) - restriction: >= netstandard2.0
       System.Threading.Tasks.Extensions (>= 4.5.4) - restriction: || (>= net462) (&& (>= netstandard2.0) (< netstandard2.1))
     Microsoft.CodeAnalysis.Analyzers (3.3.4) - restriction: >= netstandard2.0

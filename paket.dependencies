@@ -9,5 +9,5 @@ nuget FSharp.Data.Adaptive 0.0.13
 nuget FSharpX.Collections 3.0.1
 nuget FSharpx.Collections.Experimental 3.0.1
 nuget ImTools.dll 1.0.0
-nuget LanguageExt.FSharp 4.2.9
+nuget LanguageExt.FSharp
 nuget System.Collections.Immutable ~> 6
