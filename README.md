@@ -44,7 +44,7 @@ All collections are persisted/immutable by nature so any Add/Remove operation pr
 | Equals | O(n) |
 
 Example Usage:
-```
+```fs
 open FSharp.HashCollections
 let hashMapResult = HashMap.empty |> HashMap.add k v |> HashMay.tryFind k // Result is ValueSome(v)
 ```
@@ -60,7 +60,7 @@ let hashMapResult = HashMap.empty |> HashMap.add k v |> HashMay.tryFind k // Res
 | Equals | O(n) |
 
 Example Usage:
-```
+```fs
 open FSharp.HashCollections
 let hashMapResult = HashSet.empty |> HashSet.add k |> HashSet.contains k // Result is true
 ```
@@ -71,7 +71,7 @@ By default any "empty" seeded HashSet/Map uses F# HashIdentity.Structural compar
 
 In addition all collection types allow custom equality to be assigned if required. The equality is encoded as a type on the collection so equality and hashing operations are consistent. Same collection types with different equality comparers can not be used interchangeably by operations provided.  To use:
 
-```
+```fs
 // Uses the default equality template provided.
 let defaultIntHashMap : HashMap<int, int64> = HashMap.empty
 
@@ -87,7 +87,7 @@ Any equality comparer specified in the type signature must:
 
 An example with the type "Int" for the custom equality comparer (which in testing exhibits slightly faster perf than the default):
 
-```
+```fs
 type IntEqualityTemplate =
     struct end
     interface System.Collections.Generic.IEqualityComparer<int> with
